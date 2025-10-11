@@ -13,6 +13,14 @@ def login():
     
     if request.method == "POST":
         return "login"
+    
+@app.route('/register', methods = ['POST', 'GET'])
+def register():
+    if request.method == "GET":
+        return render_template('register_page.html')
+    
+    if request.method == "POST":
+        return "Student success fully registered"
 
 @app.route('/home')
 def home():
