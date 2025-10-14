@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for
 
+
 app = Flask(__name__)
 
 @app.route('/')
@@ -22,7 +23,7 @@ def register():
     if request.method == "POST":
         return "Student success fully registered"
 
-@app.route('/home')
+@app.route('/index')
 def home():
     return render_template("show_classes_page.html")
 
