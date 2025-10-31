@@ -8,3 +8,7 @@ def login():
     if request.method == 'POST':
         return instructorController.login(request.form)
     return render_template('/instructorTemplate/instructor_login_page.html')
+
+@instructor_bp.route('/', methods=['GET'])
+def index():
+    return render_template('/instructorTemplate/instructor_class_list.html')

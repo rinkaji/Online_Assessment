@@ -1,0 +1,20 @@
+{% extends "base.html" %} {% block title %}instructor registration page{%
+endblock %} {% block content %} {% with messages=get_flashed_messages() %}{% if
+messages %}{% for message in messages %}{{message}}{% endfor %}{% endif %}{%
+endwith %}
+
+<h1>This is instructor register page</h1>
+<form action="/admin/instructor/register" method="post">
+  <label for="">First Name: </label>
+  <input type="text" name="fname" id="" required />
+  <label for="">Middle Name: </label>
+  <input type="text" name="mname" id="" required />
+  <label for="">Last Name: </label>
+  <input type="text" name="lname" id="" required />
+  <label for="">Email: </label>
+  <input type="text" name="email" id="" required />
+  <label for="">Password: </label>
+  <input type="text" name="password" id="" required />
+  <input type="submit" value="register" />
+</form>
+{% endblock %}

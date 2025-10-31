@@ -1,0 +1,28 @@
+{% extends "base.html" %} {% block title %}Instructor list page{% endblock %} {%
+block content %}
+<h1>This is Admin Instructor list page</h1>
+<a href="/admin/instructor/register">Add Instructor</a>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Email</th>
+      <th>actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for instructor in instructors %}
+    <tr>
+      <td>
+        {{instructor['first_name']~''~instructor['middle_name']~''~instructor['last_name']}}
+      </td>
+      <td><p>{{instructor['email']}}</p></td>
+      <td>
+        <a href="/admin/instructor/delete/{{instructor['id']}}">delete</a>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+<a href="/admin/student">Go to Students</a>
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends "base.html" %} {% block title %}Student List page{% endblock %} {%
+block content %}
+<h1>This is Admin student list page</h1>
+<a href="/admin/student/register">Add student</a>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>email</th>
+      <th>action</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for student in students %}
+    <tr>
+      <td>
+        {{student['first_name']~''~student['middle_name']~''~student['last_name']}}
+      </td>
+      <td><p>{{student['email']}}</p></td>
+      <td><a href="/admin/student/delete/{{student['id']}}">delete</a></td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<a href="/admin/instructor">Go to Instructor</a>
+{% endblock %}

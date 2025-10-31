@@ -9,7 +9,9 @@ def login(user):
         flash("account does not exists", 'error')
         return redirect(url_for('instructor.login'))
     elif instructor and password == instructor['password']:
-        return render_template('instructorTemplate/instructor_class_list.html')
+        if instructor["role"] == "admin":
+            return redirect(url_for('admin.home'))
+        return redirect(url_for('instructor.index'))
     else:
         flash("incorrect password", 'error')
         return redirect(url_for('instructor.login'))
