@@ -8,6 +8,9 @@ python -m venv venv
 To activate the virtual environment, run in the terminal:
 .venv\Scripts\activate
 
+To run the package:
+python app.py
+
 ### install required packages
 
 To install the required Python packages for this project, run the following command after activating the virtual environment:
