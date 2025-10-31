@@ -1,7 +1,9 @@
 {% extends "base.html" %} {% block title %}Register{% endblock %} {% block
-content %}
+content %} {% with messages=get_flashed_messages() %}{% if messages %}{% for
+message in messages %}{{message}}{% endfor %}{% endif %}{% endwith %}
+
 <h1>This is student register page</h1>
-<form action="/register" method="post">
+<form action="/student/register" method="post">
   <label for="">First Name: </label>
   <input type="text" name="fname" id="" required />
   <label for="">Middle Name: </label>
@@ -14,4 +16,5 @@ content %}
   <input type="text" name="password" id="" required />
   <input type="submit" value="register" />
 </form>
+<a href="/student/login">login</a>
 {% endblock %}

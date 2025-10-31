@@ -1,11 +1,14 @@
 {% extends "base.html" %} {% block title %} Login Page {% endblock %} {% block
-content %}
+content %} {% with messages=get_flashed_messages() %}{% if messages %}{% for
+message in messages %}{{message}}{% endfor %}{% endif %}{% endwith %}
+
 <h1>This is login page</h1>
-<form action="/login" method="post">
+<form action="/student/login" method="post">
   <label for="">Email: </label>
   <input type="text" name="email" id="" required />
   <label for="">Password</label>
   <input type="text" name="password" required />
   <input type="submit" value="login" />
 </form>
+<a href="/student/register">Register</a>
 {% endblock %}
