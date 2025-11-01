@@ -1,6 +1,7 @@
 {% extends "base.html" %} {% block title %}Student registration page{% endblock
 %} {% block content %} {% with messages=get_flashed_messages() %}{% if messages
 %}{% for message in messages %}{{message}}{% endfor %}{% endif %}{% endwith %}
+{% include "instructor_header.html" %}
 
 <h1>This is student register page</h1>
 <form action="/admin/student/register" method="post">

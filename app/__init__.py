@@ -2,6 +2,7 @@ from flask import Flask, redirect, url_for
 from app.routes.studentRoutes import student_bp 
 from app.routes.instructorRoutes import instructor_bp
 from app.routes.adminRoutes import admin_bp
+from app.routes.classroomRoutes import classroom_bp
 from app.config import Config
 from flask_mysqldb import MySQL
 
@@ -24,5 +25,6 @@ def create_app():
     app.register_blueprint(student_bp, url_prefix = '/student')
     app.register_blueprint(instructor_bp, url_prefix = '/instructor')
     app.register_blueprint(admin_bp, url_prefix='/admin')
+    app.register_blueprint(classroom_bp, url_prefix='/classroom')
     
     return app 

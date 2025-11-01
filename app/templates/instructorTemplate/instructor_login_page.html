@@ -3,7 +3,7 @@ content %} {% with messages=get_flashed_messages() %}{% if messages %}{% for
 message in messages %}{{message}}{% endfor %}{% endif %}{% endwith %}
 
 <h1>This is instructor login page</h1>
-<form action="/instructor/login" method="post">
+<form action="/instructor/login" method="POST">
   <label for="">Email: </label>
   <input type="text" name="email" id="" required />
   <label for="">Password</label>

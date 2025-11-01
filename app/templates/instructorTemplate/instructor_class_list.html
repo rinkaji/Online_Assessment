@@ -1,4 +1,36 @@
 {% extends "base.html" %} {% block title %}Classes{% endblock %} {% block
-content %}
+content %} {% include "instructor_header.html" %} {% with
+messages=get_flashed_messages() %}{% if messages %}{% for message in messages
+%}{{message}}{% endfor %}{% endif %}{% endwith %}
 <h1>this is instructor class list page</h1>
+<a href="/classroom/create">Create classroom</a>
+<table>
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>class code</th>
+      <th>created_by</th>
+      <th>description</th>
+      <th>actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for classroom in classrooms %}
+    <tr>
+      <td>{{classroom['title']}}</td>
+      <td>{{classroom['class_code']}}</td>
+      <td>
+        {{classroom['first_name']}} {{classroom['middle_name'][0]}}
+        {{classroom['last_name']}}
+      </td>
+      <td>{{classroom['description']}}</td>
+      <td>
+        <a href="/classroom/{{classroom['id']}}">view</a>
+        <a href="/classroom/delete/{{classroom['id']}}">delete</a>
+        <a href="/classroom/edit/{{classroom['id']}}">edit</a>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
 {% endblock %}

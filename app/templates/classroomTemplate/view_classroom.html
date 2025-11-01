@@ -1,0 +1,11 @@
+{% extends "base.html" %} {% block title %}view classroom{% endblock %} {% block
+content %}{% include "instructor_header.html" %}
+</br>
+<a href="/instructor/">back to list</a>
+<h1>{{classroom['title'].title()}}</h1>
+<h3>
+  Created by: {{classroom['first_name'].title()}}
+  {{classroom['middle_name'][0].title()}} {{classroom['last_name'].title()}}
+</h3>
+<p>Description: {{classroom['description']}}</p>
+{% endblock %}

@@ -1,0 +1,11 @@
+{% extends "base.html" %}{% block title %}add classroom{% endblock %} {% block
+content %} {% include "instructor_header.html" %}
+<h1>This is create classroom page</h1>
+<form action="/classroom/create" method="post">
+  <label for="">title: </label>
+  <input type="text" name="title" id="" required />
+  <label for="">description: </label>
+  <input type="text" name="description" id="" />
+  <input type="submit" value="create" />
+</form>
+{% endblock %}
