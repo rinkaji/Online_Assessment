@@ -1,4 +1,15 @@
 {% extends "base.html" %} {% block title %}Home Page{% endblock %} {% block
-content %} {% include "student_header.html" %}
+content %} {% include "student_header.html" %} {% with
+messages=get_flashed_messages() %}{% if messages %}{% for message in messages
+%}{{message}}{% endfor %}{% endif %}{% endwith %}
+
+<a href="/student/join">Join Class</a>
 <h1>Classes</h1>
-{% endblock %}
+{% for classroom in classrooms %}
+<h2>{{classroom['title']}}</h2>
+<h3>
+  {{classroom['first_name'].title()}} {{classroom['middle_name'][0].title()}}
+  {{classroom['last_name'].title()}}
+</h3>
+<h4>{{classroom['description']}}</h4>
+{% endfor %} {% endblock %}

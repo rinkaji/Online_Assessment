@@ -1,5 +1,7 @@
 from flask import Blueprint, request, render_template, session, redirect, url_for
+from app.controllers import classroomController
 import app.controllers.studentController as studentController
+from app.helper import studentHelper
 
 student_bp = Blueprint('student', __name__)
 
@@ -23,6 +25,16 @@ def register():
 
 @student_bp.route('/dashboard', methods=['GET'])
 def dashboard():
-    if not session:
-        return redirect(url_for('student.login'))
+    check = studentHelper.accountCheck()
+    if check:
+        return check
     return studentController.getClasses()
+
+@student_bp.route('/join', methods =['GET', 'POST'])
+def join():
+    if request.method == "POST":
+        return classroomController.joinClassroom(request.form)
+    check = studentHelper.accountCheck()
+    if check:
+        return check
+    return render_template('classroomTemplate/join_classroom.html')

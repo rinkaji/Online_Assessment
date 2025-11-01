@@ -62,3 +62,9 @@ def updateClassroom(details, id):
                 (details['title'],details['description'], id ))
     app.mysql.connection.commit()
     
+def searchClassroom(code):
+    cur = app.mysql.connection.cursor(dictFormat)
+    cur.execute('SELECT * from classrooms where class_code = %s' , (code,))
+    data = cur.fetchone()
+    cur.close()
+    return data

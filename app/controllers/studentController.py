@@ -1,4 +1,4 @@
-import app.models.studentModel as studentModel
+from app.models import classroomModel, enrollmentModel,studentModel
 from flask import render_template, flash, url_for, redirect, session
 
 def login(user):
@@ -27,4 +27,5 @@ def register(details):
     return redirect(url_for('student.dashboard'))
 
 def getClasses():
-    return render_template('studentTemplate/student_show_classes_page.html')
+    classrooms = enrollmentModel.getClasses()
+    return render_template('studentTemplate/student_show_classes_page.html', classrooms = classrooms)

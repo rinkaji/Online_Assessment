@@ -1,5 +1,5 @@
 from flask import flash, redirect, render_template, url_for
-from app.models import classroomModel
+from app.models import classroomModel, enrollmentModel
 
 
 def createClassroom(details):
@@ -22,3 +22,18 @@ def getClassroom(id):
 def updateClassroom(details, id):
     classroomModel.updateClassroom(details, id)
     return redirect(url_for('instructor.index'))
+
+def joinClassroom(code):
+    classRoom = classroomModel.searchClassroom(code['code'])
+    
+    if not classRoom:
+        flash("classroom does not exists", 'error') 
+        return redirect(url_for('student.dashboard'))
+    
+    exists = enrollmentModel.searchClass(classRoom['id'])
+    if exists:
+        flash("classroom already joined", 'error') 
+        return redirect(url_for('student.dashboard'))
+    
+    enrollmentModel.addStudent(classRoom)
+    return redirect(url_for('student.dashboard'))
