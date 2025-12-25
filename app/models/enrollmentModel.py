@@ -11,15 +11,14 @@ def addStudent(classroom):
     
 def getClasses():
     cur = app.mysql.connection.cursor(dictFormat)
-    cur.execute('''SELECT classrooms.title, users.first_name, users.middle_name, users.last_name, classrooms.description
-                from classroom_enrollment
-                join classrooms 
-                on classroom_enrollment.classroom_id = classrooms.id
-                join users
-                on classroom_enrollment.user_id = users.id 
-                where users.id = %s''', (session['user']['id'],))
+    cur.execute('''SELECT ce.classroom_id, c.title, c.description, u.first_name, u.middle_name, u.last_name
+                from classroom_enrollment as ce
+                join classrooms as c
+                on ce.classroom_id = c.id
+                join users as u
+                on c.user_id = u.id 
+                where ce.user_id = %s''', (session['user']['id'],))
     data = cur.fetchall()
-    
     cur.close()
     return data
 
@@ -27,5 +26,17 @@ def searchClass(classroom_id):
     cur = app.mysql.connection.cursor(dictFormat)
     cur.execute('SELECT * from classroom_enrollment where classroom_id = %s and user_id = %s', (classroom_id, session['user']['id']))
     data = cur.fetchone()
+    cur.close()
+    return data
+
+def getStudents(classroomId):
+    cur = app.mysql.connection.cursor(dictFormat)
+    cur.execute('''
+                SELECT users.first_name, users.middle_name, users.last_name, users.email
+                FROM classroom_enrollment
+                JOIN users
+                ON classroom_enrollment.user_id = users.id
+                WHERE classroom_id = %s''', (classroomId,))
+    data = cur.fetchall()
     cur.close()
     return data

@@ -1,7 +1,7 @@
 from flask import redirect, session, url_for
 
 
-def accountCheck():
+def studentAccountCheck():
     if not session:
         return redirect(url_for('student.login'))  
     elif  session and session['user']['role'] == 'student':

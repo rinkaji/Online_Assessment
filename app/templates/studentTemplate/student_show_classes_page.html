@@ -12,4 +12,5 @@ messages=get_flashed_messages() %}{% if messages %}{% for message in messages
   {{classroom['last_name'].title()}}
 </h3>
 <h4>{{classroom['description']}}</h4>
+<a href="/classroom/view/{{classroom['classroom_id']}}">view </a>
 {% endfor %} {% endblock %}

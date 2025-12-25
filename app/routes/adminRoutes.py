@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, session, redirect, url_for
-import app.controllers.adminController as adminController
+#import app.controllers.adminController as adminController
 
 
 admin_bp = Blueprint('admin', __name__)

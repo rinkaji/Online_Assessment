@@ -8,6 +8,7 @@ messages=get_flashed_messages() %}{% if messages %}{% for message in messages
   <thead>
     <tr>
       <th>Title</th>
+      <th>subject</th>
       <th>class code</th>
       <th>created_by</th>
       <th>description</th>
@@ -17,7 +18,8 @@ messages=get_flashed_messages() %}{% if messages %}{% for message in messages
   <tbody>
     {% for classroom in classrooms %}
     <tr>
-      <td>{{classroom['title']}}</td>
+      <td>{{classroom['title']}} </td>
+      <td>{{classroom['subject'].title()}}</td>
       <td>{{classroom['class_code']}}</td>
       <td>
         {{classroom['first_name']}} {{classroom['middle_name'][0]}}

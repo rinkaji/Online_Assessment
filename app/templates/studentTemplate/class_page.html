@@ -1,9 +1,9 @@
 {% extends "base.html" %} 
-{% block title %}view classroom{% endblock %} 
+{% block title %}student view classroom{% endblock %} 
 {% block content %} 
-{% include "instructor_header.html" %}
+{% include "student_header.html" %}
 
-<a href="/instructor/">back to list</a>
+<a href="/student/dashboard">back to list</a>
 <h1>{{classroom['title'].title()}}</h1>
 <h3>
   Created by: {{classroom['first_name'].title()}}
@@ -11,15 +11,13 @@
 </h3>
 <p>Description: {{classroom['description']}}</p>
 
-
 {% for student in students %} 
 <b>{{student['first_name'].title()}} {{student['middle_name'][0].title()}} {{student['last_name'].title()}}</b>
 <p>{{ student['email'] }}</p>
-
 {% endfor %}
-<a href="/assessment/create/{{classroom['id']}}">Create assessment</a>
+<h4>Assessments</h4>
 {% for assessment in assessments %}
-  <h3>{{assessment['title']}}</h3>
+  <h6>{{assessment['title']}}</h6>
   <h6>{{assessment['total_marks']}} points</h6>
 {% endfor %}
 {% endblock %}

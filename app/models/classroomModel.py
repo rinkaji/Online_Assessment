@@ -34,8 +34,8 @@ def code_generator():
 
 def createClassroom(details):
     cur = app.mysql.connection.cursor()
-    cur.execute("""INSERT INTO classrooms (user_id, title, class_code, description)
-                VALUES (%s, %s, %s, %s)""", (session['user']['id'], details['title'], code_generator(), details.get('description', '')))
+    cur.execute("""INSERT INTO classrooms (user_id, title, class_code, description, subject)
+                VALUES (%s, %s, %s, %s, %s)""", (session['user']['id'], details['title'], code_generator(), details.get('description', ''), details.get('subject', "")))
     app.mysql.connection.commit()
     cur.close()
     

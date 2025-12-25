@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block title %}
+    create assessment
+{% endblock %}
+{% block content %}
+    <h1>This is create assessment page</h1>
+    <form action="/assessment/create/{{classroom_id}}" method="post">
+        <label for="">title</label>
+        <input type="text" name="title" id="" required>
+        <label for="">Total Marks: </label>
+        <input type="number" name="total_marks" id="" required>
+        <label for="">Time limit: </label>
+        <input type="number" name="time_limit" id="">
+        <label for="">description: </label>
+        <input type="text" name="description" id="">
+        <select name="type" id="" required>
+            <option value="quiz">Quiz</option>
+            <option value="exam">Exam</option>
+        </select>
+        <input type="submit" value="create">
+    </form>
+{% endblock %}
