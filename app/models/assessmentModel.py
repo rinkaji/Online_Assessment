@@ -18,3 +18,10 @@ def getAssessments(classroomId):
     data = cur.fetchall()
     cur.close()
     return data
+
+def viewAssessment(assessmentId):
+    cur = app.mysql.connection.cursor(dictFormat)
+    cur.execute("""SELECT * from assessments where id = %s""", (assessmentId,))
+    data = cur.fetchone()
+    cur.close()
+    return data

@@ -24,7 +24,6 @@ def view(id):
     classroom = classroomModel.viewClassroom(id)
     students = enrollmentModel.getStudents(id)
     assessments = assessmentModel.getAssessments(id)
-    print(assessments)
     return render_template('classroomTemplate/view_classroom.html', classroom = classroom, students = students, assessments = assessments)
 
 #student view class

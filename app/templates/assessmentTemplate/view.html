@@ -1,0 +1,200 @@
+{% extends 'base.html' %}
+{% block title %}
+    view assessment
+{% endblock %}
+{% block content %}
+    <h1>This is view assessment page</h1>
+    <h3>Title: {{assessment.get('title')}}</h3>
+    <h4>Description: {{assessment.get('description')}}</h4>
+    <p><b>Total Points:</b> {{assessment.get('total_marks')}} pts.</p>
+    <p><b>Time limit:</b> {{assessment.get('time_limit')}}</p>
+    
+    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal">Add Question</button>
+    <div class="container" id = 'question-box'></div>
+    
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="myModalLabel" > 
+        <div class="modal-dialog"> 
+            <div class="modal-content"> 
+                <!-- Header --> 
+                <div class="modal-header"> 
+                    <h5 class="modal-title" id="myModalLabel">Create Question</h5> 
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> 
+                </div> 
+                <!-- Body --> 
+                <div class="modal-body"> 
+                    Question: <input type="text" name="" id="question" class="form-control">
+                    Type: <select class="form-select" name="" id="question-type">
+                        <option value="mc" selected>Multiple Choice</option>
+                        <option value="id">Identification</option>
+                        <option value="tf">True or False</option>
+                    </select>
+                    <div id="type-options"></div>
+
+                    Explanation: <input type="text" id="question-explanation" class="form-control" placeholder="Optional">
+                </div> 
+                
+
+                <!-- Footer -->
+                <div class="modal-footer"> 
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button> 
+                    <button type="button" class="btn btn-primary" id="addBtn">Add</button> 
+                </div> 
+            </div> 
+        </div> 
+    </div>
+{% endblock %}  
+
+
+
+{% block scripts %}
+ <script> 
+    let questions = [];
+    const box = document.getElementById('question-box')
+    const add = document.getElementById('addBtn')
+    const input_question = document.getElementById('question')
+
+    const inputQuestion = document.getElementById('question');
+    const questionType = document.getElementById('question-type');
+    const typeOptions = document.getElementById('type-options');
+
+    function renderTypeInputs(type) {
+    typeOptions.innerHTML = '';
+    if (type === 'mc') {
+        // fixed 4 option inputs (no add/remove)
+        const optsContainer = document.createElement('div');
+        optsContainer.id = 'mc-options';
+        for (let i=0; i<4; i++) optsContainer.appendChild(createMcOption(i+1));
+        typeOptions.appendChild(optsContainer);
+
+    } else if (type === 'tf') {
+        // True / False radio to choose correct answer
+        const div = document.createElement('div');
+        div.innerHTML = `
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="tf-answer" id="tf-true" value="True" checked>
+            <label class="form-check-label" for="tf-true">True</label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="tf-answer" id="tf-false" value="False">
+            <label class="form-check-label" for="tf-false">False</label>
+        </div>
+        `;
+        typeOptions.appendChild(div);
+
+    } else if (type === 'id') {
+        // single text input for identification answer
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.id = 'id-answer';
+        input.className = 'form-control';
+        input.placeholder = 'Correct answer';
+        typeOptions.appendChild(input);
+    }
+    }
+
+    function createMcOption(index) {
+    const wrapper = document.createElement('div');
+    wrapper.className = 'input-group mb-1 mc-option';
+    wrapper.innerHTML = `
+        <span class="input-group-text">
+        <input name="mc-correct" type="radio" aria-label="Select correct answer">
+        </span>
+        <input type="text" class="form-control mc-option-text" placeholder="Option ${index}">
+    `;
+    // update Add button state when a radio is selected
+    const radio = wrapper.querySelector('input[name="mc-correct"]');
+    radio.addEventListener('change', updateAddButtonState);
+    return wrapper;
+    }
+
+    function collectQuestion() {
+    const text = inputQuestion.value.trim();
+    if (!text) return null;
+    const type = questionType.value;
+    let payload = { text, type };
+
+    if (type === 'mc') {
+        const opts = [];
+        const optElems = document.querySelectorAll('.mc-option');
+        optElems.forEach((el, i) => {
+        const t = el.querySelector('.mc-option-text').value.trim();
+        const correct = el.querySelector('input[name="mc-correct"]').checked;
+        if (t) opts.push({ text: t, correct });
+        });
+        if (opts.length < 2) { alert('Please provide at least 2 options.'); return null; } // simple validation
+        const hasCorrect = opts.some(o => o.correct);
+        if (!hasCorrect) { alert('Please select a correct answer.'); return null; }
+        payload.options = opts;
+
+    } else if (type === 'tf') {
+        const val = document.querySelector('input[name="tf-answer"]:checked').value;
+        payload.answer = val;
+
+    } else if (type === 'id') {
+        const ans = document.getElementById('id-answer').value.trim();
+        if (!ans) return null;
+        payload.answer = ans;
+    }
+
+    return payload;
+    }
+
+    function updateAddButtonState() {
+    if (questionType.value === 'mc') {
+        const checked = document.querySelector('input[name="mc-correct"]:checked');
+        add.disabled = !checked;
+    } else {
+        add.disabled = false;
+    }
+    }
+
+    function renderQuestionPreview(q, index) {
+    const container = document.createElement('div');
+    container.className = 'card mb-2 p-2';
+    container.innerHTML = `<strong>Q${index+1} (${q.type}):</strong> ${q.text}<div class="mt-2"></div>`;
+    const body = container.querySelector('div');
+
+    if (q.type === 'mc') {
+        q.options.forEach(opt => {
+        const p = document.createElement('p');
+        p.innerHTML = `${opt.text} ${opt.correct ? '<span class="badge bg-success">correct</span>' : ''}`;
+        body.appendChild(p);
+        });
+    } else {
+        body.textContent = `Answer: ${q.answer}`;
+    }
+    return container;
+    }
+
+    // initial render
+    renderTypeInputs(questionType.value);
+    updateAddButtonState();
+    questionType.addEventListener('change', () => {
+        renderTypeInputs(questionType.value);
+        updateAddButtonState();
+    });
+
+    add.addEventListener('click', function(){
+    const q = collectQuestion();
+    if (!q) {
+        // collectQuestion now shows specific alerts for MC validation
+        return;
+    }
+    questions.push(q);
+    box.appendChild(renderQuestionPreview(q, questions.length-1));
+
+    // reset modal
+    const modalElement = document.getElementById('myModal');
+    const modalInstance = bootstrap.Modal.getInstance(modalElement) || new bootstrap.Modal(modalElement);
+    modalInstance.hide();
+    inputQuestion.value = '';
+    questionType.value = 'mc';
+    renderTypeInputs('mc');
+    updateAddButtonState();
+    document.querySelector('[data-bs-target="#myModal"]').focus();
+    });
+
+
+</script> 
+{% endblock %}

@@ -19,7 +19,11 @@
 {% endfor %}
 <a href="/assessment/create/{{classroom['id']}}">Create assessment</a>
 {% for assessment in assessments %}
+<a href="/assessment/view/{{assessment['id']}}">
+<div>
   <h3>{{assessment['title']}}</h3>
   <h6>{{assessment['total_marks']}} points</h6>
+</div>
+</a>
 {% endfor %}
 {% endblock %}
