@@ -177,10 +177,21 @@
 
     add.addEventListener('click', function(){
     const q = collectQuestion();
+    console.log(q);
+    
     if (!q) {
         // collectQuestion now shows specific alerts for MC validation
         return;
     }
+
+    fetch('/question/create', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(q)
+    })
+
     questions.push(q);
     box.appendChild(renderQuestionPreview(q, questions.length-1));
 

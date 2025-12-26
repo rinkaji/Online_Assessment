@@ -4,6 +4,7 @@ from app.routes.instructorRoutes import instructor_bp
 from app.routes.adminRoutes import admin_bp
 from app.routes.classroomRoutes import classroom_bp
 from app.routes.assessmentRoutes import assessment_bp
+from app.routes.questionRoutes import question_bp
 from app.config import Config
 from flask_mysqldb import MySQL
 
@@ -28,5 +29,6 @@ def create_app():
     app.register_blueprint(admin_bp, url_prefix='/admin')
     app.register_blueprint(classroom_bp, url_prefix='/classroom')
     app.register_blueprint(assessment_bp, url_prefix = '/assessment')
+    app.register_blueprint(question_bp, url_prefix = '/question')
     
     return app 
