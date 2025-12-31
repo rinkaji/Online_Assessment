@@ -1,0 +1,135 @@
+/* Essential Layout CSS */
+body,
+html {
+  height: 100%;
+  overflow: hidden;
+}
+
+.sidebar {
+  width: 250px;
+  min-height: 100vh;
+  background-color: #d9d9d9;
+}
+
+.logo-section {
+  display: flex;
+  height: 85px;
+  padding: 26px 63px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+  align-self: stretch;
+  background: #0051e9;
+}
+
+.top-bar {
+  height: 85px;
+  background-color: white;
+  /* border-bottom: 1px solid #dee2e6; */
+  display: flex;
+  align-items: center;
+  padding: 0 1.5rem;
+}
+
+.content-container {
+  flex-grow: 1;
+  overflow-y: auto;
+  background-color: #fffafa; /* Main background color */
+}
+
+.join-btn {
+  display: flex;
+  width: 149px;
+  padding: 7px 15px;
+  align-items: center;
+  gap: 10px;
+  border-radius: 13px;
+  background: #fff;
+  border: none;
+}
+
+.join-btn p {
+  color: #000;
+  text-align: center;
+  font-family: Inter;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  margin: 0;
+}
+
+/* Remove default list styling */
+.nav-item {
+  list-style: none;
+  width: 100%;
+}
+
+.nav-pills {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 0;
+}
+
+.nav-link-custom {
+  display: flex; /* Makes the icon and text sit side-by-side */
+  align-items: center; /* Vertically centers the icon and text */
+  gap: 17px; /* The exact spacing you wanted */
+  text-decoration: none; /* Removes the underline from the link */
+  color: #333; /* Set your desired text color */
+  padding: 10px 15px; /* Adds some "hit area" for the mouse */
+  transition: 0.2s;
+  color: #000;
+  font-family: Inter;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+}
+
+.nav-link-custom:hover {
+  background-color: rgba(0, 0, 0, 0.05); /* Subtle hover effect */
+  border-radius: 8px;
+}
+
+.nav-link-custom p {
+  margin: 0; /* Prevents the <p> tag's default margin from breaking alignment */
+}
+
+.p-3 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
+  align-self: stretch;
+  margin-top: 30px;
+}
+
+.profile-pic {
+  background-color: #c49f9f;
+  color: #fff;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-inline-end: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: normal;
+}
+
+.username {
+  color: #000;
+  text-align: center;
+  font-family: Inter;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  margin-left: 12px;
+  cursor: pointer;
+  margin-left: 0.25rem;
+}

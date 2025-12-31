@@ -1,16 +1,37 @@
-{% extends "base.html" %} {% block title %}Home Page{% endblock %} {% block
-content %} {% include "student_header.html" %} {% with
-messages=get_flashed_messages() %}{% if messages %}{% for message in messages
-%}{{message}}{% endfor %}{% endif %}{% endwith %}
+{% extends "base.html" %}
+{% block title %}Home Page{% endblock %}
 
-<a href="/student/join">Join Class</a>
-<h1>Classes</h1>
+{% block content %}
+
+<h1 id="greeting"></h1>
+
 {% for classroom in classrooms %}
-<h2>{{classroom['title']}}</h2>
-<h3>
-  {{classroom['first_name'].title()}} {{classroom['middle_name'][0].title()}}
-  {{classroom['last_name'].title()}}
-</h3>
-<h4>{{classroom['description']}}</h4>
-<a href="/classroom/view/{{classroom['classroom_id']}}">view </a>
-{% endfor %} {% endblock %}
+  <h2>{{ classroom['title'] }}</h2>
+  <h3>
+    {{ classroom['first_name'].title() }}
+    {{ classroom['middle_name'][0].title() }}
+    {{ classroom['last_name'].title() }}
+  </h3>
+  <h4>{{ classroom['description'] }}</h4>
+  <a href="/classroom/view/{{ classroom['classroom_id'] }}">view</a>
+{% endfor %}
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const hour = new Date().getHours();
+    let greeting;
+
+    if (hour >= 3 && hour < 12) {
+      greeting = "Good morning";
+    } else if (hour < 17) {
+      greeting = "Good afternoon, ";
+    } else {
+      greeting = "Good evening, ";
+    }
+
+    document.getElementById("greeting").textContent =
+      greeting + "Name";
+  });
+</script>
+
+{% endblock %}

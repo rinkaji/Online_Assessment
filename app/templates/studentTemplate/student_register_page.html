@@ -1,20 +1,89 @@
-{% extends "base.html" %} {% block title %}Register{% endblock %} {% block
-content %} {% with messages=get_flashed_messages() %}{% if messages %}{% for
-message in messages %}{{message}}{% endfor %}{% endif %}{% endwith %}
+{% extends "base_nonav.html" %} {% block title %}Register{% endblock %} {% block
+content %} 
 
-<h1>This is student register page</h1>
-<form action="/student/register" method="post">
-  <label for="">First Name: </label>
-  <input type="text" name="fname" id="" required />
-  <label for="">Middle Name: </label>
-  <input type="text" name="mname" id="" required />
-  <label for="">Last Name: </label>
-  <input type="text" name="lname" id="" required />
-  <label for="">Email: </label>
-  <input type="text" name="email" id="" required />
-  <label for="">Password: </label>
-  <input type="text" name="password" id="" required />
-  <input type="submit" value="register" />
-</form>
-<a href="/student/login">login</a>
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='css/style-student-login.css') }}"
+/>
+
+<div class="main-container">
+  <div class="left-container">
+    <div class="tag-lines-container">
+      <img src="{{ url_for('static', filename='images/quizzr-logo.svg') }}" />
+      <img
+        src="{{ url_for('static', filename='images/multiple-choice.svg') }}"
+        class="illustration"
+      />
+      <h1 class="tag-line">
+        Answer assessments from your teachers. <b>See results immediately.</b>
+      </h1>
+    </div>
+  </div>
+
+  <div class="right-container">
+    <div class="credentials-container">
+      <h2>Register</h2>
+      <p class="login-tagline">
+        Join your teacher’s classrooms, take quizzes, submit assignments, and view your scores.
+      </p>
+      <div class="error-msg">
+        {% with messages=get_flashed_messages() %}{% if messages %}{% for
+        message in messages %}{{message}}{% endfor %}{% endif %}{% endwith %}
+      </div>
+      <form action="/student/register" method="post">
+        <input
+          type="text"
+          name="fname"
+          id=""
+          required
+          placeholder="First name"
+        />
+        <!-- <input
+          type="text"
+          name="mname"
+          id=""
+          required
+          placeholder="Middle name"
+        /> -->
+        <input
+          type="text"
+          name="lname"
+          id=""
+          required
+          placeholder="Last name"
+        />
+        <input
+          type="email"
+          name="email"
+          id=""
+          required
+          placeholder="Email address"
+        />
+        <input
+          type="password"
+          name="password"
+          id=""
+          required
+          placeholder="Password"
+        />
+        <input type="submit" value="Register" class="submit-btn" />
+      </form>
+      <p class="register-btn">
+        Already has account? <a href="/student/login">Log in</a>
+      </p>
+            <div class="break">
+        <hr />
+        <span>OR</span>
+        <hr />
+      </div>
+      <a href="{{ url_for('instructor.login') }}" class="btn-link">
+        <button type="button">
+          <img src="{{ url_for('static', filename='images/grad-hat.svg') }}" />
+          <p>Quizzr for teachers</p>
+        </button>
+      </a>
+    </div>
+  </div>
+</div>
+
 {% endblock %}

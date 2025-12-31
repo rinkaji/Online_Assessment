@@ -1,0 +1,208 @@
+.main-container {
+  display: flex;
+  flex-direction: row;
+}
+
+.left-container {
+  background-color: #0051e9;
+  display: flex;
+  width: 50%;
+  height: 100vh;
+  padding: 153px 152px;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.tag-lines-container {
+  display: flex;
+  width: 408px;
+  flex-direction: column;
+  align-items: center;
+  gap: 55px;
+}
+
+.illustration {
+  display: flex;
+  width: 308px;
+  height: 282px;
+  justify-content: center;
+  align-items: center;
+}
+
+.tag-line {
+  color: #fff;
+  text-align: center;
+  font-family: Inter;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.right-container {
+  width: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.credentials-container {
+  display: flex;
+  width: 397px;
+  padding: 40px 30px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 19px;
+  flex-shrink: 0;
+  border-radius: 20px;
+  background: #fbfbfb;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 19px;
+  width: 100%;
+}
+
+h2 {
+  color: #000;
+  font-family: Inter;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+
+.login-tagline {
+  color: #000;
+  text-align: center;
+  font-family: Inter;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+input {
+  display: flex;
+  height: 47px;
+  padding: 15px 24px;
+  align-items: center;
+  gap: 10px;
+  align-self: stretch;
+  border-radius: 13px;
+  border: 1px solid rgba(0, 0, 0, 0.25);
+  background: var(--White, #fff);
+  color: rgba(0, 0, 0, 0.5);
+  font-family: Inter;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.submit-btn {
+  display: flex;
+  height: 47px;
+  padding: 15px 24px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  align-self: stretch;
+  border-radius: 13px;
+  background: var(--Blue, #0051e9);
+  color: #fff;
+  font-family: Inter;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.register-btn {
+  color: #000;
+  text-align: center;
+  font-family: Inter;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.register-btn a {
+  color: #0051e9;
+  font-family: Inter;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  text-decoration-line: underline;
+  text-decoration-style: solid;
+  text-decoration-skip-ink: auto;
+  text-decoration-thickness: auto;
+  text-underline-offset: auto;
+  text-underline-position: from-font;
+}
+
+.error-msg {
+  color: red;
+}
+
+.break {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.break hr {
+  flex: 1;
+  border: none;
+  border-top: 2px solid #bfbfbf;
+  margin: 0;
+}
+
+.break span {
+  padding: 0 15px;
+  color: #00000091;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+button {
+  border-radius: 13px;
+  border: 1px solid rgba(0, 0, 0, 0.25);
+  background: var(--White, #fff);
+  display: flex;
+  height: 47px;
+  justify-content: center;
+  align-items: center;
+  gap: 13px;
+  align-self: stretch;
+}
+
+button p {
+  margin: 0;
+  color: #000;
+  font-family: Inter;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+}
+
+.btn-link {
+  display: flex;
+  align-self: stretch;
+  text-decoration: none;
+  width: 100%;
+}
+
+.btn-link button {
+  width: 100%;
+  cursor: pointer;
+}

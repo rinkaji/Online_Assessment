@@ -1,14 +1,62 @@
-{% extends "base.html" %} {% block title %} Login Page {% endblock %} {% block
-content %} {% with messages=get_flashed_messages() %}{% if messages %}{% for
-message in messages %}{{message}}{% endfor %}{% endif %}{% endwith %}
+{% extends "base_nonav.html" %} {% block title %} Login - Quizzr {% endblock %} {%
+block content %}
 
-<h1>This is login page</h1>
-<form action="/student/login" method="post">
-  <label for="">Email: </label>
-  <input type="text" name="email" id="" required />
-  <label for="">Password</label>
-  <input type="text" name="password" required />
-  <input type="submit" value="login" />
-</form>
-<a href="/student/register">Register</a>
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='css/style-student-login.css') }}"
+/>
+
+<div class="main-container">
+  <div class="left-container">
+    <div class="tag-lines-container">
+      <img src="{{ url_for('static', filename='images/quizzr-logo.svg') }}" />
+      <img
+        src="{{ url_for('static', filename='images/multiple-choice.svg') }}"
+        class="illustration"
+      />
+      <h1 class="tag-line">
+        Answer assessments from your teachers. <b>See results immediately.</b>
+      </h1>
+    </div>
+  </div>
+
+  <div class="right-container">
+    <div class="credentials-container">
+      <h2>Log in</h2>
+      <p class="login-tagline">
+        Join your teacher’s classrooms, take quizzes, submit assignments, and
+        view your scores.
+      </p>
+      <div class="error-msg">
+        {% with messages=get_flashed_messages() %}{% if messages %}{% for
+        message in messages %}{{message}}{% endfor %}{% endif %}{% endwith %}
+      </div>
+      <form action="/student/login" method="post" class="login-form">
+        <input type="email" name="email" required placeholder="Email address" />
+        <input
+          type="password"
+          name="password"
+          required
+          placeholder="Password"
+        />
+        <input type="submit" value="Continue" class="submit-btn" />
+      </form>
+      <p class="register-btn">
+        No account? <a href="/student/register">Register</a>
+      </p>
+      <div class="break">
+        <hr />
+        <span>OR</span>
+        <hr />
+      </div>
+      <a href="{{ url_for('instructor.login') }}" class="btn-link">
+        <button type="button">
+          <img src="{{ url_for('static', filename='images/grad-hat.svg') }}" />
+          <p>Quizzr for teachers</p>
+        </button>
+      </a>
+    </div>
+  </div>
+</div>
+
 {% endblock %}
