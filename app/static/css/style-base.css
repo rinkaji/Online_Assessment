@@ -34,8 +34,22 @@ html {
 
 .content-container {
   flex-grow: 1;
-  overflow-y: auto;
-  background-color: #fffafa; /* Main background color */
+  overflow-y: auto; /* Enables vertical scrolling */
+  height: 100vh; /* Ensures it takes full height */
+  background-color: #fffafa;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* This centers the "lane" (content-wrapper) */
+  padding-bottom: 50px; /* Space at the bottom so cards don't hit the edge */
+}
+
+.content-wrapper {
+  width: 100%;
+  max-width: 926px; /* 453px * 2 cards + 20px gap */
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* Aligns Greeting and Grid to the LEFT of this lane */
+  padding-top: 40px;
 }
 
 .join-btn {
@@ -132,4 +146,40 @@ html {
   margin-left: 12px;
   cursor: pointer;
   margin-left: 0.25rem;
+}
+
+/* ========================= */
+/* This is the scrolling area we defined in base.html */
+.content-container {
+  flex-grow: 1;
+  overflow-y: auto;
+  background-color: #fffafa;
+  display: flex; /* Allow us to center the child */
+  flex-direction: column;
+  align-items: center; /* Centers the content-wrapper horizontally */
+  padding: 40px 20px 80px 20px;
+}
+
+/* New: This wrapper keeps everything aligned in a column */
+.content-wrapper {
+  width: 100%;
+  /* 453px * 2 cards + 20px gap = 926px */
+  max-width: 926px;
+  padding: 40px 20px; /* Top/Bottom and Side padding */
+  display: flex;
+  flex-direction: column;
+  gap: 30px; /* Space between the Header and the Grid */
+}
+
+/* Ensure the header text aligns with the start of the grid */
+.page-header {
+  width: 100%;
+  text-align: left;
+}
+
+.page-header h1 {
+  font-family: "Inter", sans-serif;
+  font-weight: 700;
+  font-size: 32px;
+  margin: 0;
 }
