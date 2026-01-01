@@ -27,6 +27,9 @@
         <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal">
           <i class="bi bi-plus-lg"></i> Add
         </button>
+        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal2">
+          <i class="bi bi-plus-lg"></i> Add from question bank
+        </button>
       </div>
     </div>
 
@@ -94,50 +97,94 @@
 
     <!-- Modal -->
     <div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="myModalLabel">Create Question</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-
-            <div class="modal-body">
-                <form class="row g-3" onsubmit="return false;">
-                <div class="col-12">
-                    <label for="question" class="form-label">Question</label>
-                    <textarea id="question" class="form-control" rows="3" placeholder="Write the question here"></textarea>
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="myModalLabel">Create Question</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
 
-                <div class="col-md-6">
-                    <label for="question-type" class="form-label">Type</label>
-                    <select id="question-type" class="form-select" aria-label="Question type">
-                    <option value="mc" selected>Multiple Choice</option>
-                    <option value="id">Identification</option>
-                    <option value="tf">True or False</option>
-                    </select>
-                    <div class="form-text">Type-specific inputs will appear below.</div>
+                <div class="modal-body">
+                    <form class="row g-3" onsubmit="return false;">
+                        <div class="col-12">
+                            <label for="question" class="form-label">Question</label>
+                            <textarea id="question" class="form-control" rows="3" placeholder="Write the question here"></textarea>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="question-type" class="form-label">Type</label>
+                            <select id="question-type" class="form-select" aria-label="Question type">
+                            <option value="mc" selected>Multiple Choice</option>
+                            <option value="id">Identification</option>
+                            <option value="tf">True or False</option>
+                            </select>
+                            <div class="form-text">Type-specific inputs will appear below.</div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="question-explanation" class="form-label">Explanation <small class="text-muted">(optional)</small></label>
+                            <input id="question-explanation" class="form-control" placeholder="Short explanation shown after answer">
+                        </div>
+
+                        <div class="col-12">
+                            <div id="type-options" class="border rounded p-3 bg-light">
+                            <small class="text-muted">Options / answers for the selected type will render here.</small>
+                            </div>
+                        </div>
+                    </form>
                 </div>
 
-                <div class="col-md-6">
-                    <label for="question-explanation" class="form-label">Explanation <small class="text-muted">(optional)</small></label>
-                    <input id="question-explanation" class="form-control" placeholder="Short explanation shown after answer">
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button id="addBtn" type="button" class="btn btn-primary">Add</button>
                 </div>
-
-                <div class="col-12">
-                    <div id="type-options" class="border rounded p-3 bg-light">
-                    <small class="text-muted">Options / answers for the selected type will render here.</small>
-                    </div>
-                </div>
-                </form>
-            </div>
-
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button id="addBtn" type="button" class="btn btn-primary">Add</button>
             </div>
         </div>
     </div>
-</div>
+
+    <!-- Modal2 -->
+    <div class="modal fade" id="myModal2" tabindex="-1" aria-labelledby="myModalLabel2" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="myModalLabel2">Add from Question Bank</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th scope="col">Select</th>
+                                <th scope="col">Question</th>
+                                <th scope="col">Type</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for qb in questionsBank %}
+                            {% if qb.id not in existingQ %}
+                                <tr>
+                                <td>
+                                    <input type="checkbox" class="form-check-input question-bank-checkbox" value="{{ qb.id }}">
+                                </td>
+                                <td>{{ qb.question }}</td>
+                                <td>
+                                    {{ 'Multiple Choice' if qb.type == 'mc' else 'True/False' if qb.type == 'tf' else 'Identification' }}
+                                </td>
+                            </tr>
+                            {% endif %}
+                            {% endfor %}
+                        </tbody>
+
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button id="addFromBankBtn" type="button" class="btn btn-primary">Add Selected Questions</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
 {% endblock %}  
 
@@ -149,6 +196,7 @@
     const assessmentId = document.getElementById('assessment-id').value;
      const box = document.getElementById('question-box')
      const add = document.getElementById('addBtn')
+     const addFromBank = document.getElementById('addFromBankBtn')
  
      const inputQuestion = document.getElementById('question');
      const questionType = document.getElementById('question-type');
@@ -372,6 +420,43 @@
  
      // load current questions on page load
     //  fetchQuestions();
- 
+    addFromBank.addEventListener('click', function() {
+        const checkboxes = document.querySelectorAll('.question-bank-checkbox:checked');
+        if (checkboxes.length === 0) {
+            alert('Please select at least one question to add.');
+            return;
+        }
+
+        const questionIds = Array.from(checkboxes).map(cb => cb.value);
+        addFromBank.disabled = true;
+
+        fetch('/question/add_from_bank', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ question_ids: questionIds, assessment_id: assessmentId })
+        })
+        .then(res => {
+            addFromBank.disabled = false;
+            if (!res.ok) return res.text().then(t => Promise.reject(t || 'Add failed'));
+            return res.json().catch(() => ({}));
+        })
+        .then(() => {
+            // re-fetch questions from backend so numbering and content reflect DB
+            // fetchQuestions();
+            // reset modal & inputs
+            const modalElement = document.getElementById('myModal2');
+            const modalInstance = bootstrap.Modal.getInstance(modalElement) || new bootstrap.Modal(modalElement);
+            modalInstance.hide();
+            checkboxes.forEach(cb => cb.checked = false);
+            document.querySelector('[data-bs-target="#myModal2"]').focus();
+            location.reload();
+        })
+        .catch(err => {
+            addFromBank.disabled = false;
+            console.error('Add error:', err);
+            alert('Failed to add questions from bank.');
+        });
+    });
+     
  </script> 
  {% endblock %}

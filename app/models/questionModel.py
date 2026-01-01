@@ -1,6 +1,6 @@
 import app as app
 import MySQLdb.cursors
-from flask import json, jsonify
+from flask import json, jsonify, session
 
 
 dictFormat = MySQLdb.cursors.DictCursor
@@ -68,6 +68,31 @@ def getQuestions(assessmentId):
             }
             lookup[qid] = q
             questions.append(q)
+    return questions
+
+def getAllQuestions():
+    cur = app.mysql.connection.cursor(dictFormat)
+    cur.execute("""
+        select * from questions 
+        where user_id  = %s
+    """, (session['user']['id'],))
+    rows = cur.fetchall()
+    cur.close()
+
+    questions = []
+    for row in rows:
+        q = {
+            'id': row['id'],
+            'user_id': row.get('user_id'),
+            'question': row.get('question'),
+            'type': row.get('type'),
+            'answer': row.get('answer'),
+            'explanation': row.get('explanation'),
+            # normalize is_sensitive to boolean (handles 0/1, '0'/'1', True/False)
+            'is_sensitive': int(row.get('is_sensitive')) if row.get('is_sensitive') is not None else False,
+            'options': row.get('options').split(',') if row.get('options') else []
+        }
+        questions.append(q)
     return questions
 
 def deleteQuestion(questionId, assessmentId=None):

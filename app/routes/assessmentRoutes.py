@@ -24,5 +24,6 @@ def view(assessment_id):
         return check
     assessment = assessmentModel.viewAssessment(assessment_id)
     questions = questionModel.getQuestions(assessment_id)
-    print(questions)
-    return render_template('assessmentTemplate/view.html', assessment = assessment, questions = questions)
+    questionsBank = questionModel.getAllQuestions()
+    existingQ = [q['id'] for q in questions]
+    return render_template('assessmentTemplate/view.html', assessment = assessment, questions = questions, questionsBank = questionsBank, existingQ = existingQ)

@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify, render_template, request, session, redirect
 
-from app.models import questionModel
+from app.models import question_assessmentModel, questionModel
 
 
 question_bp = Blueprint('question', __name__)
@@ -73,3 +73,12 @@ def edit_question_no_assessment(question_id):
         return redirect('/instructor/questions')
     question = questionModel.viewQuestion(question_id)
     return render_template('instructorTemplate/edit_question.html', question=question)
+
+@question_bp.route('/add_from_bank', methods=['POST'])
+def add_questions_from_bank():
+    data = request.get_json()
+    print(data)
+    question_ids = data.get('question_ids', [])
+    assessment_id = data.get('assessment_id')
+    question_assessmentModel.addQuestionsFromBank(question_ids, assessment_id)
+    return jsonify(success=True)
