@@ -2,7 +2,7 @@ from flask import Blueprint, redirect, render_template, request, url_for
 
 #from app.controllers import assessmentController
 from app.helper.instructorHelper import accountCheck
-from app.models import assessmentModel
+from app.models import assessmentModel, optionModel, questionModel
 
 
 assessment_bp = Blueprint('assessment', __name__)
@@ -23,5 +23,6 @@ def view(assessment_id):
     if check:
         return check
     assessment = assessmentModel.viewAssessment(assessment_id)
-    print(assessment)
-    return render_template('assessmentTemplate/view.html', assessment = assessment)
+    questions = questionModel.getQuestions(assessment_id)
+    print(questions)
+    return render_template('assessmentTemplate/view.html', assessment = assessment, questions = questions)

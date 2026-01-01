@@ -8,7 +8,7 @@ dictFormat = MySQLdb.cursors.DictCursor
 
 def getAllClassrooms(id):
     cur = app.mysql.connection.cursor(dictFormat)
-    cur.execute("""SELECT classrooms.*, users.first_name, users.middle_name, users.last_name
+    cur.execute("""SELECT classrooms.*, users.f_name, users.m_name, users.l_name
                 FROM classrooms
                 JOIN users on classrooms.user_id = users.id
                 WHERE user_id = %s""", (id,))
@@ -41,7 +41,7 @@ def createClassroom(details):
     
 def viewClassroom(id):
     cur = app.mysql.connection.cursor(dictFormat)
-    cur.execute("""SELECT users.first_name, users.middle_name, users.last_name, classrooms.* 
+    cur.execute("""SELECT users.f_name, users.m_name, users.l_name, classrooms.* 
                 from classrooms 
                 join users on users.id = classrooms.user_id 
                 where classrooms.id = %s""", (id,))

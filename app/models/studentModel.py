@@ -9,9 +9,15 @@ def find_account(email):
     return data
 
 def insert_student(details):
-    cur = app.mysql.connection.cursor()
-    cur.execute("""INSERT INTO users (first_name, middle_name, last_name, role, email, password)
+    cur = app.mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    cur.execute("""INSERT INTO users (f_name, m_name, l_name, role, email, password)
                 VALUES (%s,%s,%s,%s,%s,%s)""",
                 (details['fname'], details['mname'], details['lname'],"student",details['email'],details['password'],))
     app.mysql.connection.commit()
+    
+    dataId = cur.lastrowid
+    
+    cur.execute("SELECT * FROM users where id = %s", (dataId,))
+    data = cur.fetchone()
     cur.close()
+    return data

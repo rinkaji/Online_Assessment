@@ -14,7 +14,7 @@ block content %} {% include "instructor_header.html" %}
     {% for instructor in instructors %}
     <tr>
       <td>
-        {{instructor['first_name']~''~instructor['middle_name']~''~instructor['last_name']}}
+        {{instructor['f_name']~''~instructor['m_name']~''~instructor['l_name']}}
       </td>
       <td><p>{{instructor['email']}}</p></td>
       <td>

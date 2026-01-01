@@ -38,7 +38,7 @@ def register():
         if data:
             flash("account already exists", 'error')
             return redirect(url_for('student.register'))
-        studentModel.insert_student(request.form)
+        data = studentModel.insert_student(request.form)
         session['user'] = data
         return redirect(url_for('student.dashboard'))
     return render_template('studentTemplate/student_register_page.html')

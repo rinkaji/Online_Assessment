@@ -8,8 +8,8 @@ messages=get_flashed_messages() %}{% if messages %}{% for message in messages
 {% for classroom in classrooms %}
 <h2>{{classroom['title']}}</h2>
 <h3>
-  {{classroom['first_name'].title()}} {{classroom['middle_name'][0].title()}}
-  {{classroom['last_name'].title()}}
+  {{classroom['f_name'].title()}} {{classroom['m_name'][0].title()}}
+  {{classroom['l_name'].title()}}
 </h3>
 <h4>{{classroom['description']}}</h4>
 <a href="/classroom/view/{{classroom['classroom_id']}}">view </a>

@@ -1,0 +1,78 @@
+
+{% extends 'base.html' %}
+{% block title %}create assessment{% endblock %}
+{% block content %}
+    <form action="{{assessment_id}}" method="post">
+        <div class="mb-3">
+            <label class="form-label">Question Text</label>
+            <textarea name="question_text" class="form-control" rows="3" required>{{ question.question }}</textarea>
+        </div>
+        <div class="mb-3">
+            <div class="mb-3">
+                <label class="form-label">Question Type</label>
+                <div>
+                    {% if question.type == 'mc' %}
+                    <span class="badge bg-primary">Multiple Choice</span>
+                    {% elif question.type == 'tf' %}
+                    <span class="badge bg-success">True/False</span>
+                    {% else %}
+                    <span class="badge bg-info">Identification</span>
+                    {% endif %}
+                    <input type="hidden" name="question_type" value="{{ question.type }}">
+                </div>
+            </div>
+        </div>
+        <div class="mb-3">
+            {% if question.type == 'mc' %}
+            <ul>
+                {% for choice in question.options.split(',') %}
+                <li class="list-group-item d-flex justify-content-between align-items-center py-2">
+                <div class="input-group mb-2">
+                    <div class="input-group-text">
+                    <input type="radio" class="form-check-input mt-0"
+                            name="answer"
+                            id="choice-{{ loop.index }}"
+                            value="{{loop.index}}"
+                            {% if choice == question.answer %}checked{% endif %}>
+                    </div>
+                    <input type="text"
+                        name="choice"
+                        class="form-control choice-input"
+                        value="{{ choice }}">
+                </div>
+                </li>
+                {% endfor %}
+
+            </ul>
+            {% elif question.type == 'tf' %}
+                <div> 
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="answer" id="tf-true" value="True" {% if question.answer == "True" %}checked{% endif %}>
+                        <label class="form-check-label" for="tf-true">True</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="answer" id="tf-false" value="False"{% if question.answer == "False" %}checked{% endif %}>
+                        <label class="form-check-label" for="tf-false">False</label>
+                    </div>
+                </div>
+            {% elif question.type == 'id' %}
+                <label for="" class="form-label">Answer</label>
+                <div class="mb-2"><input type="text" name="answer" value="{{ question.answer }}" class="form-control"></div>
+                <div>
+                     <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="case_sensitive" id="" value="sensitive" {% if question.is_sensitive == True %}checked{% endif %}>
+                        <label class="form-check-label" for="id-case-sensitive">Case-sensitive</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="case_sensitive" id="" value="insensitive" {% if question.is_sensitive == False %}checked{% endif %}>
+                        <label class="form-check-label" for="id-case-insensitive">Not case sensitive</label>
+                    </div>
+                </div>
+            {% endif %}
+        </div> 
+        <div>
+            <input type="text" name="explanation" id="" class="form-control" placeholder="Explanation (optional)" value="{{ question.explanation }}">
+        </div>
+        <input type="submit" value="Save Changes" class="btn btn-primary">
+    </form>
+{% endblock %}

@@ -37,3 +37,11 @@ def index():
     flash("account does not exists", "error")
     return redirect(url_for('instructor.login'))
     
+@instructor_bp.route('/questions', methods=['GET'])
+def getQuestions():
+    if session and session['user']['role'] == 'instructor':
+        user_id = session['user']['id']
+        questions = instructorModel.getQuestions(user_id)
+        return render_template('instructorTemplate/question_list.html', questions=questions)
+    flash("account does not exists", "error")
+    return redirect(url_for('instructor.login'))

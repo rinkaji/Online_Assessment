@@ -6,13 +6,13 @@
 <a href="/student/dashboard">back to list</a>
 <h1>{{classroom['title'].title()}}</h1>
 <h3>
-  Created by: {{classroom['first_name'].title()}}
-  {{classroom['middle_name'][0].title()}} {{classroom['last_name'].title()}}
+  Created by: {{classroom['f_name'].title()}}
+  {{classroom['m_name'][0].title()}} {{classroom['l_name'].title()}}
 </h3>
 <p>Description: {{classroom['description']}}</p>
 
 {% for student in students %} 
-<b>{{student['first_name'].title()}} {{student['middle_name'][0].title()}} {{student['last_name'].title()}}</b>
+<b>{{student['f_name'].title()}} {{student['m_name'][0].title()}} {{student['l_name'].title()}}</b>
 <p>{{ student['email'] }}</p>
 {% endfor %}
 <h4>Assessments</h4>

@@ -1,29 +1,80 @@
 {% extends "base.html" %} 
 {% block title %}view classroom{% endblock %} 
-{% block content %} 
+
+{% block content %}
 {% include "instructor_header.html" %}
 
-<a href="/instructor/">back to list</a>
-<h1>{{classroom['title'].title()}}</h1>
-<h3>
-  Created by: {{classroom['first_name'].title()}}
-  {{classroom['middle_name'][0].title()}} {{classroom['last_name'].title()}}
-</h3>
-<p>Description: {{classroom['description']}}</p>
+<div class="container py-4">
+  <div class="d-flex align-items-center mb-3">
+    <a href="/instructor/" class="me-3 text-decoration-none"><i class="bi bi-arrow-left"></i> Back to list</a>
+    <h1 class="h4 mb-0">{{ classroom['title'].title() }}</h1>
+    <div class="ms-auto">
+      <a href="/assessment/create/{{ classroom['id'] }}" class="btn btn-primary">
+        <i class="bi bi-plus-lg"></i> Create assessment
+      </a>
+    </div>
+  </div>
 
+  <div class="row g-3">
+    <div class="col-md-8">
+      <div class="card mb-3">
+        <div class="card-body">
+          <h5 class="card-title mb-1">{{ classroom['title'].title() }}</h5>
+          <p class="card-text mb-2 text-muted">{{ classroom['description'] }}</p>
+          <p class="mb-0 text-muted small">
+            Created by:
+            <strong>{{ classroom['f_name'].title() }} {{ classroom['m_name'][0].title() }} {{ classroom['l_name'].title() }}</strong>
+          </p>
+        </div>
+      </div>
 
-{% for student in students %} 
-<b>{{student['first_name'].title()}} {{student['middle_name'][0].title()}} {{student['last_name'].title()}}</b>
-<p>{{ student['email'] }}</p>
+      <h6 class="mb-2">Assessments</h6>
+      {% if assessments %}
+      <div class="row row-cols-1 row-cols-md-2 g-3">
+        {% for assessment in assessments %}
+        <div class="col">
+          <div class="card h-100">
+            <div class="card-body d-flex flex-column">
+              <h5 class="card-title mb-1">{{ assessment['title'] }}</h5>
+              <p class="card-text mb-2 text-muted">{{ assessment.get('description', '') }}</p>
+              <div class="mt-auto d-flex justify-content-between align-items-center">
+                <small class="text-muted">{{ assessment['total_marks'] }} points</small>
+                <a href="/assessment/view/{{ assessment['id'] }}" class="stretched-link btn btn-sm btn-outline-primary">Open</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+      {% else %}
+      <div class="alert alert-secondary">No assessments yet. Click "Create assessment" to add one.</div>
+      {% endif %}
+    </div>
 
-{% endfor %}
-<a href="/assessment/create/{{classroom['id']}}">Create assessment</a>
-{% for assessment in assessments %}
-<a href="/assessment/view/{{assessment['id']}}">
-<div>
-  <h3>{{assessment['title']}}</h3>
-  <h6>{{assessment['total_marks']}} points</h6>
+    <div class="col-md-4">
+      <div class="card">
+        <div class="card-header">
+          <strong>Students</strong>
+        </div>
+        <ul class="list-group list-group-flush">
+          {% if students %}
+            {% for student in students %}
+              <li class="list-group-item d-flex align-items-center">
+                <div class="me-3 rounded-circle bg-secondary text-white d-flex align-items-center justify-content-center" style="width:40px;height:40px;">
+                  {{ student['f_name'][0]|upper }}{{ student['l_name'][0]|upper }}
+                </div>
+                <div>
+                  <div class="fw-semibold">{{ student['f_name'].title() }} {{ student['m_name'][0].title() }} {{ student['l_name'].title() }}</div>
+                  <div class="text-muted small">{{ student['email'] }}</div>
+                </div>
+              </li>
+            {% endfor %}
+          {% else %}
+            <li class="list-group-item text-muted">No students enrolled.</li>
+          {% endif %}
+        </ul>
+      </div>
+    </div>
+  </div>
 </div>
-</a>
-{% endfor %}
 {% endblock %}

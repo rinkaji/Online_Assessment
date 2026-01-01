@@ -1,22 +1,45 @@
 {% extends 'base.html' %}
-{% block title %}
-    create assessment
-{% endblock %}
+{% block title %}create assessment{% endblock %}
 {% block content %}
-    <h1>This is create assessment page</h1>
-    <form action="/assessment/create/{{classroom_id}}" method="post">
-        <label for="">title</label>
-        <input type="text" name="title" id="" required>
-        <label for="">Total Marks: </label>
-        <input type="number" name="total_marks" id="" required>
-        <label for="">Time limit: </label>
-        <input type="number" name="time_limit" id="">
-        <label for="">description: </label>
-        <input type="text" name="description" id="">
-        <select name="type" id="" required>
+<div class="container py-4">
+  <div class="card mx-auto" style="max-width:720px;">
+    <div class="card-body">
+      <h4 class="card-title mb-3">Create Assessment</h4>
+      <form action="/assessment/create/{{ classroom_id }}" method="post" class="row g-3">
+        <div class="col-12">
+          <label class="form-label">Title</label>
+          <input type="text" name="title" class="form-control" required>
+        </div>
+
+        <div class="col-md-6">
+          <label class="form-label">Total Marks</label>
+          <input type="number" name="total_marks" class="form-control" required>
+        </div>
+
+        <div class="col-md-6">
+          <label class="form-label">Time limit (minutes)</label>
+          <input type="number" name="time_limit" class="form-control">
+        </div>
+
+        <div class="col-12">
+          <label class="form-label">Description</label>
+          <textarea name="description" class="form-control" rows="2"></textarea>
+        </div>
+
+        <div class="col-12">
+          <label class="form-label">Type</label>
+          <select name="type" class="form-select" required>
             <option value="quiz">Quiz</option>
             <option value="exam">Exam</option>
-        </select>
-        <input type="submit" value="create">
-    </form>
+          </select>
+        </div>
+
+        <div class="col-12 text-end">
+          <button type="button" class="btn btn-outline-secondary me-2" onclick="window.history.back()">Cancel</button>
+          <button type="submit" class="btn btn-primary">Create</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
 {% endblock %}

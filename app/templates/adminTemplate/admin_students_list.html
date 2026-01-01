@@ -14,7 +14,7 @@ block content %} {% include "instructor_header.html" %}
     {% for student in students %}
     <tr>
       <td>
-        {{student['first_name']~''~student['middle_name']~''~student['last_name']}}
+        {{student['f_name']~''~student['m_name']~''~student['l_name']}}
       </td>
       <td><p>{{student['email']}}</p></td>
       <td><a href="/admin/student/delete/{{student['id']}}">delete</a></td>

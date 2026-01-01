@@ -25,3 +25,4 @@ def viewAssessment(assessmentId):
     data = cur.fetchone()
     cur.close()
     return data
+
