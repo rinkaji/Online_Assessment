@@ -1,73 +1,89 @@
-{% extends "base.html" %}
-{% block title %} Register {% endblock %}
-{% block content %}
-{% with messages=get_flashed_messages() %}{% if messages %}{% for message in messages %}
-<div class="container mt-3">
-  <div class="alert alert-info" role="alert">{{ message }}</div>
-</div>
-{% endfor %}{% endif %}{% endwith %}
+{% extends "base_nonav.html" %} {% block title %}Register{% endblock %} {% block
+content %} 
 
-<div class="container d-flex align-items-center justify-content-center" style="min-height:60vh;">
-  <div class="card shadow-sm w-100" style="max-width:680px;">
-    <div class="card-header bg-success text-white text-center">
-      <strong>Student Registration</strong>
-      <div class="small">Create your student account</div>
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='css/style-student-login.css') }}"
+/>
+
+<div class="main-container">
+  <div class="left-container">
+    <div class="tag-lines-container">
+      <img src="{{ url_for('static', filename='images/quizzr-logo.svg') }}" />
+      <img
+        src="{{ url_for('static', filename='images/multiple-choice.svg') }}"
+        class="illustration"
+      />
+      <h1 class="tag-line">
+        Answer assessments from your teachers. <b>See results immediately.</b>
+      </h1>
     </div>
+  </div>
 
-    <div class="card-body">
-      <h4 class="card-title mb-2">Register</h4>
-      <p class="text-muted small mb-4">Fill in the fields below using your official school details.</p>
-
-      <form action="/student/register" method="post" novalidate>
-        <div class="row g-3 mb-3">
-          <div class="col-md-4">
-            <label for="fname" class="form-label">First name</label>
-            <input type="text" class="form-control" id="fname" name="fname" placeholder="First name" required />
-          </div>
-          <div class="col-md-4">
-            <label for="mname" class="form-label">Middle name</label>
-            <input type="text" class="form-control" id="mname" name="mname" placeholder="Middle name" />
-          </div>
-          <div class="col-md-4">
-            <label for="lname" class="form-label">Last name</label>
-            <input type="text" class="form-control" id="lname" name="lname" placeholder="Last name" required />
-          </div>
-        </div>
-
-        <div class="mb-3">
-          <label for="email" class="form-label">School Email</label>
-          <input type="email" class="form-control" id="email" name="email" placeholder="you@email.com" required />
-        </div>
-
-        <div class="mb-3">
-          <label for="password" class="form-label">Password</label>
-          <div class="input-group">
-            <input type="password" class="form-control" id="password" name="password" placeholder="Choose a password" required />
-          </div>
-        </div>
-
-        <div class="d-grid">
-          <button type="submit" class="btn btn-success">Register</button>
-        </div>
-      </form>
-
-      <div class="mt-3 text-center small">
-        Already have an account? <a href="/student/login">Log in</a>
+  <div class="right-container">
+    <div class="credentials-container">
+      <h2>Register</h2>
+      <p class="login-tagline">
+        Join your teacher’s classrooms, take quizzes, submit assignments, and view your scores.
+      </p>
+      <div class="error-msg">
+        {% with messages=get_flashed_messages() %}{% if messages %}{% for
+        message in messages %}{{message}}{% endfor %}{% endif %}{% endwith %}
       </div>
+      <form action="/student/register" method="post">
+        <input
+          type="text"
+          name="fname"
+          id=""
+          required
+          placeholder="First name"
+        />
+        <!-- <input
+          type="text"
+          name="mname"
+          id=""
+          required
+          placeholder="Middle name"
+        /> -->
+        <input
+          type="text"
+          name="lname"
+          id=""
+          required
+          placeholder="Last name"
+        />
+        <input
+          type="email"
+          name="email"
+          id=""
+          required
+          placeholder="Email address"
+        />
+        <input
+          type="password"
+          name="password"
+          id=""
+          required
+          placeholder="Password"
+        />
+        <input type="submit" value="Register" class="submit-btn" />
+      </form>
+      <p class="register-btn">
+        Already has account? <a href="/student/login">Log in</a>
+      </p>
+            <div class="break">
+        <hr />
+        <span>OR</span>
+        <hr />
+      </div>
+      <a href="{{ url_for('instructor.login') }}" class="btn-link">
+        <button type="button">
+          <img src="{{ url_for('static', filename='images/grad-hat.svg') }}" />
+          <p>Quizzr for teachers</p>
+        </button>
+      </a>
     </div>
   </div>
 </div>
 
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-  const pw = document.getElementById('password');
-  const btn = document.getElementById('toggleRegPassword');
-  if (pw && btn) {
-    btn.addEventListener('click', function () {
-      if (pw.type === 'password') { pw.type = 'text'; btn.textContent = 'Hide'; }
-      else { pw.type = 'password'; btn.textContent = 'Show'; }
-    });
-  }
-});
-</script>
 {% endblock %}

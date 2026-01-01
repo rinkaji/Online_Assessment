@@ -1,15 +1,60 @@
-{% extends "base.html" %} {% block title %} Login Page {% endblock %} {% block
-content %} {% with messages=get_flashed_messages() %}{% if messages %}{% for
+{% extends "base_nonav.html" %} {% block title %} Login Page {% endblock %} {% block
+content %}
+
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='css/style-instructor-login.css') }}"
+/>
+
+<div class="main-container">
+  <div class="left-container">
+    <div class="tag-lines-container">
+      <img src="{{ url_for('static', filename='images/quizzr-logo.svg') }}" />
+      <img
+        src="{{ url_for('static', filename='images/educator.svg') }}"
+        class="illustration"
+      />
+      <h1 class="tag-line">
+Give your students assessments. <b>Check answers immediately.</b></h1>
+    </div>
+  </div>
+
+  <div class="right-container">
+    <div class="credentials-container">
+      <h2>Log in as teacher</h2>
+      <p class="login-tagline">
+Create classrooms, assign quizzes to your students, assess students.
+      </p>
+      <div class="error-msg">
+{% with messages=get_flashed_messages() %}{% if messages %}{% for
 message in messages %}{{message}}{% endfor %}{% endif %}{% endwith %}
-
-<h1>This is instructor login page</h1>
-<form action="/instructor/login" method="POST">
-  <label for="">Email: </label>
-  <input type="text" name="email" id="" required />
-  <label for="">Password</label>
-  <input type="text" name="password" required />
-  <input type="submit" value="login" />
-</form>
-
+      </div>
+      <form action="/instructor/login" method="post" class="login-form">
+        <input type="email" name="email" required placeholder="Email address" />
+        <input
+          type="password"
+          name="password"
+          required
+          placeholder="Password"
+        />
+        <input type="submit" value="Continue" class="submit-btn" />
+      </form>
+      <!-- <p class="register-btn">
+        No account? <a href="/instructor/register">Register</a>
+      </p> -->
+      <div class="break">
+        <hr />
+        <span>OR</span>
+        <hr />
+      </div>
+      <a href="{{ url_for('student.login') }}" class="btn-link">
+        <button type="button">
+          <img src="{{ url_for('static', filename='images/people-icon.svg') }}" />
+          <p>Quizzr for students</p>
+        </button>
+      </a>
+    </div>
+  </div>
+</div>
 
 {% endblock %}
