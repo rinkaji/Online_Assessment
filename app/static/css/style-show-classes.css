@@ -1,10 +1,7 @@
 .class-list {
   display: grid;
-  /* Creates 2 columns that are exactly 453px wide */
   grid-template-columns: repeat(2, 453px);
-  /* Space between columns and rows */
   gap: 20px;
-  /* Ensures it doesn't try to stretch beyond the design width */
   width: max-content;
   margin-top: 20px;
 }
@@ -22,24 +19,22 @@
 }
 
 .class-theme {
-  width: 100%; /* Fill the 453px container */
+  width: 100%;
   height: 150px;
-  /* Only round the top corners */
   border-top-left-radius: 20px;
   border-top-right-radius: 20px;
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
   border: 1px rgba(0, 0, 0, 0.15) solid;
-  border-bottom: none; /* Prevent double border where it meets the gray box */
-  object-fit: cover; /* Prevents image distortion */
+  border-bottom: none;
+  object-fit: cover;
 }
 
 .class-info {
   width: 100%;
-  height: 100px; /* Let content dictate height or keep your 108px */
+  height: 100px;
   padding: 18px 21px;
   background: #ececec;
-  /* Only round the bottom corners */
   border-bottom-right-radius: 20px;
   border-bottom-left-radius: 20px;
   border: 1px rgba(0, 0, 0, 0.15) solid;
@@ -47,6 +42,18 @@
   flex-direction: column;
   justify-content: center;
   justify-content: space-between;
+}
+
+.content-container {
+  flex-grow: 1;
+  overflow-y: auto;
+  height: 100vh;
+  background-color: #fffafa;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  padding: 40px 20px 100px 20px !important;
 }
 
 .card-class-title {
@@ -60,7 +67,7 @@
 }
 
 .div-a2 {
-  width: 100%;
+  width: 396px;
   color: black;
   font-size: 16px;
   font-family: Inter;
@@ -78,8 +85,6 @@
 }
 
 .anotha-div {
-  /* Remove: position: absolute; */
-  /* Remove: left/top: 0; */
   width: 100%;
   display: flex;
 }
@@ -88,7 +93,6 @@
   width: 453px;
   display: flex;
   flex-direction: column;
-  /* Remove margin-bottom as 'gap' in the grid handles this now */
   position: relative;
   transition: transform 0.2s ease;
   text-decoration: none;
@@ -97,5 +101,30 @@
 }
 
 .main-div-ig:hover {
-  transform: translateY(-5px); /* Adds a subtle lift on hover */
+  transform: translateY(-5px);
+}
+
+#greeting {
+  font-family: "Inter", sans-serif;
+  font-weight: 700;
+  font-size: 32px;
+  color: #000;
+  margin-bottom: 20px;
+  text-align: left;
+  width: 100%;
+  margin-top: 0;
+}
+
+.content-wrapper {
+  width: 100%;
+  max-width: 926px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding-top: 10px;
+  gap: 20px;
+}
+
+#greeting .user-name {
+  text-decoration: underline #0051e9;
 }
