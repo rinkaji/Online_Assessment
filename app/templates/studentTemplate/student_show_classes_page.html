@@ -1,36 +1,50 @@
-{% extends "base.html" %}
-{% block title %}Home Page{% endblock %}
+{% extends "base.html" %} {% block title %}Home Page{% endblock %} {% block
+content %}
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='css/style-show-classes.css') }}"
+/>
 
-{% block content %}
+<div class="content-wrapper">
+  <h1 id="greeting" class="page-title"></h1>
 
-<h1 id="greeting"></h1>
-
-{% for classroom in classrooms %}
-  <h2>{{ classroom['title'] }}</h2>
-  <h3>
-    {{ session['user']['f_name'].title() }}
-    {{ session['user']['l_name'].title() }}
-  </h3>
-  <h4>{{ classroom['description'] }}</h4>
-  <a href="/classroom/view/{{ classroom['classroom_id'] }}">view</a>
-{% endfor %}
+  <div class="class-list">
+    {% for classroom in classrooms %}
+    <a
+      href="/classroom/view/{{ classroom['classroom_id'] }}"
+      class="main-div-ig"
+    >
+      <img
+        class="class-theme"
+        src="{{ url_for('static', filename='images/class-theme/sketch.jpg') }}"
+      />
+      <div class="class-info">
+        <div class="card-class-title">{{ classroom['description'] }}</div>
+        <div class="div-a2">{{ classroom['title'] }}</div>
+        <div class="div-a3">Rhenel Bernisca</div>
+      </div>
+    </a>
+    {% endfor %}
+  </div>
+</div>
 
 <script>
   document.addEventListener("DOMContentLoaded", function () {
     const hour = new Date().getHours();
+    const name = "{{ session['user']['f_name'] }}";
     let greeting;
 
     if (hour >= 3 && hour < 12) {
-      greeting = "Good morning";
+      greeting = "Good morning, ";
     } else if (hour < 17) {
       greeting = "Good afternoon, ";
     } else {
       greeting = "Good evening, ";
     }
 
-    document.getElementById("greeting").textContent =
-      greeting + "Name";
+    document.getElementById(
+      "greeting"
+    ).innerHTML = `${greeting} <span class="user-name">${name}</span>`;
   });
 </script>
-
 {% endblock %}

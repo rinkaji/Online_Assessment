@@ -27,12 +27,16 @@
         </div>
 
         <div class="p-3">
-<a href="{{ url_for('student.join') }}" class="text-decoration-none">
-  <button class="join-btn {{ 'active-btn' if request.endpoint == 'student_join' }}">
-    <img src="{{ url_for('static', filename='images/rounded-plus.svg') }}" />
-    <p>Join class</p>
-  </button>
-</a>
+          <a href="{{ url_for('student.join') }}" class="text-decoration-none">
+            <button
+              class="join-btn {{ 'active-btn' if request.endpoint == 'student_join' }}"
+            >
+              <img
+                src="{{ url_for('static', filename='images/rounded-plus.svg') }}"
+              />
+              <p>Join class</p>
+            </button>
+          </a>
 
           <ul class="nav nav-pills flex-column mb-auto gap-40">
             <li class="nav-item">
@@ -62,33 +66,43 @@
           </ul>
         </div>
 
-<div class="mt-auto p-5">
-  <div class="d-flex align-items-center">
-    <div class="profile-pic">DB</div>
+        <div class="mt-auto p-5">
+          <div class="d-flex align-items-center">
+            <div class="profile-pic">
+              {{ session['user']['f_name'][0] | upper }}{{
+              session['user']['l_name'][0] | upper }}
+            </div>
 
-    <div class="dropdown">
-      <strong
-        class="username dropdown-toggle"
-        role="button"
-        data-bs-toggle="dropdown"
-        aria-expanded="false"
-      >
-        Daisy
-      </strong>
+            <div class="dropdown">
+              <strong
+                class="username dropdown-toggle"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                {{ session['user']['f_name'].title() }}
+              </strong>
 
-      <ul class="dropdown-menu">
-        <li>
-          <a class="dropdown-item" href="/student/logout">Logout</a>
-        </li>
-      </ul>
-    </div>
-  </div>
-</div>
-
+              <ul class="dropdown-menu">
+                <li>
+                  <a
+                    class="dropdown-item"
+                    href="{{ url_for('student.logout') }}"
+                    >Logout</a
+                  >
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
       </div>
 
       <div class="d-flex flex-column flex-grow-1">
-        <header class="top-bar">{% block topbar %} {% endblock %}</header>
+        <header
+          class="top-bar {{ 'bg-transparent border-0' if request.endpoint == 'student_dashboard' }}"
+        >
+          {% block topbar %}{% endblock %}
+        </header>
 
         <main class="content-container p-4">
           {% block content %}{% endblock %}

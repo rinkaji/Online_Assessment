@@ -1,9 +1,25 @@
 {% extends "base.html" %}{% block title %}add classroom{% endblock %} {% block
-content %} {% include "student_header.html" %}
-<h1>This is edit classroom page</h1>
+content %}
+<!-- <h1>This is edit classroom page</h1>
 <form action="/student/join" method="post">
   <label for="">Enter code: </label>
   <input type="text" name="code" id="" required />
   <input type="submit" value="Enter" />
-</form>
+</form> -->
+
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='css/style-join-classroom.css') }}"
+/>
+
+<div class="main-container">
+  <h1>Join a class</h1>
+  <img src="{{ url_for('static', filename='images/shared-workplace.svg') }}" />
+  <p>Connect with your classmates and teachers.</p>
+  <form action="/student/join" method="post">
+    <input type="text" name="code" id="" required placeholder="Class code" />
+    <input type="submit" value="Join class" />
+  </form>
+</div>
+
 {% endblock %}
