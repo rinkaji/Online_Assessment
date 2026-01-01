@@ -23,7 +23,7 @@
           <p class="card-text mb-2 text-muted">{{ classroom['description'] }}</p>
           <p class="mb-0 text-muted small">
             Created by:
-            <strong>{{ classroom['f_name'].title() }} {{ classroom['m_name'][0].title() }} {{ classroom['l_name'].title() }}</strong>
+            <strong>{{ classroom['f_name'].title() }} {{ classroom['l_name'].title() }}</strong>
           </p>
         </div>
       </div>
@@ -64,7 +64,7 @@
                   {{ student['f_name'][0]|upper }}{{ student['l_name'][0]|upper }}
                 </div>
                 <div>
-                  <div class="fw-semibold">{{ student['f_name'].title() }} {{ student['m_name'][0].title() }} {{ student['l_name'].title() }}</div>
+                  <div class="fw-semibold">{{ student['f_name'].title() }} {{ student['l_name'].title() }}</div>
                   <div class="text-muted small">{{ student['email'] }}</div>
                 </div>
               </li>

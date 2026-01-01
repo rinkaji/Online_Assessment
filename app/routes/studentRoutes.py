@@ -18,6 +18,7 @@ def login():
         email = request.form.get('email','')
         password = request.form.get('password','')
         data = studentModel.find_account(email)
+        print(data)
         if not data:
             flash('account does not exists', 'error')
             return redirect(url_for('student.login'))
