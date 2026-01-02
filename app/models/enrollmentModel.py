@@ -11,13 +11,21 @@ def addStudent(classroom):
     
 def getClasses():
     cur = app.mysql.connection.cursor(dictFormat)
-    cur.execute('''SELECT ce.classroom_id, c.title, c.description, u.f_name, u.m_name, u.l_name
-                from classroom_enrollment as ce
-                join classrooms as c
-                on ce.classroom_id = c.id
-                join users as u
-                on c.user_id = u.id 
-                where ce.user_id = %s''', (session['user']['id'],))
+    cur.execute("""
+        SELECT 
+            ce.classroom_id,
+            c.title,
+            c.description,
+            c.user_id AS teacher_id,
+            u.f_name AS teacher_fname,
+            u.l_name AS teacher_lname
+        FROM classroom_enrollment AS ce
+        JOIN classrooms AS c
+            ON ce.classroom_id = c.id
+        JOIN users AS u
+            ON c.user_id = u.id
+        WHERE ce.user_id = %s
+    """, (session['user']['id'],))
     data = cur.fetchall()
     cur.close()
     return data

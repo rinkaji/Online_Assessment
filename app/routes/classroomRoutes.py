@@ -32,6 +32,9 @@ def studentView(classroom_id):
     assessments = assessmentModel.getAssessments(classroom_id)
     classroom = classroomModel.viewClassroom(classroom_id)
     students = enrollmentModel.getStudents(classroom_id)
+    print("this is assessments: ", assessments)
+    print("this is classroom: ", classroom)
+    print("this is students: ", students)
     return render_template('studentTemplate/class_page.html', classroom = classroom, students = students, assessments = assessments)
 
 

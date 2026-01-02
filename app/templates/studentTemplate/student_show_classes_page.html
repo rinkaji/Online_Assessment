@@ -21,9 +21,7 @@ content %}
       <div class="class-info">
         <div class="card-class-title">{{ classroom['description'] }}</div>
         <div class="div-a2">{{ classroom['title'] }}</div>
-        <div class="div-a3">
-          {{classroom['f_name'].title()}} {{classroom['l_name'].title()}}
-        </div>
+        <div class="div-a3">{{classroom['teacher_fname']}} {{classroom['teacher_lname']}}</div>
       </div>
     </a>
     {% endfor %}

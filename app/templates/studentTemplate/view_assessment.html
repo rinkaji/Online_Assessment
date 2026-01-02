@@ -1,0 +1,18 @@
+{% extends "base.html" %} 
+{% block title %}student view classroom{% endblock %} 
+{% block content %} 
+{% include "student_header.html" %}
+<h1>view assessment</h1>
+
+Title : {{assessment['title']}} <br>
+posted by : {{assessment['f_name'].title()}} {{assessment['l_name'].title()}}  on {{assessment['date']}} <br>
+Due date : {{assessment['due_date']}} <br>
+{{assessment['total_marks']}} points <br>
+
+<a href="">
+    {{assessment['title']}} <br>
+    view {{assessment['type']}}</a>
+
+    Private comments <br>
+    {{assessment['feedback']}}
+{% endblock %}
