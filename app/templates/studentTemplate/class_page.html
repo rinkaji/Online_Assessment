@@ -49,6 +49,8 @@ filename='images/class-theme/sketch.jpg') }}') center/cover repeat; height:
 
   <div class="ann-list">
     {% for assessment in assessments %}
+    <a href="/student/assessment/{{ assessment['id'] }}"
+      class="text-decoration-none text-dark">
     <div class="ann-card">
       <div class="ann-icon-box">
         <img
@@ -71,6 +73,7 @@ filename='images/class-theme/sketch.jpg') }}') center/cover repeat; height:
         </p>
       </div>
     </div>
+    </a>
     {% endfor %}
   </div>
 </div>
