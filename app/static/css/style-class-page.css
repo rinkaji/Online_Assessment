@@ -1,0 +1,140 @@
+.ann-list {
+  display: flex;
+  width: 927px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+.ann-card {
+  display: flex;
+  width: 927px;
+  height: 107px;
+  padding: 20px;
+  align-items: center;
+  gap: 30px;
+  border-radius: 20px;
+  background: #f0f0f0;
+}
+
+.ann-card-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  flex-shrink: 0;
+  margin: 0;
+}
+
+.ann-card-info h1 {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  align-self: stretch;
+  color: #000;
+  font-family: Inter;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  margin: 0;
+}
+
+.ann-card-info h2 {
+  align-self: stretch;
+  color: rgba(0, 0, 0, 0.5);
+  font-family: Inter;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  margin-bottom: 5px;
+}
+
+.ann-card-info p {
+  color: #0051e9;
+  font-family: Inter;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  margin: 0;
+}
+
+.ann-card-info span {
+  color: #000;
+  font-family: Inter;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+}
+
+.content-wrapper {
+  width: 100%;
+  max-width: 926px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding-top: 20px; /* Reduced from 40px to compensate for larger header */
+}
+
+.title-box {
+  display: flex;
+  align-items: center;
+}
+
+.title {
+  display: flex;
+  padding: 5px 10px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  background-color: #fff;
+  color: #000;
+  font-family: Inter;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+
+.desc {
+  display: flex;
+  padding: 5px 10px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  background: #000;
+  color: #fff;
+  font-family: Inter;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+
+.header-text-container {
+  display: flex;
+  width: 1114px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.view-classmates-btn {
+  display: flex;
+  padding: 5px 5px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  background: #000;
+  color: #fff;
+  font-family: Inter;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+
+#modalya {
+  font-family: Inter;
+}
