@@ -5,19 +5,24 @@
 
 <a href="/student/dashboard">back to list</a>
 <h1>{{classroom['title'].title()}}</h1>
-<h3>
+<!-- <h3>
   Created by: {{classroom['f_name'].title()}}
-  {{classroom['m_name'][0].title()}} {{classroom['l_name'].title()}}
-</h3>
-<p>Description: {{classroom['description']}}</p>
+  {{classroom['l_name'].title()}}
+</h3> -->
+<!-- <p>Description: {{classroom['description']}}</p> -->
 
+<!-- <h4>Students</h4>
 {% for student in students %} 
-<b>{{student['f_name'].title()}} {{student['m_name'][0].title()}} {{student['l_name'].title()}}</b>
+<b>{{student['f_name'].title()}} {{student['l_name'].title()}}</b>
 <p>{{ student['email'] }}</p>
-{% endfor %}
+{% endfor %} -->
 <h4>Assessments</h4>
 {% for assessment in assessments %}
+  created by: {{classroom['f_name'].title()}} {{classroom['l_name'].title()}} <br>
   <h6>{{assessment['title']}}</h6>
-  <h6>{{assessment['total_marks']}} points</h6>
+  <!-- <h6>{{assessment['total_marks']}} points</h6> -->
+  date created: {{assessment['date']}} <br>
+  Due date: missing
+  <a href="/student/assessment/{{assessment['id']}}">view assessment</a>
 {% endfor %}
 {% endblock %}

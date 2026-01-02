@@ -9,6 +9,7 @@ def createAssessment(classroom_id, details):
     cur.execute("""INSERT INTO assessments (classroom_id, title, date, total_marks, time_limit, description, type)
                 VALUES (%s, %s, %s, %s, %s, %s, %s)""", 
                 (classroom_id, details['title'], datetime.now(), details.get('total_marks', ''), details.get('time_limit', ''), details.get('description', ''), details.get('type', '')))
+    # print(datetime.now())
     app.mysql.connection.commit()
     cur.close()    
     

@@ -2,7 +2,7 @@ from flask import Blueprint, flash, request, render_template, session, redirect,
 #from app.controllers import classroomController
 #import app.controllers.studentController as studentController
 from app.helper import studentHelper
-from app.models import classroomModel, enrollmentModel, studentModel
+from app.models import assessmentModel, classroomModel, enrollmentModel, studentModel, user_assessmentModel
 
 student_bp = Blueprint('student', __name__)
 
@@ -18,7 +18,6 @@ def login():
         email = request.form.get('email','')
         password = request.form.get('password','')
         data = studentModel.find_account(email)
-        print(data)
         if not data:
             flash('account does not exists', 'error')
             return redirect(url_for('student.login'))
@@ -72,3 +71,15 @@ def join():
     if check:
         return check
     return render_template('classroomTemplate/join_classroom.html')
+
+@student_bp.route('/assessment/<int:assessment_id>', methods=['GET'])
+def viewAssessment(assessment_id):
+    check = studentHelper.studentAccountCheck()
+    if check:
+        return check
+    assessment = user_assessmentModel.viewAssessment(assessment_id)
+    if not assessment:
+        user_assessmentModel.insertAssessment(assessment_id)
+        assessment = user_assessmentModel.viewAssessment(assessment_id)
+    print(assessment)
+    return render_template('studentTemplate/view_assessment.html', assessment = assessment)
