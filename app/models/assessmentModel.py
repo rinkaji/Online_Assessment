@@ -27,3 +27,10 @@ def viewAssessment(assessmentId):
     cur.close()
     return data
 
+def isAutomatic(assessmentId):
+    cur = app.mysql.connection.cursor(dictFormat)
+    cur.execute("""SELECT id, is_automatic from assessments where id = %s""", (assessmentId,))
+    data = cur.fetchone()
+    cur.close()
+    data['is_automatic'] = True if data['is_automatic'] == 1 else False
+    return data

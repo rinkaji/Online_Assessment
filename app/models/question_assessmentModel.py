@@ -14,3 +14,18 @@ def addQuestionsFromBank(question_ids, assessment_id):
         """, (qid, assessment_id))
     app.mysql.connection.commit()
     cursor.close()
+
+def getQuestions(assessment_id):
+    cursor = app.mysql.connection.cursor(dictFormat)
+    cursor.execute("""
+        SELECT 
+            qa.id AS qaid, 
+            q.id AS qid, q.question, q.type, q.answer, q.explanation, q.is_sensitive, q.options
+        FROM question_assessment qa
+        JOIN questions q 
+            ON qa.question_id = q.id
+        WHERE qa.assessment_id = %s
+    """, (assessment_id,))
+    questions = cursor.fetchall()
+    cursor.close()
+    return questions

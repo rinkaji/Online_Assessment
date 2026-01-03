@@ -1,8 +1,8 @@
-from flask import Blueprint, flash, request, render_template, session, redirect, url_for
+from flask import Blueprint, flash, jsonify, request, render_template, session, redirect, url_for
 #from app.controllers import classroomController
 #import app.controllers.studentController as studentController
 from app.helper import studentHelper
-from app.models import assessmentModel, classroomModel, enrollmentModel, studentModel, user_assessmentModel
+from app.models import answerModel, assessmentModel, classroomModel, enrollmentModel, question_assessmentModel, studentModel, user_assessmentModel
 
 student_bp = Blueprint('student', __name__)
 
@@ -81,5 +81,26 @@ def viewAssessment(assessment_id):
     if not assessment:
         user_assessmentModel.insertAssessment(assessment_id)
         assessment = user_assessmentModel.viewAssessment(assessment_id)
+    # print(assessment)
+    is_finished = user_assessmentModel.isAssessementFinished(assessment_id)
+    return render_template('studentTemplate/view_assessment.html', assessment = assessment, is_finished = is_finished)
+
+@student_bp.route('/take-assessment/<int:aid>', methods=['GET', 'POST'])
+def takeAssessment(aid):
+    check = studentHelper.studentAccountCheck()
+    if check:
+        return check
+    questions = question_assessmentModel.getQuestions(aid)
+    assessment = assessmentModel.isAutomatic(aid)
+    uaid = user_assessmentModel.getUaidByAid(aid)
     print(assessment)
-    return render_template('studentTemplate/view_assessment.html', assessment = assessment)
+    if request.method == 'POST':
+        output = [{"qid": k, "answer": v} for k, v in request.form.items()]
+        if not assessment['is_automatic']:
+            uaid = user_assessmentModel.getUaidByAid(aid)
+            # print(uaid)
+            answerModel.insertAnswers(uaid, output)
+            user_assessmentModel.updateAssessment(uaid)
+            is_finished = user_assessmentModel.isAssessementFinished(aid)
+        return redirect(url_for('student.viewAssessment', assessment_id=aid, is_finished=is_finished))
+    return render_template('studentTemplate/take_assessment.html', questions = questions, assessment = assessment)

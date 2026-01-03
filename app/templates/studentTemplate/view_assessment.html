@@ -9,9 +9,14 @@ posted by : {{assessment['f_name'].title()}} {{assessment['l_name'].title()}}  o
 Due date : {{assessment['due_date']}} <br>
 {{assessment['total_marks']}} points <br>
 
-<a href="">
+{% if is_finished == "submitted" %}
+    Your teacher will grade your assessment soon.
+{% else  %}
+    <a href="/student/take-assessment/{{assessment['aid']}}">
     {{assessment['title']}} <br>
-    view {{assessment['type']}}</a>
+    view {{assessment['type']}}
+    </a>
+{% endif %}
 
     Private comments <br>
     {{assessment['feedback']}}

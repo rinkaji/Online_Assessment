@@ -1,0 +1,30 @@
+{% extends "base.html" %} {% block title %}take assessment{% endblock %}
+{% block content %}
+<form action="/student/take-assessment/{{assessment['id']}}" method="post">
+    {% for question in questions %}
+        <div class="question">
+            <h3>{{loop.index}} {{ question.question }}</h3>
+            {% if question.type == "id" %}
+                <input type="text" name="{{ question.qid }}" required>
+            {% elif question.type == "tf" %}
+                <input type="radio" name="{{ question.qid }}" value="True" required> True
+                <input type="radio" name="{{ question.qid }}" value="False"> False
+            {% endif %}
+            {% if question.options %}
+                <ul>
+                    {% for option in question.options.split(',') %}
+                        <li><input type="radio" name="{{ question.qid }}" value="{{ option }}" {% if loop.first %}required{% endif %}> {{ option }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+    {% endfor %}
+    <button type="submit">submit for grading</button>
+    {% if assessment['is_automatic'] %}
+        <p>You will see your score automatically.</p>
+    {% else %}
+        <p>You will see your score after checking.</p>
+    {% endif %}
+
+</form>
+{% endblock %}
