@@ -5,15 +5,15 @@
         <div class="question">
             <h3>{{loop.index}} {{ question.question }}</h3>
             {% if question.type == "id" %}
-                <input type="text" name="{{ question.qid }}" required>
+                <input type="text" name="{{ question.qid }}" >
             {% elif question.type == "tf" %}
-                <input type="radio" name="{{ question.qid }}" value="True" required> True
+                <input type="radio" name="{{ question.qid }}" value="True" > True
                 <input type="radio" name="{{ question.qid }}" value="False"> False
             {% endif %}
             {% if question.options %}
                 <ul>
                     {% for option in question.options.split(',') %}
-                        <li><input type="radio" name="{{ question.qid }}" value="{{ option }}" {% if loop.first %}required{% endif %}> {{ option }}</li>
+                        <li><input type="radio" name="{{ question.qid }}" value="{{ option }}"> {{ option }}</li>
                     {% endfor %}
                 </ul>
             {% endif %}

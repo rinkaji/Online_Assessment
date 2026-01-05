@@ -39,18 +39,23 @@ def getUaidByAid(aid):
     cur.close()
     return data['id']
 
-def updateAssessment(uaid):
+def updateAssessment(uaid, score = 0):
     cur = app.mysql.connection.cursor()
-    cur.execute("""UPDATE user_assessment
-                SET is_finished = %s, submitted_at = NOW()
-                WHERE id = %s""", ("submitted", uaid,))
+    if not score:
+        cur.execute("""UPDATE user_assessment
+                    SET is_finished = %s, submitted_at = NOW()
+                    WHERE id = %s""", ("submitted", uaid,))
+    else:
+        cur.execute("""UPDATE user_assessment
+                    SET is_finished = %s, score = %s, submitted_at = NOW()
+                    WHERE id = %s""", ("checked", score, uaid))
     app.mysql.connection.commit()
     cur.close()
     
-def isAssessementFinished(uaid):
+def isAssessementFinished(aid):
     cur = app.mysql.connection.cursor(dictFormat)
     cur.execute("""SELECT is_finished FROM user_assessment
-                WHERE user_id = %s AND assessment_id = %s""",  (session['user']['id'], uaid,))
+                WHERE user_id = %s AND assessment_id = %s""",  (session['user']['id'], aid))
     data = cur.fetchone()
     cur.close()
     return data['is_finished']

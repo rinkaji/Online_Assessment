@@ -83,6 +83,7 @@ def viewAssessment(assessment_id):
         assessment = user_assessmentModel.viewAssessment(assessment_id)
     # print(assessment)
     is_finished = user_assessmentModel.isAssessementFinished(assessment_id)
+    # print(is_finished)
     return render_template('studentTemplate/view_assessment.html', assessment = assessment, is_finished = is_finished)
 
 @student_bp.route('/take-assessment/<int:aid>', methods=['GET', 'POST'])
@@ -93,14 +94,29 @@ def takeAssessment(aid):
     questions = question_assessmentModel.getQuestions(aid)
     assessment = assessmentModel.isAutomatic(aid)
     uaid = user_assessmentModel.getUaidByAid(aid)
-    print(assessment)
+    # print(assessment)
+    print(questions)
     if request.method == 'POST':
         output = [{"qid": k, "answer": v} for k, v in request.form.items()]
+        # print(output)
         if not assessment['is_automatic']:
-            uaid = user_assessmentModel.getUaidByAid(aid)
-            # print(uaid)
+            # uaid = user_assessmentModel.getUaidByAid(aid)
             answerModel.insertAnswers(uaid, output)
             user_assessmentModel.updateAssessment(uaid)
-            is_finished = user_assessmentModel.isAssessementFinished(aid)
+        else:
+            answerModel.insertAnswers(uaid, output)
+            questions = question_assessmentModel.getQuestions(aid)
+            count = 0
+            # continue the grading logic here
+            for index, question in enumerate(questions):
+                if question['is_sensitive']:
+                    if question['answer'].strip() == output[index]['answer'].strip():
+                        count += 1
+                else:
+                    if question['answer'].lower().strip() == output[index]['answer'].lower().strip():
+                        count += 1
+            print(count)
+            user_assessmentModel.updateAssessment(uaid, count)
+        is_finished = user_assessmentModel.isAssessementFinished(aid)
         return redirect(url_for('student.viewAssessment', assessment_id=aid, is_finished=is_finished))
     return render_template('studentTemplate/take_assessment.html', questions = questions, assessment = assessment)
