@@ -1,81 +1,81 @@
-{% extends "base.html" %}
-{% block title %}Classes{% endblock %}
-{% block content %}
-{% include "instructor_header.html" %}
+{% extends "base_instructor.html" %} {% block title %}Classes{% endblock %} {%
+block content %}
 
-<div class="container py-4">
-  <div class="d-flex align-items-center mb-3 gap-3">
-    <h1 class="h4 mb-0">Classes</h1>
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='css/style-show-classes-instructor.css') }}"
+/>
 
-    <div class="ms-auto d-flex gap-2">
-      <input id="class-search" class="form-control form-control-sm" placeholder="Search classes..." style="min-width:240px;">
-      <a href="/classroom/create" class="btn btn-primary btn-sm">
-        <i class="bi bi-plus-lg"></i> Create Classroom
-      </a>
-    </div>
-  </div>
-
-  {% with messages = get_flashed_messages() %}
-    {% if messages %}
-      {% for message in messages %}
-        <div class="alert alert-info alert-dismissible fade show" role="alert">
-          {{ message }}
-          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-      {% endfor %}
-    {% endif %}
-  {% endwith %}
-
-  {% if classrooms %}
-  <div id="class-grid" class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3">
+<div class="content-wrapper">
+  <div class="class-list">
     {% for classroom in classrooms %}
-    <div class="col class-card" data-search="{{ (classroom['title'] ~ ' ' ~ classroom['subject'] ~ ' ' ~ classroom['class_code']) | lower }}">
-      <div class="card h-100 shadow-sm">
-        <div class="card-body d-flex flex-column">
-          <div class="d-flex align-items-start">
-            <div class="me-3 rounded-circle bg-primary text-white d-flex align-items-center justify-content-center" style="width:44px;height:44px;">
-              {{ classroom['title'][0]|upper }}
-            </div>
-            <div class="flex-grow-1">
-              <h5 class="card-title mb-1">{{ classroom['title'] }}</h5>
-              <div class="text-muted small">{{ classroom['subject'].title() }} • <span class="fw-monospace">{{ classroom['class_code'] }}</span></div>
-            </div>
+    <div class="main-div-ig">
+      <a href="/classroom/{{ classroom['id'] }}" class="stretched-link"></a>
+
+      <img
+        class="class-theme"
+        src="{{ url_for('static', filename='images/class-theme/sketch.jpg') }}"
+      />
+
+      <div class="hor-class-info-action">
+        <div class="class-info">
+          <div class="card-class-title">{{ classroom['description'] }}</div>
+          <div class="div-a2">{{ classroom['title'] }}</div>
+          <div class="div-a3">
+            {{classroom['f_name'].title()}} {{classroom['l_name'].title()}}
+          </div>
+        </div>
+
+        <div class="dropdown">
+          <div
+            class="more-icon-btn"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+            style="position: relative; z-index: 10"
+          >
+            <img
+              src="{{ url_for('static', filename='images/more-icon.svg') }}"
+              alt="more"
+              style="filter: brightness(0); cursor: pointer; width: 25px"
+            />
           </div>
 
-          <p class="card-text mt-2 text-truncate" style="max-height:3.6rem;overflow:hidden;">{{ classroom['description'] }}</p>
-
-          <div class="mt-auto d-flex justify-content-between align-items-center">
-            <small class="text-muted">Created by {{ classroom['f_name'] }} {{ classroom['l_name'] }}</small>
-            <div>
-              <a href="/classroom/{{ classroom['id'] }}" class="btn btn-sm btn-outline-primary me-1">View</a>
-              <a href="/classroom/edit/{{ classroom['id'] }}" class="btn btn-sm btn-outline-secondary me-1">Edit</a>
-              <button class="btn btn-sm btn-outline-danger" onclick="if(confirm('Delete this classroom?')) location.href='/classroom/delete/{{ classroom.id }}'">Delete</button>
-            </div>
-          </div>
+          <ul
+            class="dropdown-menu dropdown-menu-end shadow-sm"
+            style="border-radius: 12px; border: none"
+          >
+            <li>
+              <a
+                class="dropdown-item d-flex align-items-center gap-2"
+                href="/classroom/edit/{{ classroom['id'] }}"
+              >
+                <img
+                  src="{{ url_for('static', filename='images/edit-icon.svg') }}"
+                  width="16"
+                />
+                Edit
+              </a>
+            </li>
+            <li><hr class="dropdown-divider" /></li>
+            <li>
+              <a
+                class="dropdown-item d-flex align-items-center gap-2 text-danger"
+                href="#"
+                onclick="if(confirm('Delete this classroom?')) location.href='/classroom/delete/{{ classroom.id }}'"
+              >
+                <img
+                  src="{{ url_for('static', filename='images/trash-icon.svg') }}"
+                  width="16"
+                />
+                Delete
+              </a>
+            </li>
+          </ul>
         </div>
       </div>
     </div>
     {% endfor %}
   </div>
-  {% else %}
-  <div class="alert alert-secondary">No classrooms found. Click "Create Classroom" to add one.</div>
-  {% endif %}
 </div>
-{% endblock %}
 
-{% block scripts %}
-<script>
-  // simple client-side search for classroom cards
-  (function(){
-    const input = document.getElementById('class-search');
-    if (!input) return;
-    input.addEventListener('input', () => {
-      const q = input.value.trim().toLowerCase();
-      document.querySelectorAll('.class-card').forEach(el => {
-        const txt = (el.dataset.search || '').toLowerCase();
-        el.style.display = q === '' || txt.includes(q) ? '' : 'none';
-      });
-    });
-  })();
-</script>
 {% endblock %}
