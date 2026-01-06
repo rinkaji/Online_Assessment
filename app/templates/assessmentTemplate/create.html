@@ -69,13 +69,13 @@ endblock %} {% block content %}
   <h1>Create an assessment</h1>
   <form action="/assessment/create/{{ classroom_id }}" method="post">
     <input type="text" name="title" required placeholder="Title" />
-    <input
+    <!-- <input
       type="number"
       name="total_marks"
       required
       placeholder="Total marks"
       min="0"
-    />
+    /> -->
     <input
       type="number"
       name="time_limit"
@@ -88,6 +88,12 @@ endblock %} {% block content %}
       rows="2"
       placeholder="Description (optional)"
     ></textarea>
+    <input type="date" name="due_date">
+
+    <select name="is_automatic" id="">
+      <option value="1">Automatic Grading</option>
+      <option value="0">Manual Grading</option>
+    </select>
 
     <div class="form-actions">
       <button type="button" class="cancel-btn" onclick="window.history.back()">

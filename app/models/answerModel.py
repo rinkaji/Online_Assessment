@@ -13,3 +13,30 @@ def insertAnswers(uaid, answers):
     app.mysql.connection.commit()   
     cur.close()
     
+def getAnswers(uaid):
+    cur = app.mysql.connection.cursor(dictFormat)
+    cur.execute("""SELECT 
+                q.question, q.answer, q.type, q.options, 
+                a.answer_text
+                FROM answers a
+                JOIN questions q
+                    ON a.question_id = q.id 
+                WHERE a.user_assessment_id = %s""", (uaid,))
+    data = cur.fetchall()
+    cur.close()
+    return data
+    
+def getAnswersByUaids(uaids):
+    cur = app.mysql.connection.cursor(dictFormat)
+    studentAnswers = []
+    for uaid in uaids:
+        cur.execute("""select 
+                    a.*, q.* 
+                    from answers a
+                    join questions q 
+                        on a.question_id = q.id
+                    where user_assessment_id = %s""" , (uaid,))
+        studentAnswers.append(cur.fetchall())
+    cur.close()
+    return studentAnswers
+    

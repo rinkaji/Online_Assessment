@@ -48,3 +48,19 @@ def getStudents(classroomId):
     data = cur.fetchall()
     cur.close()
     return data
+
+def getEnrolledStudents(assessment_id):
+    cur = app.mysql.connection.cursor(dictFormat)
+    cur.execute('''
+                SELECT users.f_name, users.m_name, users.l_name, users.email
+                FROM classroom_enrollment
+                JOIN users
+                ON classroom_enrollment.user_id = users.id
+                JOIN classrooms
+                ON classroom_enrollment.classroom_id = classrooms.id
+                JOIN assessments
+                ON classrooms.id = assessments.classroom_id
+                WHERE assessments.id = %s''', (assessment_id,))
+    data = cur.fetchall()
+    cur.close()
+    return data
