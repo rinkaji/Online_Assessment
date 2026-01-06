@@ -29,11 +29,15 @@ endblock %}
           <div class="title info-item">
             {{ assessment.get('time_limit') }} mins
           </div>
+          <div class="title info-item">
+            Status: {{ assessment.get('status').title() }}
+          </div>
         </div>
       </div>
     </div>
   </div>
 
+  {% if assessment.get('status') == 'draft' %}
   <div class="actions-top">
     <h3>Add new item</h3>
     <button data-bs-toggle="modal" data-bs-target="#myModal">
@@ -52,6 +56,7 @@ endblock %}
     </button>
   </div>
 </div>
+{% endif %}
 {% endblock %}
 
 <!-- erfrv -->
@@ -136,7 +141,9 @@ endblock %}
       id="assessment-id"
       value="{{assessment.get('id')}}"
     />
+    <a href="/assessment/deploy/{{ assessment.get('id') }}" class="btn btn-primary">Deploy</a>
   </div>
+  
   <!-- /.mx-auto constrained wrapper -->
 
   <!-- Modal -->
@@ -287,7 +294,7 @@ endblock %}
       </div>
     </div>
   </div>
-
+</div>
   {% endblock %} {% block scripts %}
   <script>
     // no local questions array — always read from backend
@@ -591,5 +598,5 @@ endblock %}
         });
     });
   </script>
+
   {% endblock %}
-</div>

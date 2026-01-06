@@ -77,7 +77,7 @@ def edit_question_no_assessment(question_id):
 @question_bp.route('/add_from_bank', methods=['POST'])
 def add_questions_from_bank():
     data = request.get_json()
-    print(data)
+    # print(data)
     question_ids = data.get('question_ids', [])
     assessment_id = data.get('assessment_id')
     question_assessmentModel.addQuestionsFromBank(question_ids, assessment_id)
