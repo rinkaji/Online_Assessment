@@ -1,0 +1,90 @@
+.header-text-container {
+  display: flex;
+  width: 1114px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.ass-info {
+  display: flex;
+  align-items: flex-start;
+  gap: 5px;
+}
+
+.title-box .desc {
+  color: #000;
+  font-family: Inter;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+
+.title-box .title {
+  color: #000;
+  font-family: Inter;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.actions-top {
+  display: flex;
+  align-items: center;
+  gap: 19px;
+}
+
+.actions-top h3 {
+  color: #000;
+  font-family: Inter;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  margin: 0;
+}
+
+.actions-top button {
+  display: flex;
+  padding: 3px 12px;
+  align-items: center;
+  gap: 13px;
+  border-radius: 5px;
+  background: #efefef;
+  border: none;
+}
+
+.actions-top button p {
+  margin: 0; /* Remove default paragraph spacing */
+  color: #000; /* Set text to black */
+  text-decoration: none; /* Remove underline */
+  font-family: Inter;
+  font-size: 16px;
+}
+
+.actions-top button:hover {
+  background: #e2e2e2; /* Changes color on hover */
+  cursor: pointer;
+}
+
+.horizz {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+}
+
+.horizz button {
+  border: none;
+}
+
+.verti {
+  display: flex;
+  flex-direction: column;
+}
+
+.info-item:not(:last-child)::after {
+  content: "•";
+  margin-left: 10px;
+  color: #888888b7;
+}
