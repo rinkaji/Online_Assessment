@@ -1,0 +1,279 @@
+/* Header Styles */
+.q-bank-title {
+  color: #000;
+  font-family: Inter, sans-serif;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  margin: 0;
+  display: flex;
+  align-items: center;
+}
+
+.horizz {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  align-items: center;
+}
+
+.horizz button {
+  border: none;
+  background: transparent;
+}
+
+.header-text-container {
+  width: 100%;
+  padding: 0 20px;
+}
+
+.d-flex.justify-content-between {
+  width: 100%;
+}
+
+.add-btn {
+  border: none;
+  background-color: #0051e9;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: background-color 0.2s;
+}
+
+.add-btn:hover {
+  background-color: #0041c4;
+}
+
+.add-btn img {
+  filter: invert();
+  width: 16px;
+  height: 16px;
+}
+
+/* Questions Container */
+.questions-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Question Card */
+.question-card {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  transition: box-shadow 0.2s;
+}
+
+.question-card:hover {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+}
+
+/* Question Header */
+.question-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.question-title-section {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.question-number {
+  font-weight: 600;
+  font-size: 14px;
+  color: #374151;
+}
+
+.question-type-badge {
+  font-size: 12px;
+  color: #6b7280;
+  text-transform: capitalize;
+}
+
+.question-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.action-btn {
+  padding: 6px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+}
+
+.action-btn:hover {
+  background-color: #f3f4f6;
+}
+
+.action-btn img {
+  height: 18px;
+  width: 18px;
+  display: block;
+}
+
+/* Question Text */
+.question-text {
+  font-size: 16px;
+  font-weight: 600;
+  color: #111827;
+  margin-bottom: 16px;
+  line-height: 1.5;
+}
+
+/* Multiple Choice Options */
+.question-options {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.option-item {
+  padding: 12px 16px;
+  background-color: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all 0.2s;
+}
+
+.option-item.option-correct {
+  background-color: #f0fdf4;
+  border-color: #86efac;
+}
+
+.option-text {
+  font-size: 14px;
+  color: #374151;
+  font-weight: 500;
+}
+
+.option-item.option-correct .option-text {
+  color: #166534;
+}
+
+.correct-badge {
+  background-color: #22c55e;
+  color: white;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+/* Identification & True/False Answer */
+.question-answer {
+  margin-top: 8px;
+  padding: 12px 16px;
+  background-color: #f9fafb;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.answer-label {
+  font-weight: 600;
+  font-size: 14px;
+  color: #6b7280;
+}
+
+.answer-value {
+  font-size: 14px;
+  font-weight: 600;
+  color: #111827;
+  background-color: #22c55e;
+  color: white;
+  padding: 4px 12px;
+  border-radius: 12px;
+}
+
+.answer-value.answer-true {
+  background-color: #22c55e;
+}
+
+.answer-value.answer-false {
+  background-color: #ef4444;
+}
+
+.sensitivity-badge {
+  display: inline-block;
+  margin-top: 8px;
+  background-color: #3b82f6;
+  color: white;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+/* Question Explanation */
+.question-explanation {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid #e5e7eb;
+}
+
+.question-explanation small {
+  color: #6b7280;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+/* No Questions State */
+.no-questions {
+  text-align: center;
+  padding: 60px 20px;
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+}
+
+.no-questions p {
+  color: #9ca3af;
+  font-size: 16px;
+  margin: 0;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .header-text-container {
+    padding: 0 16px;
+  }
+
+  .question-card {
+    padding: 16px;
+  }
+
+  .question-text {
+    font-size: 15px;
+  }
+
+  .add-btn {
+    padding: 8px 16px;
+    font-size: 14px;
+  }
+
+  .q-bank-title {
+    font-size: 18px;
+  }
+}
