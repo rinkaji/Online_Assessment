@@ -94,8 +94,8 @@ def takeAssessment(aid):
     questions = question_assessmentModel.getQuestions(aid)
     assessment = assessmentModel.isAutomatic(aid)
     uaid = user_assessmentModel.getUaidByAid(aid)
-    # print(assessment)
-    print(questions)
+    print(assessment)
+    # print(uaid)
     if request.method == 'POST':
         output = [{"qid": k, "answer": v} for k, v in request.form.items()]
         # print(output)
@@ -115,8 +115,21 @@ def takeAssessment(aid):
                 else:
                     if question['answer'].lower().strip() == output[index]['answer'].lower().strip():
                         count += 1
-            print(count)
             user_assessmentModel.updateAssessment(uaid, count)
         is_finished = user_assessmentModel.isAssessementFinished(aid)
         return redirect(url_for('student.viewAssessment', assessment_id=aid, is_finished=is_finished))
+    
+    # answers = answerModel.getAnswers(uaid)
+    
     return render_template('studentTemplate/take_assessment.html', questions = questions, assessment = assessment)
+
+@student_bp.route('/view-assessment/<int:aid>', methods=['GET'])
+def viewAnswers(aid):
+    check = studentHelper.studentAccountCheck()
+    if check:
+        return check
+    uaid = user_assessmentModel.getUaidByAid(aid)
+    ua_details = user_assessmentModel.getUserAssessment(uaid)
+    answers = answerModel.getAnswers(uaid)
+    return render_template('studentTemplate/view_answers.html', answers=answers, ua_details = ua_details)
+    

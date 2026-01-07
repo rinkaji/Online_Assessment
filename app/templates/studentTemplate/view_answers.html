@@ -1,0 +1,22 @@
+{% extends "base.html" %} 
+{% block title %}student view classroom{% endblock %} 
+{% block content %} 
+{% include "student_header.html" %}
+    {% for answer in answers %}
+    <div>
+        <b>{{loop.index}}. </b>{{answer.question}}
+        <br>
+        {% if answer.type == 'mc' %}
+            {% for option in answer.options.split(',') %}
+                <p>{{option}}</p>
+            {% endfor %}
+        {% endif %}
+        Answer: {{answer.answer_text}} <br>
+        Correct Answer: {{answer.answer}} <br>
+        Explanation: {{answer.explanation}} <br>
+
+        Teacher's Feedback <br>
+        {{ua_details.feedback}}
+        </div>
+    {% endfor %}
+{% endblock  %}

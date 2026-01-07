@@ -13,9 +13,12 @@ def createAssessment(classroom_id, details):
     app.mysql.connection.commit()
     cur.close()    
     
-def getAssessments(classroomId):
+def getAssessments(classroomId, status = ""):
     cur = app.mysql.connection.cursor(dictFormat)
-    cur.execute("""SELECT * from assessments where classroom_id = %s""", (classroomId,))
+    if status:
+        cur.execute("""SELECT * from assessments where classroom_id = %s and status = %s""", (classroomId, status))
+    else:
+        cur.execute("""SELECT * from assessments where classroom_id = %s""", (classroomId,))
     data = cur.fetchall()
     cur.close()
     return data
