@@ -1,7 +1,7 @@
 from flask import Blueprint, flash, redirect, render_template, url_for, request, session
 #from app.controllers import classroomController
 from app.helper.instructorHelper import accountCheck
-from app.models import assessmentModel, classroomModel, enrollmentModel, studentModel
+from app.models import assessmentModel, classroomModel, enrollmentModel, studentModel, user_assessmentModel
 
 classroom_bp = Blueprint('classroom', __name__)
 
@@ -58,3 +58,20 @@ def edit(id):
     classroom = classroomModel.viewClassroom(id)
     return render_template('classroomTemplate/edit_classroom.html', classroom = classroom)
 
+@classroom_bp.route('/analysis/<int:classroom_id>', methods=['GET'])
+def getAnalysis(classroom_id):
+    check = accountCheck()
+    if check: 
+        return check
+    assessments = assessmentModel.getAssessments(classroom_id)
+    students = enrollmentModel.getStudents(classroom_id)
+    print(assessments)
+    studentIds = [student['id'] for student in students]
+    assessmentIds = [assessment['id'] for assessment in assessments]
+    if studentIds and assessmentIds:
+        scores = user_assessmentModel.getScores(studentIds, assessmentIds)
+        # average = 
+    else:
+        scores = 0
+    classroom = classroomModel.viewClassroom(classroom_id)
+    return render_template('classroomTemplate/view_analysis.html', students = students, classroom=classroom, scores =scores, assessments = assessments)

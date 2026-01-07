@@ -40,7 +40,7 @@ def searchClass(classroom_id):
 def getStudents(classroomId):
     cur = app.mysql.connection.cursor(dictFormat)
     cur.execute('''
-                SELECT users.f_name, users.m_name, users.l_name, users.email
+                SELECT users.id, users.f_name, users.m_name, users.l_name, users.email
                 FROM classroom_enrollment
                 JOIN users
                 ON classroom_enrollment.user_id = users.id

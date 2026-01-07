@@ -87,3 +87,30 @@ def getUserAssessment(uaid):
     data = cur.fetchone()
     cur.close
     return data
+
+def getScores(sids, aids = ()):
+    scores = {}
+    cur = app.mysql.connection.cursor(dictFormat)
+
+    query = """
+        SELECT user_id, assessment_id, score
+        FROM user_assessment
+        WHERE user_id IN %s
+          AND assessment_id IN %s
+    """
+
+    cur.execute(query, (sids, aids))
+    rows = cur.fetchall()
+    cur.close()
+
+    for row in rows:
+        sid = row['user_id']
+        aid = row['assessment_id']
+        score = row['score']
+
+        if sid not in scores:
+            scores[sid] = {}
+
+        scores[sid][aid] = score
+
+    return scores

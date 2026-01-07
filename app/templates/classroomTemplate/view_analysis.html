@@ -1,0 +1,121 @@
+{% extends "base_instructor.html" %} {% block title %}{{ classroom.title }} -
+Quizzr {% endblock %}
+
+<!-- eregetg -->
+{% block topbar_style %} background: url('{{ url_for('static',
+filename='images/class-theme/sketch.jpg') }}') center/cover repeat; height:
+85px; {% endblock %}
+
+<!-- weffe -->
+{% block topbar %}
+<div class="header-text-container">
+  <span class="badge bg-dark me-2">{{ classroom.course_id }}</span>
+
+  <div class="title-box">
+    <div class="desc">{{ classroom.description }}</div>
+    <div class="title">{{ classroom.title }}</div>
+  </div>
+
+  <div>
+    <div
+      class="view-classmates-btn"
+      style="cursor: pointer"
+      data-bs-toggle="modal"
+      data-bs-target="#classmatesModal"
+    >
+      <img
+        class="class-theme"
+        src="{{ url_for('static', filename='images/more-icon.svg') }}"
+      />
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+
+
+sdfsdfd
+{% block content %}
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='css/style-view-class-ins.css') }}"
+/>
+
+<div class="table-responsive">
+  <table class="table table-striped table-hover table-bordered align-middle">
+    <thead class="table-dark text-center">
+      <tr>
+        <th>👩‍🎓 Student</th>
+        {% for assessment in assessments %}
+          <th>📘 {{ assessment['title'] }}</th>
+        {% endfor %}
+        <th>📊 Total</th>
+        <th>🎓 Overall Grade</th>
+      </tr>
+    </thead>
+     
+    <tbody>
+      {% if scores %}
+        {% set column_totals = {} %}
+        {% set student_count = students|length %}
+        {% set ts = namespace(total_sum = 0) %}
+
+        <!-- Max scores row -->
+        <tr class="table-info fw-bold">
+          <td>Max Scores</td>
+          {% set msa = namespace(maxScoresAmount = 0) %}
+          {% for assessment in assessments %}
+            {% set msa.maxScoresAmount = msa.maxScoresAmount + assessment['total_marks'] %}
+            <td>{{assessment['total_marks']}}</td>
+          {% endfor %}
+          <td>{{msa.maxScoresAmount}}</td>
+          <td>-</td>
+        </tr>
+
+        <!-- Student rows -->
+        {% for student in students %}
+          {% set ns = namespace(total=0, overAllScore=0) %}
+          <tr>
+            <td class="fw-semibold">{{ student['f_name'] }} {{ student['l_name'] }}</td>
+            
+            {% for assessment in assessments %}
+              {% set score = scores.get(student['id'], {}).get(assessment['id'], 0) | int %}
+              <td>{{ score }}</td>
+
+              {% set ns.total = ns.total + score %}
+              {% set ns.overAllScore = ns.overAllScore + assessment['total_marks'] %}
+
+              {% set current = column_totals.get(assessment['id'], 0) %}
+              {% set _ = column_totals.update({ assessment['id']: current + score }) %}
+            {% endfor %}
+            
+            <td class="fw-bold">{{ ns.total }}</td>
+            <td>
+              <div class="progress" style="height: 20px;">
+                <div class="progress-bar bg-success" role="progressbar"
+                     style="width: {{ ((ns.total / ns.overAllScore) * 100) | round(2) }}%">
+                  {{ ((ns.total / ns.overAllScore) * 100) | round(2) }}%
+                </div>
+              </div>
+            </td>
+          </tr>
+
+          {% set ts.total_sum = ts.total_sum + ns.total %}
+        {% endfor %}
+        
+        <!-- Average row -->
+        <tr class="table-warning fw-bold">
+          <td>Average</td>
+          {% for assessment in assessments %}
+            <td>{{ (column_totals.get(assessment['id'], 0) / student_count) | round(2) }}</td>
+          {% endfor %}
+          <td>{{ (ts.total_sum / student_count) | round(2) }}</td>
+          <td>-</td>
+        </tr>
+      {% endif %}
+    </tbody>
+  </table>
+</div>
+
+
+{% endblock %}
