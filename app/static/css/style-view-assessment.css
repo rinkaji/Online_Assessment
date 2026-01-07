@@ -1,3 +1,8 @@
+.main-container {
+  font-family: Inter;
+  padding-bottom: 100px !important;
+}
+
 .header-text-container {
   display: flex;
   width: 1114px;
@@ -9,6 +14,7 @@
   display: flex;
   align-items: flex-start;
   gap: 5px;
+  margin-top: 0;
 }
 
 .title-box .desc {
@@ -17,7 +23,8 @@
   font-size: 20px;
   font-style: normal;
   font-weight: 700;
-  line-height: normal;
+  line-height: 1.2;
+  margin-bottom: 0;
 }
 
 .title-box .title {
@@ -56,15 +63,15 @@
 }
 
 .actions-top button p {
-  margin: 0; /* Remove default paragraph spacing */
-  color: #000; /* Set text to black */
-  text-decoration: none; /* Remove underline */
+  margin: 0;
+  color: #000;
+  text-decoration: none;
   font-family: Inter;
   font-size: 16px;
 }
 
 .actions-top button:hover {
-  background: #e2e2e2; /* Changes color on hover */
+  background: #e2e2e2;
   cursor: pointer;
 }
 
@@ -81,10 +88,103 @@
 .verti {
   display: flex;
   flex-direction: column;
+  gap: 0 !important;
+  justify-content: center;
+}
+
+.verti .desc,
+.verti .ass-info {
+  margin: 0 !important;
+  padding: 0 !important;
+  line-height: 1.1;
+}
+
+.header-text-container {
+  display: flex;
+  width: 100%;
+  max-width: 1200px;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 auto;
 }
 
 .info-item:not(:last-child)::after {
   content: "•";
   margin-left: 10px;
   color: #888888b7;
+}
+
+.actions-top .deploy-button {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  padding: 3px 12px;
+  border-radius: 5px;
+  border: none;
+
+  background-color: #0d6efd;
+  color: #ffffff;
+  text-decoration: none;
+  transition: background-color 0.2s;
+}
+
+.actions-top .deploy-button span {
+  font-family: Inter;
+  font-size: 16px;
+  font-weight: 400;
+}
+
+.actions-top .deploy-button:hover {
+  background-color: #0b5ed7;
+  color: #ffffff;
+}
+
+.deploy-button img {
+  filter: brightness(0) invert(1);
+  width: 16px;
+}
+
+.card-body {
+  display: block;
+  padding: 30px;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+}
+
+.card-action-btn {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.card {
+  border: 1px solid rgba(0, 0, 0, 0.125) !important;
+  border-radius: 12px !important;
+  background-color: #fff;
+  overflow: hidden;
+}
+
+.card-action-btn {
+  display: flex;
+  gap: 12px;
+  margin-left: auto;
+}
+
+.explanation {
+  display: block;
+  width: 100%;
+  color: rgba(0, 0, 0, 0.6) !important;
+  font-family: Inter;
+  font-size: 14px;
+  font-style: italic;
+  font-weight: 400;
+  margin-top: 10px;
+  border-top: 1px inset #f0f0f0;
+  padding-top: 5px;
+}
+
+.card-action-btn img {
+  height: 18px !important;
+  width: auto;
 }

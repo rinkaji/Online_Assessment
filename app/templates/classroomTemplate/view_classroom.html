@@ -17,16 +17,8 @@ filename='images/class-theme/sketch.jpg') }}') center/cover repeat; height:
   </div>
 
   <div>
-    <div
-      class="view-classmates-btn"
-      style="cursor: pointer"
-      data-bs-toggle="modal"
-      data-bs-target="#classmatesModal"
-    >
-      <img
-        class="class-theme"
-        src="{{ url_for('static', filename='images/more-icon.svg') }}"
-      />
+    <div class="view-classmates-btn" style="cursor: pointer" data-bs-toggle="modal" data-bs-target="#classmatesModal">
+      <img class="class-theme" src="{{ url_for('static', filename='images/more-icon.svg') }}" />
     </div>
   </div>
 </div>
@@ -34,10 +26,7 @@ filename='images/class-theme/sketch.jpg') }}') center/cover repeat; height:
 
 <!-- erfrv -->
 {% block content %}
-<link
-  rel="stylesheet"
-  href="{{ url_for('static', filename='css/style-view-class-ins.css') }}"
-/>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style-view-class-ins.css') }}" />
 
 <!-- MAIN CONTENT  -->
 <div class="content-wrapper">
@@ -46,10 +35,7 @@ filename='images/class-theme/sketch.jpg') }}') center/cover repeat; height:
       <div class="d-flex align-items-center mb-3">
         <!-- <p>Create new quiz</p> -->
         <div class="ms-auto">
-          <a
-            href="/assessment/create/{{ classroom['id'] }}"
-            class="btn btn-primary"
-          >
+          <a href="/assessment/create/{{ classroom['id'] }}" class="btn btn-primary">
             <i class="bi bi-plus-lg"></i> Create assessment
           </a>
           <a href="">View Analysis</a>
@@ -58,12 +44,8 @@ filename='images/class-theme/sketch.jpg') }}') center/cover repeat; height:
       <!-- ==== -->
       <div class="share-code">
         <p>Share classroom</p>
-        <img
-          src="{{ url_for('static', filename='images/copy-icon.svg') }}"
-          alt="icon"
-          style="cursor: pointer"
-          onclick="copyAndNotify('{{ classroom.class_code }}', '{{ classroom.title }}')"
-        />
+        <img src="{{ url_for('static', filename='images/copy-icon.svg') }}" alt="icon" style="cursor: pointer"
+          onclick="copyAndNotify('{{ classroom.class_code }}', '{{ classroom.title }}')" />
         <p><b>{{ classroom['class_code'] }}</b></p>
       </div>
 
@@ -77,24 +59,16 @@ filename='images/class-theme/sketch.jpg') }}') center/cover repeat; height:
   <div class="ann-list">
     {% for assessment in assessments %}
     <div class="ann-card">
-      <a
-        href="/assessment/view/{{ assessment['id'] }}"
-        class="stretched-link"
-      ></a>
+      <a href="/assessment/view/{{ assessment['id'] }}" class="stretched-link"></a>
       <div class="ann-icon-box">
-        <img
-          src="{{ url_for('static', filename='images/announcement-icon-red.svg') }}"
-          alt="icon"
-        />
+        <img src="{{ url_for('static', filename='images/announcement-icon-red.svg') }}" alt="icon" />
       </div>
 
       <div class="ann-card-info">
         <p class="ann-date">{{ assessment['date'].strftime("%d %b %Y %I:%M:%S %p") }}</p>
         <h1 class="ann-title">
-          <span class="fw-bold"
-            >{{ classroom['f_name'].title() }} {{ classroom['l_name'].title()
-            }}</span
-          >
+          <span class="fw-bold">{{ classroom['f_name'].title() }} {{ classroom['l_name'].title()
+            }}</span>
           assigned a work titled <b>{{ assessment['title'] }}</b>
         </h1>
         <p class="ann-points text-red">
@@ -109,19 +83,11 @@ filename='images/class-theme/sketch.jpg') }}') center/cover repeat; height:
 
 <!-- Modal -->
 <div class="modal fade" id="classmatesModal" tabindex="-1" aria-hidden="true">
-  <div
-    id="modalya"
-    class="modal-dialog modal-dialog-centered modal-dialog-scrollable"
-  >
+  <div id="modalya" class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
     <div class="modal-content" style="border-radius: 20px; border: none">
       <div class="modal-header border-0 p-4 pb-0">
         <h5 class="modal-title fw-bold" style="font-size: 24px">People</h5>
-        <button
-          type="button"
-          class="btn-close"
-          data-bs-dismiss="modal"
-          aria-label="Close"
-        ></button>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
 
       <div class="modal-body p-4">
@@ -130,15 +96,12 @@ filename='images/class-theme/sketch.jpg') }}') center/cover repeat; height:
             Teacher
           </h6>
           <div class="d-flex align-items-center">
-            <div
-              class="profile-pic me-3"
-              style="
+            <div class="profile-pic me-3" style="
                 width: 40px;
                 height: 40px;
                 background-color: #0051e9;
                 color: white;
-              "
-            >
+              ">
               {{ classroom['f_name'][0]|upper }}{{ classroom['l_name'][0]|upper
               }}
             </div>
@@ -160,19 +123,14 @@ filename='images/class-theme/sketch.jpg') }}') center/cover repeat; height:
           </h6>
           <ul class="list-group list-group-flush">
             {% for student in students %}
-            <li
-              class="list-group-item d-flex align-items-center border-0 px-0 py-2"
-            >
-              <div
-                class="profile-pic me-3"
-                style="
+            <li class="list-group-item d-flex align-items-center border-0 px-0 py-2">
+              <div class="profile-pic me-3" style="
                   width: 35px;
                   height: 35px;
                   font-size: 12px;
                   background-color: #e9ecef;
                   color: #495057;
-                "
-              >
+                ">
                 {{ student['f_name'][0]|upper }}{{ student['l_name'][0]|upper }}
               </div>
               <div>
