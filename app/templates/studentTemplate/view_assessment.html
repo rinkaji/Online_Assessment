@@ -13,14 +13,14 @@ Due date : {{assessment['due_date']}} <br>
     Your teacher will grade your assessment soon.
 {% elif is_finished == "checked" %}
     You Got <br>
-    {{assessment['score']}}/{{assessment['total_marks']}} <br>
+    <a href="/student/view-assessment/{{assessment['aid']}}">
+    {{assessment['score']}}/{{assessment['total_marks']}}</a> <br>
 {% else  %}
     <a href="/student/take-assessment/{{assessment['aid']}}">
     {{assessment['title']}} <br>
     view {{assessment['type']}}
     </a>
 {% endif %}
-
     Private comments <br>
     {{assessment['feedback']}}
 {% endblock %}

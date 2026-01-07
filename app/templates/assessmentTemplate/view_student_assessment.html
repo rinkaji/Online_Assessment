@@ -64,6 +64,8 @@ endblock %}
 
 
 
+
+
 <script>
   const answersData = {{ answers | tojson }};
   const studentsData = {{students | tojson}}
@@ -74,7 +76,7 @@ endblock %}
   let userData = {}
 
   function testing(index) {
-    console.log(assessmentData);
+
     
     const answerContainer = document.getElementById('answerContainer');
     const explanationContainer = document.getElementById('explanationContainer')
@@ -98,6 +100,8 @@ endblock %}
           <p><strong>Answer:</strong> ${answer.answer_text}</p>
           <p><strong>Options:</strong> ${answer.options}</p>
           <p><strong>Correct answer:</strong>  ${answer.answer}</p>
+          <input type="text" name="explanation" id="">
+          <input type="hidden" name="answerId" value="${answer.id}">
         </div>
       `;  
       }
@@ -107,7 +111,9 @@ endblock %}
           <input type="checkbox" class="score">
           <p><strong>Question:</strong> ${answer.question}</p>
           <p><strong>Answer:</strong> ${answer.answer_text}</p>
-          <p><strong>Correct answer::</strong>  ${answer.answer}</p>
+          <p><strong>Correct answer:</strong>  ${answer.answer}</p>
+          <input type="text" name="explanation" id="">
+          <input type="hidden" name="answerId" value="${answer.id}">
         </div>
       `;
       }
@@ -118,6 +124,8 @@ endblock %}
           <p><strong>Question:</strong> ${answer.question}</p>
           <p><strong>Answer:</strong> ${answer.answer_text}</p>
           <p><strong>Correct answer:</strong>  ${answer.answer}</p>
+          <input type="text" name="explanation" id="">
+          <input type="hidden" name="answerId" value="${answer.id}">
         </div>
       `;
       } 
@@ -155,6 +163,20 @@ endblock %}
     if (!userData.score){
       userData.score = 0
     }
+    const explanations = document.querySelectorAll('input[name="explanation"]');
+    const aids = document.querySelectorAll('input[name="answerId"]');
+    let expList = []
+    let aidList = []
+
+    explanations.forEach((exp, index)=>{
+      expList[index] = exp.value
+      aidList[index] = aids[index].value
+    })
+
+    userData.explanations = expList
+    userData.answerIDs = aidList
+    
+    
     fetch(`/assessment/check/${studentsData[index].uaid}`, {
     method: 'POST', // or PUT
     headers: {
@@ -162,7 +184,9 @@ endblock %}
     },
     body: JSON.stringify(userData) // convert JS object to JSON
     })
+    location.reload()
     }
+    
   }
     
   

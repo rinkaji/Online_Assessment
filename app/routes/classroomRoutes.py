@@ -29,7 +29,7 @@ def view(id):
 #student view class
 @classroom_bp.route('/view/<int:classroom_id>', methods =['GET'])
 def studentView(classroom_id):
-    assessments = assessmentModel.getAssessments(classroom_id)
+    assessments = assessmentModel.getAssessments(classroom_id, "deployed")
     classroom = classroomModel.viewClassroom(classroom_id)
     students = enrollmentModel.getStudents(classroom_id)
     print("this is assessments: ", assessments)

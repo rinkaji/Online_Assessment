@@ -17,7 +17,7 @@ def getAnswers(uaid):
     cur = app.mysql.connection.cursor(dictFormat)
     cur.execute("""SELECT 
                 q.question, q.answer, q.type, q.options, 
-                a.answer_text
+                a.answer_text, a.explanation
                 FROM answers a
                 JOIN questions q
                     ON a.question_id = q.id 
@@ -39,4 +39,15 @@ def getAnswersByUaids(uaids):
         studentAnswers.append(cur.fetchall())
     cur.close()
     return studentAnswers
-    
+
+def updateAnswers(data):
+    answerIds = data['answerIDs']
+    explanation = data['explanations']
+    cur = app.mysql.connection.cursor()
+    for index, answerId in enumerate(answerIds):
+        cur.execute("""update answers 
+                    set explanation = %s
+                    where id = %s""" ,(explanation[index], answerId))
+    app.mysql.connection.commit()
+    cur.close
+   

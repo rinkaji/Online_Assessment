@@ -58,4 +58,5 @@ def check(uaid):
     # print(data)
     user_assessmentModel.updateUserAssessment(uaid, data)
     assessment = user_assessmentModel.getUserAssessment(uaid)
+    answerModel.updateAnswers(data)
     return redirect(url_for('assessment.view', assessment_id = assessment['id']))
