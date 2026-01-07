@@ -63,14 +63,12 @@ def getAnalysis(classroom_id):
     check = accountCheck()
     if check: 
         return check
-    assessments = assessmentModel.getAssessments(classroom_id)
+    assessments = assessmentModel.getAssessments(classroom_id, "deployed")
     students = enrollmentModel.getStudents(classroom_id)
-    print(assessments)
     studentIds = [student['id'] for student in students]
     assessmentIds = [assessment['id'] for assessment in assessments]
     if studentIds and assessmentIds:
         scores = user_assessmentModel.getScores(studentIds, assessmentIds)
-        # average = 
     else:
         scores = 0
     classroom = classroomModel.viewClassroom(classroom_id)
