@@ -11,6 +11,9 @@ Due date : {{assessment['due_date']}} <br>
 
 {% if is_finished == "submitted" %}
     Your teacher will grade your assessment soon.
+{% elif is_finished == "checked" %}
+    You Got <br>
+    {{assessment['score']}}/{{assessment['total_marks']}} <br>
 {% else  %}
     <a href="/student/take-assessment/{{assessment['aid']}}">
     {{assessment['title']}} <br>

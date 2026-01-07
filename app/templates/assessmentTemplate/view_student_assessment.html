@@ -1,0 +1,171 @@
+{% extends 'base_instructor.html' %} {% block title %} {{
+assessment.get('title', '') }} - Quizzr {% endblock %}
+<!-- eregetg -->
+{% block topbar_style %} background: white center/cover repeat; height: 85px; {%
+endblock %}
+
+{% block topbar %}
+<div class="header-text-container">
+  <div class="title-box">
+    <div class="horizz">
+      <button
+        type="button"
+        class="btn btn-outline-secondary"
+        onclick="( window.location.href='/classroom/{{assessment.get('classroom_id')}}')"
+      >
+        <img
+          class="class-theme"
+          src="{{ url_for('static', filename='images/arrow-back.svg') }}"
+        />
+      </button>
+      <div class="verti">
+        <div class="desc">{{ assessment.get('title', '') }}</div>
+        <div class="ass-info">
+          <div class="title info-item">{{ questions | length }} questions</div>
+          <div class="title info-item">
+            {{ assessment.get('total_marks') }} pts
+          </div>
+          <div class="title info-item">
+            {{ assessment.get('time_limit') }} mins
+          </div>
+          <div class="title info-item">
+            Status: {{ assessment.get('status').title() }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block content %}
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='css/style-view-assessment.css') }}"
+/>
+
+
+  
+  {% for student in students %}
+  <div class="student-row" onclick="testing('{{loop.index0}}')" >
+    <div class="student-name">{{ student.get('f_name', '') }} {{ student.get('l_name', '') }} &nbsp&nbsp&nbsp {{ student.get('is_finished', '') }}</div>
+    <!-- <div class="student-score">{{ student.get('score', 0) }}</div> -->
+    <div class="student-status"></div>
+  </div>
+  {% endfor %}
+  
+
+<div id="answerContainer"></div>
+<div id="explanationContainer"></div>
+
+
+
+
+
+
+<script>
+  const answersData = {{ answers | tojson }};
+  const studentsData = {{students | tojson}}
+  const assessmentData = {{assessment | tojson}}
+</script>
+
+<script>
+  let userData = {}
+
+  function testing(index) {
+    console.log(assessmentData);
+    
+    const answerContainer = document.getElementById('answerContainer');
+    const explanationContainer = document.getElementById('explanationContainer')
+
+    const studentAnswers = answersData[index];
+    const studentData = studentsData[index];
+
+    if (studentData.is_finished == "checked"){
+      explanationContainer.innerHTML = ''
+      answerContainer.innerHTML = '';
+      answerContainer.innerHTML += `<h2> Score: ${studentData.score}/${assessmentData.total_marks}<h2>`
+    }
+    else{
+      answerContainer.innerHTML = '';
+    studentAnswers.forEach(answer => {
+      if (answer.type == "mc"){
+      answerContainer.innerHTML += `
+        <div class="answer">
+          <input type="checkbox" class="score">
+          <p><strong>Question:</strong> ${answer.question}</p>
+          <p><strong>Answer:</strong> ${answer.answer_text}</p>
+          <p><strong>Options:</strong> ${answer.options}</p>
+          <p><strong>Correct answer:</strong>  ${answer.answer}</p>
+        </div>
+      `;  
+      }
+      else if (answer.type == "id"){
+        answerContainer.innerHTML += `
+        <div class="answer">
+          <input type="checkbox" class="score">
+          <p><strong>Question:</strong> ${answer.question}</p>
+          <p><strong>Answer:</strong> ${answer.answer_text}</p>
+          <p><strong>Correct answer::</strong>  ${answer.answer}</p>
+        </div>
+      `;
+      }
+      else {
+        answerContainer.innerHTML += `
+        <div class="answer">
+          <input type="checkbox" class="score">
+          <p><strong>Question:</strong> ${answer.question}</p>
+          <p><strong>Answer:</strong> ${answer.answer_text}</p>
+          <p><strong>Correct answer:</strong>  ${answer.answer}</p>
+        </div>
+      `;
+      } 
+    }
+  );
+    answerContainer.innerHTML += `<button id="updateUserAssessmentBtn">return assessment</button>`
+
+    explanationContainer.innerHTML = ''
+    explanationContainer.innerHTML += `
+    ${studentData.f_name} ${studentData.l_name}
+    <div id="studentScore">Score: 0/${assessmentData.total_marks}</div>
+    Teacher's comment
+    <input type="text" name="comment" id="commentInput">
+    `
+    const checkboxes = document.querySelectorAll('.score');
+    console.log(checkboxes);
+    checkboxes.forEach(cb => cb.addEventListener('change', updateCheckedCount));
+
+    const updateUserAssessmentBtn = document.getElementById("updateUserAssessmentBtn")
+    updateUserAssessmentBtn.addEventListener('click', ()=>{updateUserAssessment(index)})
+  }
+
+  function updateCheckedCount() {
+    let checkedCount = document.querySelectorAll('.score:checked').length;
+    const studentScore = document.getElementById('studentScore')
+    studentScore.innerHTML = `Score: ${checkedCount}/${assessmentData.total_marks}`
+    userData.score = checkedCount
+  }
+
+  
+
+  function updateUserAssessment(index){
+    const commentInput = document.getElementById('commentInput')
+    userData.comment = commentInput.value
+    if (!userData.score){
+      userData.score = 0
+    }
+    fetch(`/assessment/check/${studentsData[index].uaid}`, {
+    method: 'POST', // or PUT
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(userData) // convert JS object to JSON
+    })
+    }
+  }
+    
+  
+</script>
+
+{% endblock %}

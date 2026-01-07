@@ -88,7 +88,7 @@ filename='images/class-theme/sketch.jpg') }}') center/cover repeat; height:
       </div>
 
       <div class="ann-card-info">
-        <p class="ann-date">00 Jan 2026 00:00</p>
+        <p class="ann-date">{{ assessment['date'].strftime("%d %b %Y %I:%M:%S %p") }}</p>
         <h1 class="ann-title">
           <span class="fw-bold"
             >{{ classroom['f_name'].title() }} {{ classroom['l_name'].title()
@@ -99,6 +99,7 @@ filename='images/class-theme/sketch.jpg') }}') center/cover repeat; height:
         <p class="ann-points text-red">
           {{ assessment['total_marks'] }} points
         </p>
+        Due: {{ assessment['due_date'].strftime("%A, %B %d") | replace(" 0", " ") }}
       </div>
     </div>
     {% endfor %}
