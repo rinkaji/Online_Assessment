@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{% block title %}Quizzr{% endblock %}</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style-base-admin.css') }}" />
+</head>
+
+<body>
+  <div class="d-flex w-100">
+    <div class="sidebar d-flex flex-column flex-shrink-0">
+      <div class="logo-section">
+        <img src="{{ url_for('static', filename='images/quizzr-logo.svg') }}" />
+      </div>
+
+      <div class="p-3">
+        <!-- <a href="/classroom/create" class="text-decoration-none">
+          <button class="join-btn {{ 'active-btn' if request.endpoint == 'student_join' }}">
+            <img src="{{ url_for('static', filename='images/rounded-plus.svg') }}" />
+            <p>New class</p>
+          </button>
+        </a> -->
+
+        <ul class="nav nav-pills flex-column mb-auto gap-40">
+          <li class="nav-item">
+            <a href="/admin/student" class="nav-link-custom">
+              <img src="{{ url_for('static', filename='images/notebook-icon.svg') }}" />
+              <p>Students</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="/admin/instructor" class="nav-link-custom">
+              <img src="{{ url_for('static', filename='images/grad-hat-black.svg') }}" />
+              <p>Teachers</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link-custom">
+              <img src="{{ url_for('static', filename='images/settings-icon.svg') }}" />
+              <p>Settings</p>
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="mt-auto p-5">
+        <div class="d-flex align-items-center">
+          <div class="profile-pic">
+            {{ session['user']['f_name'][0] | upper }}{{
+            session['user']['l_name'][0] | upper }}
+          </div>
+
+          <div class="dropdown">
+            <strong class="username dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              {{ session['user']['f_name'].title() }}
+            </strong>
+
+            <ul class="dropdown-menu">
+              <li>
+                <a class="dropdown-item" href="{{ url_for('student.logout') }}">Logout</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="d-flex flex-column flex-grow-1">
+      <header class="top-bar {{ 'bg-transparent border-0' if request.endpoint == 'view_classroom' }}"
+        style="{% block topbar_style %}{% endblock %}">
+        {% block topbar %}{% endblock %}
+      </header>
+
+      <main class="content-container p-4">
+        {% block content %}{% endblock %}
+      </main>
+    </div>
+  </div>
+
+  {% block scripts %}{% endblock %}
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

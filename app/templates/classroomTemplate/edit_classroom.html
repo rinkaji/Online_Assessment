@@ -1,13 +1,33 @@
-{% extends "base.html" %}{% block title %}add classroom{% endblock %} {% block
-content %} {% include "instructor_header.html" %}
-<h1>This is edit classroom page</h1>
+{% extends "base_instructor.html" %}
+
+{% block title %}Editing classroom - Quizzer{% endblock %}
+
+{% block content %}
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style-join-classroom.css') }}" />
+
+<!-- <h1>This is edit classroom page</h1>
 <form action="/classroom/edit/{{classroom['id']}}" method="post">
   <label for="">title: </label>
   <input type="text" name="title" id="" required value={{classroom['title']}}>
   <label for="">description: </label>
-  <input type="text" name="description" id=""
-  value={{classroom['description']}}>
+  <input type="text" name="description" id="" value={{classroom['description']}}>
   <input type="submit" value="update" />
-</form>
+</form> -->
+
+<div class="main-container">
+  <h1>Edit {{classroom['title']}} </h1>
+  <img src="{{ url_for('static', filename='images/under-construction.svg') }}" />
+  <p>Set up a space for your students and works.</p>
+  <form action="/classroom/edit/{{classroom['id']}}" method="post">
+    <label for="">Title</label>
+    <input type="text" name="title" id="" required placeholder="Course descriptive title"
+      value={{classroom['title']}} />
+    <label for="">Labels </label>
+    <input type="text" name="description" id="" required placeholder="Labels (ELEC1, SIA - 4C, etc.)"
+      value={{classroom['description']}} />
+    <input class="" type="submit" value="update" />
+  </form>
+</div>
 
 {% endblock %}

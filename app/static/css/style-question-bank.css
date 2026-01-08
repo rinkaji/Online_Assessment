@@ -1,4 +1,3 @@
-/* Header Styles */
 .q-bank-title {
   color: #000;
   font-family: Inter, sans-serif;
@@ -62,6 +61,7 @@
   display: flex;
   flex-direction: column;
   gap: 16px;
+  padding-bottom: 80px;
 }
 
 /* Question Card */
@@ -78,7 +78,6 @@
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
 }
 
-/* Question Header */
 .question-header {
   display: flex;
   justify-content: space-between;
@@ -128,7 +127,6 @@
   display: block;
 }
 
-/* Question Text */
 .question-text {
   font-size: 16px;
   font-weight: 600;
@@ -137,7 +135,6 @@
   line-height: 1.5;
 }
 
-/* Multiple Choice Options */
 .question-options {
   display: flex;
   flex-direction: column;
@@ -171,7 +168,7 @@
 }
 
 .correct-badge {
-  background-color: #22c55e;
+  background-color: #166534;
   color: white;
   padding: 4px 10px;
   border-radius: 12px;
@@ -180,7 +177,6 @@
   text-transform: uppercase;
 }
 
-/* Identification & True/False Answer */
 .question-answer {
   margin-top: 8px;
   padding: 12px 16px;
@@ -201,14 +197,14 @@
   font-size: 14px;
   font-weight: 600;
   color: #111827;
-  background-color: #22c55e;
+  background-color: #198754;
   color: white;
   padding: 4px 12px;
   border-radius: 12px;
 }
 
 .answer-value.answer-true {
-  background-color: #22c55e;
+  background-color: #198754;
 }
 
 .answer-value.answer-false {
@@ -276,4 +272,164 @@
   .q-bank-title {
     font-size: 18px;
   }
+}
+
+/* MODAL */
+
+/* Clean Modal Styles - Matching Reference */
+.modal-content {
+  border: none;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+.modal-header {
+  border-bottom: none;
+  padding: 48px 40px 32px;
+  background: white;
+  border-radius: 16px 16px 0 0;
+}
+
+.modal-title {
+  font-size: 24px;
+  font-weight: 600;
+  color: #000000;
+  margin: 0;
+  width: 100%;
+  text-align: center;
+}
+
+.btn-close {
+  display: none;
+}
+
+.modal-body {
+  padding: 0 40px 32px;
+  background: white;
+}
+
+.form-label {
+  display: none;
+}
+
+.form-control,
+.form-select {
+  border: 1px solid #d1d5db;
+  border-radius: 12px;
+  padding: 16px 18px;
+  font-size: 15px;
+  transition: all 0.2s ease;
+  background: white;
+  color: #000000;
+  font-weight: 400;
+}
+
+.form-control::placeholder,
+.form-select {
+  color: #9ca3af;
+  font-weight: 400;
+}
+
+.form-control:focus,
+.form-select:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  outline: none;
+}
+
+textarea.form-control {
+  resize: vertical;
+  min-height: 90px;
+}
+
+.form-text {
+  display: none;
+}
+
+.text-muted {
+  color: #9ca3af !important;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+#type-options {
+  background: white;
+  border: 1px solid #d1d5db;
+  border-radius: 12px;
+  padding: 24px;
+  min-height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#type-options small {
+  color: #9ca3af;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.modal-footer {
+  border-top: none;
+  padding: 0 40px 40px;
+  background: white;
+  border-radius: 0 0 16px 16px;
+  gap: 12px;
+}
+
+.btn {
+  padding: 14px 24px;
+  font-weight: 500;
+  border-radius: 12px;
+  transition: all 0.2s ease;
+  font-size: 15px;
+  border: none;
+  flex: 1;
+}
+
+.btn-secondary {
+  background: white;
+  border: 1px solid #d1d5db;
+  color: #374151;
+}
+
+.btn-secondary:hover {
+  background: #f9fafb;
+  border-color: #9ca3af;
+}
+
+.btn-primary {
+  background: #2563eb;
+  color: white;
+}
+
+.btn-primary:hover {
+  background: #1d4ed8;
+}
+
+.col-12,
+.col-md-6 {
+  margin-bottom: 16px;
+}
+
+.col-12:last-child {
+  margin-bottom: 24px;
+}
+
+/* Demo button */
+.demo-btn {
+  background: #2563eb;
+  color: white;
+  border: none;
+  padding: 14px 32px;
+  font-size: 15px;
+  font-weight: 500;
+  border-radius: 12px;
+  transition: all 0.2s ease;
+}
+
+.demo-btn:hover {
+  background: #1d4ed8;
 }

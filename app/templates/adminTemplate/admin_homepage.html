@@ -1,6 +1,144 @@
-{% extends "base.html" %} {% block title %}Home page{% endblock %} {% block
-content %} 
-<h1>This is Admin home page</h1>
-<a href="/admin/student">Students</a>
-<a href="/admin/instructor">Instructor</a>
+{% extends "base_admin.html" %}
+
+{% block title %}Admin Dashboard - Quizzr{% endblock %}
+
+
+
+{% block content %}
+<style>
+    .dashboard-container {
+        width: 100%;
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 40px 20px;
+        text-align: center;
+    }
+
+    .welcome-section {
+        margin-bottom: 50px;
+    }
+
+    .welcome-img {
+        width: 280px;
+        height: auto;
+        margin-bottom: 24px;
+    }
+
+    .welcome-section h1 {
+        font-family: 'Inter', sans-serif;
+        font-weight: 700;
+        font-size: 32px;
+        color: #1d1d1d;
+    }
+
+    .welcome-section p {
+        color: #6b7280;
+        font-size: 16px;
+    }
+
+    .card-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 24px;
+        margin-top: 20px;
+    }
+
+    .admin-card {
+        background: white;
+        padding: 32px;
+        border-radius: 16px;
+        border: 1px solid #e5e7eb;
+        text-decoration: none;
+        transition: all 0.2s ease;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 16px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    }
+
+    .admin-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        border-color: #2563eb;
+    }
+
+    .card-icon {
+        width: 60px;
+        height: 60px;
+        background: #f3f4f6;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background 0.2s;
+    }
+
+    .admin-card:hover .card-icon {
+        background: #eff6ff;
+    }
+
+    .card-icon img {
+        width: 32px;
+        height: 32px;
+    }
+
+    .card-info h3 {
+        font-size: 20px;
+        font-weight: 600;
+        color: #111827;
+        margin: 0 0 8px 0;
+    }
+
+    .card-info p {
+        font-size: 14px;
+        color: #6b7280;
+        margin: 0;
+    }
+
+    .btn-action {
+        margin-top: 10px;
+        background: #2563eb;
+        color: white;
+        padding: 10px 24px;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 14px;
+        border: none;
+        width: 100%;
+    }
+</style>
+
+<div class="dashboard-container">
+    <div class="welcome-section">
+        <img src="{{ url_for('static', filename='images/shared-workplace.svg') }}" class="welcome-img"
+            alt="Admin Workspace" />
+        <h1>Manage accounts as admin</h1>
+        <p>Select a category below to view, add, or delete user accounts.</p>
+    </div>
+
+    <div class="card-grid">
+        <a href="/admin/student" class="admin-card">
+            <div class="card-icon">
+                <img src="{{ url_for('static', filename='images/notebook-icon.svg') }}" alt="Students" />
+            </div>
+            <div class="card-info">
+                <h3>Students</h3>
+                <p>Manage registered student accounts and credentials.</p>
+            </div>
+            <div class="btn-action">View Students</div>
+        </a>
+
+        <a href="/admin/instructor" class="admin-card">
+            <div class="card-icon">
+                <img src="{{ url_for('static', filename='images/grad-hat-black.svg') }}" alt="Instructors" />
+            </div>
+            <div class="card-info">
+                <h3>Instructors</h3>
+                <p>Monitor and manage teacher access and profiles.</p>
+            </div>
+            <div class="btn-action">View Instructors</div>
+        </a>
+    </div>
+</div>
 {% endblock %}

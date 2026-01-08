@@ -148,35 +148,35 @@ endblock %}
         </div>
 
         <div class="modal-body">
-          <form class="row g-3" onsubmit="return false;">
+          <form class="row g-0" onsubmit="return false;">
             <div class="col-12">
               <label for="question" class="form-label">Question</label>
-              <textarea id="question" class="form-control" rows="3" placeholder="Write the question here"></textarea>
+              <textarea id="question" class="form-control" rows="3" placeholder="What do you want to ask?"></textarea>
             </div>
 
-            <div class="col-md-6">
-              <label for="question-type" class="form-label">Type</label>
+            <div class="col-md-6" style="padding-right: 12px;">
+              <label for="question-type" class="form-label">Question Type</label>
               <select id="question-type" class="form-select" aria-label="Question type">
                 <option value="mc" selected>Multiple Choice</option>
                 <option value="id">Identification</option>
                 <option value="tf">True or False</option>
               </select>
               <div class="form-text">
-                Type-specific inputs will appear below.
+                Choose how students will answer
               </div>
             </div>
 
-            <div class="col-md-6">
-              <label for="question-explanation" class="form-label">Explanation <small
-                  class="text-muted">(optional)</small></label>
-              <input id="question-explanation" class="form-control"
-                placeholder="Short explanation shown after answer" />
+            <div class="col-md-6" style="padding-left: 12px;">
+              <label for="question-explanation" class="form-label">
+                Explanation <small>(optional)</small>
+              </label>
+              <input id="question-explanation" class="form-control" placeholder="Why is this the correct answer?" />
             </div>
 
             <div class="col-12">
-              <div id="type-options" class="border rounded p-3 bg-light">
-                <small class="text-muted">Options / answers for the selected type will render
-                  here.</small>
+              <label class="form-label">Answer Options</label>
+              <div id="type-options">
+                <small>Select a question type to configure answer options</small>
               </div>
             </div>
           </form>
@@ -186,11 +186,14 @@ endblock %}
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
             Cancel
           </button>
-          <button id="addBtn" type="button" class="btn btn-primary">Add</button>
+          <button id="addBtn" type="button" class="btn btn-primary">
+            Add Question
+          </button>
         </div>
       </div>
     </div>
   </div>
+
 
   <!-- Modal2 -->
   <div class="modal fade" id="myModal2" tabindex="-1" aria-labelledby="myModalLabel2" aria-hidden="true">

@@ -1,0 +1,193 @@
+.work-info h1 {
+  font-size: 24px !important;
+  margin-bottom: 5px;
+}
+
+.work-info h3 {
+  font-size: 14px !important;
+  font-weight: 400;
+  margin: 0;
+  #work-title {
+    color: rgba(0, 0, 0, 0.5);
+    font-family: Inter;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+  }
+
+  #work-due {
+    color: #0051e9;
+    font-family: Inter;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+  }
+
+  #work-pts {
+    color: #000;
+    font-family: Inter;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+  }
+
+  #work-timer-txt {
+    color: #000;
+    font-family: Inter;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+  }
+}
+
+#work-author {
+  color: rgba(0, 0, 0, 0.5);
+  font-family: Inter;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+#work-due {
+  color: #0051e9;
+  font-family: Inter;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+}
+
+#work-pts {
+  color: #000;
+  font-family: Inter;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+}
+
+#work-timer-txt {
+  color: #000;
+  font-family: Inter;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+}
+
+.work-title {
+  color: #000;
+  font-family: Inter;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+
+.work-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  align-self: stretch;
+}
+
+.document-tab {
+  display: flex;
+  height: 96px;
+  padding: 34px 25px;
+  justify-content: space-between;
+  align-items: center;
+  align-self: stretch;
+  border-radius: 20px;
+  background: #e5e5e5;
+}
+
+.tab-details {
+  display: flex;
+  align-items: center;
+  gap: 23px;
+}
+
+.tab-details h1 {
+  color: #000;
+  font-family: Inter;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+}
+
+.tab-details h3 {
+  color: rgba(0, 0, 0, 0.5);
+  font-family: Inter;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+}
+
+.priv-comms h1 {
+  color: #000;
+  font-family: Inter;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+}
+
+.priv-comms p {
+  color: rgba(0, 0, 0, 0.5);
+  font-family: Inter;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+}
+
+.right-plank {
+  display: flex;
+  width: 717px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 39px;
+}
+
+.tesstt {
+  display: block;
+  width: 100%;
+  text-decoration: none !important;
+  color: inherit;
+}
+
+.document-tab {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 20px;
+  background-color: #e9ecef;
+  border-radius: 20px;
+}
+
+.score-display {
+  display: flex;
+  width: auto;
+}
+
+.score-display h1 {
+  display: flex;
+  width: auto;
+  color: #0051e9;
+}
+
+#score-baaam {
+  color: #0051e9;
+  font-size: medium;
+  font-weight: 60;
+}

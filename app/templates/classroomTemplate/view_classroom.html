@@ -34,11 +34,11 @@ filename='images/class-theme/sketch.jpg') }}') center/cover repeat; height:
     <div class="action-bar">
       <div class="d-flex align-items-center mb-3">
         <!-- <p>Create new quiz</p> -->
-        <div class="ms-auto">
+        <div class="ms-auto gap-2">
           <a href="/assessment/create/{{ classroom['id'] }}" class="btn btn-primary">
             <i class="bi bi-plus-lg"></i> Create assessment
           </a>
-          <a href="/classroom/analysis/{{classroom['id']}}">View Analysis</a>
+          <a href="/classroom/analysis/{{classroom['id']}}" class="text-decoration-none ms-3">View Analysis</a>
         </div>
       </div>
       <!-- ==== -->
@@ -57,7 +57,7 @@ filename='images/class-theme/sketch.jpg') }}') center/cover repeat; height:
   </div>
 
   <div class="ann-list">
-    {% for assessment in assessments %}
+    {% for assessment in assessments |reverse %}
     <div class="ann-card">
       <a href="/assessment/view/{{ assessment['id'] }}" class="stretched-link"></a>
       <div class="ann-icon-box">
@@ -65,7 +65,13 @@ filename='images/class-theme/sketch.jpg') }}') center/cover repeat; height:
       </div>
 
       <div class="ann-card-info">
-        <p class="ann-date">{{ assessment['date'].strftime("%d %b %Y %I:%M:%S %p") }}</p>
+        <p class="ann-date">
+          {% if assessment['date'] %}
+          {{ assessment['date'].strftime("%d %b %Y %I:%M %p") }}
+          {% else %}
+          <span class="text-danger">Date Missing</span>
+          {% endif %}
+        </p>
         <h1 class="ann-title">
           <span class="fw-bold">{{ classroom['f_name'].title() }} {{ classroom['l_name'].title()
             }}</span>
@@ -74,7 +80,7 @@ filename='images/class-theme/sketch.jpg') }}') center/cover repeat; height:
         <p class="ann-points text-red">
           {{ assessment['total_marks'] }} points
         </p>
-        Due: {{ assessment['due_date'].strftime("%A, %B %d") | replace(" 0", " ") }}
+        Due {{ assessment['due_date'].strftime("%A, %B %d") | replace(" 0", " ") }}
       </div>
     </div>
     {% endfor %}

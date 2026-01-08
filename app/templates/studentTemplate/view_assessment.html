@@ -1,26 +1,106 @@
-{% extends "base.html" %} 
-{% block title %}student view classroom{% endblock %} 
-{% block content %} 
-{% include "student_header.html" %}
-<h1>view assessment</h1>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style-question-bank.css') }}" />
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style-student-assessment.css') }}" />
 
-Title : {{assessment['title']}} <br>
-posted by : {{assessment['f_name'].title()}} {{assessment['l_name'].title()}}  on {{assessment['date']}} <br>
+{% extends 'base.html' %}
+
+{% block title %} Question Bank - Quizzr {% endblock %}
+
+{% block topbar_style %} background: white center/cover repeat; height: 85px; {%endblock %}
+
+{% block topbar %}
+<div class="header-text-container">
+    <div class="d-flex justify-content-between align-items-center">
+        <div class="horizz">
+            <button type="button" class="btn btn-outline-secondary" onclick="history.back(-1)">
+                <img class="class-theme" src="{{ url_for('static', filename='images/arrow-back.svg') }}" />
+            </button>
+            <h1 class="q-bank-title">Assessment Details</h1>
+        </div>
+        <div>
+            <!-- Meron something dito dati -->
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+
+<!-- Title : {{assessment['title']}} <br>
+posted by : {{assessment['f_name'].title()}} {{assessment['l_name'].title()}} on {{assessment['date']}} <br>
 Due date : {{assessment['due_date']}} <br>
 {{assessment['total_marks']}} points <br>
 
 {% if is_finished == "submitted" %}
-    Your teacher will grade your assessment soon.
+Your teacher will grade your assessment soon.
 {% elif is_finished == "checked" %}
-    You Got <br>
-    <a href="/student/view-assessment/{{assessment['aid']}}">
+You Got <br>
+<a href="/student/view-assessment/{{assessment['aid']}}">
     {{assessment['score']}}/{{assessment['total_marks']}}</a> <br>
-{% else  %}
-    <a href="/student/take-assessment/{{assessment['aid']}}">
+{% else %}
+<a href="/student/take-assessment/{{assessment['aid']}}">
     {{assessment['title']}} <br>
     view {{assessment['type']}}
-    </a>
-{% endif %}
-    Private comments <br>
-    {{assessment['feedback']}}
+</a>
+{% endif %} -->
+
+
+
+<div class="d-flex flex-row gap-4 mt-5">
+    <div class="left-plan mt-1">
+        <img class="class-theme" src="{{ url_for('static', filename='images/announcement-icon-blue.svg') }}" />
+    </div>
+
+    <div class="right-plank">
+        <div class="work-info">
+            <h1 id="work-title">{{assessment['title']}}</h1>
+            <h3 id="work-author">Posted by {{assessment['f_name'].title()}} {{assessment['l_name'].title()}} on
+                {{ assessment['date'].strftime('%d %b %Y %I:%M %p') }}</h3>
+            <h3 id="work-due">Due {{assessment['due_date'].strftime('%d %b %Y %I:%M %p')}}</h3>
+            <h3 id="work-pts">{{assessment['total_marks']}} points</h3>
+            <div class="d-flex flex-row gap-2">
+                <img class="class-theme" src="{{ url_for('static', filename='images/clock-icon.svg') }}" />
+                <h3 id="work-timer-txt">{{assessment['time_limit']}} minutes timer</h3>
+            </div>
+        </div>
+
+        {# Define the target URL based on the assessment status #}
+        {% if is_finished == "checked" %}
+        {% set target_url = "/student/view-assessment/" ~ assessment['aid'] %}
+        {% else %}
+        {% set target_url = "/student/take-assessment/" ~ assessment['aid'] %}
+        {% endif %}
+
+        <a href="{{ target_url }}" class="text-decoration-none tesstt">
+            <div class="document-tab">
+                <div class="tab-details">
+                    <img class="class-theme" src="{{ url_for('static', filename='images/doc-icon.svg') }}" />
+
+                    <div class="d-flex flex-column">
+                        {% if is_finished == "submitted" %}
+                        <h1 id="tbc-notice" class="m-0">Your teacher will grade your assessment soon.</h1>
+
+                        {% elif is_finished == "checked" %}
+                        <h3 class="m-0" style="font-size: 14px; color: rgba(0,0,0,0.5);">You got</h3>
+                        <h1 id="score-baaam" class="m-0" style="font-size: 20px; font-weight: 700;">
+                            {{assessment['score']}}/{{assessment['total_marks']}}
+                        </h1>
+
+                        {% else %}
+                        <h1 class="m-0" style="font-size: 16px; font-weight: 500;">{{assessment['title']}}</h1>
+                        <h3 class="m-0" style="font-size: 14px; color: rgba(0,0,0,0.5);">Quiz document</h3>
+
+                        {% endif %}
+                    </div>
+                </div>
+
+                <img class="class-theme" src="{{ url_for('static', filename='images/backspace.svg') }}" />
+            </div>
+        </a>
+
+        <div class="priv-comms">
+            <h1>Private comments</h1>
+            <p>{{assessment['feedback']}}</p>
+        </div>
+    </div>
+</div>
 {% endblock %}

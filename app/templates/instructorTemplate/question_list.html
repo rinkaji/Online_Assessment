@@ -25,6 +25,7 @@
 </div>
 {% endblock %}
 
+<!-- MAIN CONTENT -->
 {% block content %}
 <div class="container py-4">
   <div class="questions-container">
@@ -95,42 +96,39 @@
   <div class="modal-dialog modal-lg modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Add Question</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" onclick="clearFields()"></button>
+        <h5 class="modal-title">Create an assessment</h5>
       </div>
       <div class="modal-body">
         <form class="row g-3" onsubmit="return false;">
           <div class="col-12">
-            <label for="question" class="form-label">Question</label>
-            <textarea id="question" class="form-control" rows="3" placeholder="Write the question here"></textarea>
-          </div>
-
-          <div class="col-md-6">
-            <label for="question-type" class="form-label">Type</label>
-            <select id="question-type" class="form-select" aria-label="Question type">
-              <option value="mc" selected>Multiple Choice</option>
-              <option value="id">Identification</option>
-              <option value="tf">True or False</option>
-            </select>
-            <div class="form-text">Type-specific inputs will appear below.</div>
-          </div>
-
-          <div class="col-md-6">
-            <label for="question-explanation" class="form-label">Explanation <small
-                class="text-muted">(optional)</small></label>
-            <input id="question-explanation" class="form-control" placeholder="Short explanation shown after answer" />
+            <input type="text" id="question" class="form-control" placeholder="Title" />
           </div>
 
           <div class="col-12">
-            <div id="type-options" class="border rounded p-3 bg-light">
-              <small class="text-muted">Options / answers for the selected type will render here.</small>
-            </div>
+            <input type="number" id="time-limit" class="form-control" placeholder="Time limit (mins)" />
+          </div>
+
+          <div class="col-12">
+            <textarea id="question-explanation" class="form-control" rows="3"
+              placeholder="Description (optional)"></textarea>
+          </div>
+
+          <div class="col-12">
+            <input type="date" id="due-date" class="form-control" placeholder="mm/dd/yyyy" />
+          </div>
+
+          <div class="col-12">
+            <select id="question-type" class="form-select">
+              <option value="" disabled selected>Grading type</option>
+              <option value="auto">Automatic</option>
+              <option value="manual">Manual</option>
+            </select>
           </div>
         </form>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="clearFields()">Cancel</button>
-        <button type="button" class="btn btn-primary" onclick="addQuestion()">Add</button>
+        <button type="button" class="btn btn-primary" onclick="addQuestion()">Create</button>
       </div>
     </div>
   </div>

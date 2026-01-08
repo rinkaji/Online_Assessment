@@ -1,78 +1,160 @@
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style-question-bank.css') }}" />
 
-{% extends 'base.html' %}
-{% block title %}create assessment{% endblock %}
-{% block content %}
-    <form action="{{assessment_id}}" method="post">
-        <div class="mb-3">
-            <label class="form-label">Question Text</label>
-            <textarea name="question_text" class="form-control" rows="3" required>{{ question.question }}</textarea>
+{% extends 'base_instructor.html' %}
+{% block title %}Edit Question{% endblock %}
+
+
+{% block topbar %}
+<div class="header-text-container">
+    <div class="d-flex justify-content-between align-items-center">
+        <div class="horizz">
+            <button type="button" class="btn btn-outline-secondary" onclick="window.history.back()">
+                <img class="class-theme" src="{{ url_for('static', filename='images/arrow-back.svg') }}" />
+            </button>
+            <h1 class="q-bank-title">Edit question</h1>
         </div>
-        <div class="mb-3">
-            <div class="mb-3">
-                <label class="form-label">Question Type</label>
-                <div>
-                    {% if question.type == 'mc' %}
-                    <span class="badge bg-primary">Multiple Choice</span>
-                    {% elif question.type == 'tf' %}
-                    <span class="badge bg-success">True/False</span>
-                    {% else %}
-                    <span class="badge bg-info">Identification</span>
-                    {% endif %}
-                    <input type="hidden" name="question_type" value="{{ question.type }}">
-                </div>
+        <div>
+            <!-- EMPTY -->
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="container"
+    style="max-width: 800px; margin: 0 auto; padding: 40px 20px; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;">
+
+    <form action="{{assessment_id}}" method="post"
+        style="background: white; padding: 32px; border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+        <!-- Question Text -->
+        <div class="mb-4">
+            <label class="form-label"
+                style="font-size: 14px; font-weight: 500; color: #374151; margin-bottom: 8px; display: block;">Question
+                Text</label>
+            <textarea name="question_text" class="form-control" rows="4" required
+                style="width: 100%; padding: 12px 16px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 15px; font-family: 'Inter', sans-serif; resize: vertical; transition: border-color 0.2s;"
+                onfocus="this.style.borderColor='#3b82f6'; this.style.outline='none';"
+                onblur="this.style.borderColor='#d1d5db';">{{ question.question }}</textarea>
+        </div>
+
+        <!-- Question Type -->
+        <div class="mb-4">
+            <label class="form-label"
+                style="font-size: 14px; font-weight: 500; color: #374151; margin-bottom: 8px; display: block;">Question
+                Type</label>
+            <div>
+                {% if question.type == 'mc' %}
+                <span class="badge"
+                    style="background: #3b82f6; color: white; padding: 6px 12px; border-radius: 6px; font-size: 13px; font-weight: 500;">Multiple
+                    Choice</span>
+                {% elif question.type == 'tf' %}
+                <span class="badge"
+                    style="background: #10b981; color: white; padding: 6px 12px; border-radius: 6px; font-size: 13px; font-weight: 500;">True/False</span>
+                {% else %}
+                <span class="badge"
+                    style="background: #06b6d4; color: white; padding: 6px 12px; border-radius: 6px; font-size: 13px; font-weight: 500;">Identification</span>
+                {% endif %}
+                <input type="hidden" name="question_type" value="{{ question.type }}">
             </div>
         </div>
-        <div class="mb-3">
-            {% if question.type == 'mc' %}
-            <ul>
-                {% for choice in question.options.split(',') %}
-                <li class="list-group-item d-flex justify-content-between align-items-center py-2">
-                <div class="input-group mb-2">
-                    <div class="input-group-text">
-                    <input type="radio" class="form-check-input mt-0"
-                            name="answer"
-                            id="choice-{{ loop.index }}"
-                            value="{{loop.index}}"
-                            {% if choice == question.answer %}checked{% endif %}>
-                    </div>
-                    <input type="text"
-                        name="choice"
-                        class="form-control choice-input"
-                        value="{{ choice }}">
-                </div>
-                </li>
-                {% endfor %}
 
-            </ul>
+        <!-- Answer Options -->
+        <div class="mb-4">
+            <label class="form-label"
+                style="font-size: 14px; font-weight: 500; color: #374151; margin-bottom: 8px; display: block;">Answer
+                Options</label>
+
+            {% if question.type == 'mc' %}
+            <div style="display: flex; flex-direction: column; gap: 12px;">
+                {% for choice in question.options.split(',') %}
+                <div
+                    style="display: flex; align-items: center; background: #f9fafb; padding: 12px 16px; border-radius: 8px; border: 1px solid #e5e7eb;">
+                    <input type="radio" class="form-check-input" name="answer" id="choice-{{ loop.index }}"
+                        value="{{loop.index}}" {% if choice==question.answer %}checked{% endif %}
+                        style="width: 18px; height: 18px; margin-right: 12px; cursor: pointer; accent-color: #3b82f6;">
+                    <input type="text" name="choice" class="form-control choice-input" value="{{ choice }}"
+                        style="flex: 1; border: none; background: transparent; padding: 0; font-size: 15px; font-family: 'Inter', sans-serif;"
+                        onfocus="this.style.background='white'; this.style.border='1px solid #3b82f6'; this.style.padding='8px 12px'; this.style.borderRadius='6px';"
+                        onblur="this.style.background='transparent'; this.style.border='none'; this.style.padding='0';">
+                </div>
+                {% endfor %}
+            </div>
+
             {% elif question.type == 'tf' %}
-                <div> 
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="answer" id="tf-true" value="True" {% if question.answer == "True" %}checked{% endif %}>
-                        <label class="form-check-label" for="tf-true">True</label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="answer" id="tf-false" value="False"{% if question.answer == "False" %}checked{% endif %}>
-                        <label class="form-check-label" for="tf-false">False</label>
-                    </div>
+            <div style="display: flex; flex-direction: column; gap: 12px;">
+                <div
+                    style="display: flex; align-items: center; background: #f9fafb; padding: 12px 16px; border-radius: 8px; border: 1px solid #e5e7eb;">
+                    <input class="form-check-input" type="radio" name="answer" id="tf-true" value="True" {% if
+                        question.answer=="True" %}checked{% endif %}
+                        style="width: 18px; height: 18px; margin-right: 12px; cursor: pointer; accent-color: #3b82f6;">
+                    <label class="form-check-label" for="tf-true"
+                        style="font-size: 15px; cursor: pointer; margin: 0;">True</label>
                 </div>
+                <div
+                    style="display: flex; align-items: center; background: #f9fafb; padding: 12px 16px; border-radius: 8px; border: 1px solid #e5e7eb;">
+                    <input class="form-check-input" type="radio" name="answer" id="tf-false" value="False" {% if
+                        question.answer=="False" %}checked{% endif %}
+                        style="width: 18px; height: 18px; margin-right: 12px; cursor: pointer; accent-color: #3b82f6;">
+                    <label class="form-check-label" for="tf-false"
+                        style="font-size: 15px; cursor: pointer; margin: 0;">False</label>
+                </div>
+            </div>
+
             {% elif question.type == 'id' %}
-                <label for="" class="form-label">Answer</label>
-                <div class="mb-2"><input type="text" name="answer" value="{{ question.answer }}" class="form-control"></div>
-                <div>
-                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="case_sensitive" id="" value="sensitive" {% if question.is_sensitive == True %}checked{% endif %}>
-                        <label class="form-check-label" for="id-case-sensitive">Case-sensitive</label>
+            <div>
+                <input type="text" name="answer" value="{{ question.answer }}" class="form-control"
+                    style="width: 100%; padding: 12px 16px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 15px; font-family: 'Inter', sans-serif; margin-bottom: 16px;"
+                    onfocus="this.style.borderColor='#3b82f6'; this.style.outline='none';"
+                    onblur="this.style.borderColor='#d1d5db';">
+
+                <div style="display: flex; gap: 16px;">
+                    <div style="display: flex; align-items: center;">
+                        <input class="form-check-input" type="radio" name="case_sensitive" id="id-case-sensitive"
+                            value="sensitive" {% if question.is_sensitive==True %}checked{% endif %}
+                            style="width: 18px; height: 18px; margin-right: 8px; cursor: pointer; accent-color: #3b82f6;">
+                        <label class="form-check-label" for="id-case-sensitive"
+                            style="font-size: 14px; cursor: pointer; margin: 0;">Case-sensitive</label>
                     </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="case_sensitive" id="" value="insensitive" {% if question.is_sensitive == False %}checked{% endif %}>
-                        <label class="form-check-label" for="id-case-insensitive">Not case sensitive</label>
+                    <div style="display: flex; align-items: center;">
+                        <input class="form-check-input" type="radio" name="case_sensitive" id="id-case-insensitive"
+                            value="insensitive" {% if question.is_sensitive==False %}checked{% endif %}
+                            style="width: 18px; height: 18px; margin-right: 8px; cursor: pointer; accent-color: #3b82f6;">
+                        <label class="form-check-label" for="id-case-insensitive"
+                            style="font-size: 14px; cursor: pointer; margin: 0;">Not case sensitive</label>
                     </div>
                 </div>
+            </div>
             {% endif %}
-        </div> 
-        <div>
-            <input type="text" name="explanation" id="" class="form-control" placeholder="Explanation (optional)" value="{{ question.explanation }}">
         </div>
-        <input type="submit" value="Save Changes" class="btn btn-primary">
+
+        <!-- Explanation -->
+        <div class="mb-4">
+            <label class="form-label"
+                style="font-size: 14px; font-weight: 500; color: #374151; margin-bottom: 8px; display: block;">Explanation
+                (optional)</label>
+            <input type="text" name="explanation" class="form-control"
+                placeholder="Provide context or explanation for this question" value="{{ question.explanation }}"
+                style="width: 100%; padding: 12px 16px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 15px; font-family: 'Inter', sans-serif;"
+                onfocus="this.style.borderColor='#3b82f6'; this.style.outline='none';"
+                onblur="this.style.borderColor='#d1d5db';">
+        </div>
+
+        <!-- Submit Button -->
+        <div style="margin-top: 32px;">
+            <button type="submit" class="btn btn-primary"
+                style="width: 100%; background: #3b82f6; color: white; padding: 14px 24px; border: none; border-radius: 8px; font-size: 15px; font-weight: 500; cursor: pointer; transition: background 0.2s; font-family: 'Inter', sans-serif;"
+                onmouseover="this.style.background='#2563eb';" onmouseout="this.style.background='#3b82f6';">
+                Save Changes
+            </button>
+        </div>
     </form>
+</div>
+
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+
+    * {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    }
+</style>
 {% endblock %}

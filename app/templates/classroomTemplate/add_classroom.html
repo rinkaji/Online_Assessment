@@ -1,10 +1,7 @@
-{% extends "base_instructor.html" %}{% block title %}add classroom{% endblock %}
+{% extends "base_instructor.html" %}{% block title %}Creating classroom - Quizzr{% endblock %}
 {% block content %}
 
-<link
-  rel="stylesheet"
-  href="{{ url_for('static', filename='css/style-join-classroom.css') }}"
-/>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style-join-classroom.css') }}" />
 
 <!-- <h1>This is create classroom page</h1>
 <form action="/classroom/create" method="post">
@@ -16,26 +13,12 @@
 
 <div class="main-container">
   <h1>Create a class</h1>
-  <img
-    src="{{ url_for('static', filename='images/under-construction.svg') }}"
-  />
+  <img src="{{ url_for('static', filename='images/under-construction.svg') }}" />
   <p>Set up a space for your students and works.</p>
   <form action="/classroom/create" method="post">
-    <input
-      type="text"
-      name="title"
-      id=""
-      required
-      placeholder="Course descriptive title"
-    />
+    <input type="text" name="title" id="" required placeholder="Course descriptive title" />
     <!-- <input type="text" name="subject" id="" required placeholder="Subject" /> -->
-    <input
-      type="text"
-      name="description"
-      id=""
-      required
-      placeholder="Labels (ELEC1, SIA - 4C, etc.)"
-    />
+    <input type="text" name="description" id="" required placeholder="Labels (ELEC1, SIA - 4C, etc.)" />
     <input type="submit" value="create" />
   </form>
 </div>

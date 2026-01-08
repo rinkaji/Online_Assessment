@@ -1,195 +1,748 @@
-{% extends 'base_instructor.html' %} {% block title %} {{
-assessment.get('title', '') }} - Quizzr {% endblock %}
-<!-- eregetg -->
-{% block topbar_style %} background: white center/cover repeat; height: 85px; {%
-endblock %}
+{% extends 'base_instructor.html' %}
+{% block title %}{{ assessment.get('title', '') }} - Quizzr{% endblock %}
+
+{% block topbar_style %}background: white center/cover repeat; height: 85px;{% endblock %}
 
 {% block topbar %}
 <div class="header-text-container">
   <div class="title-box">
     <div class="horizz">
-      <button
-        type="button"
-        class="btn btn-outline-secondary"
-        onclick="( window.location.href='/classroom/{{assessment.get('classroom_id')}}')"
-      >
-        <img
-          class="class-theme"
-          src="{{ url_for('static', filename='images/arrow-back.svg') }}"
-        />
+      <button type="button" class="btn btn-outline-secondary"
+        onclick="window.location.href='/classroom/{{assessment.get('classroom_id')}}'">
+        <img class="class-theme" src="{{ url_for('static', filename='images/arrow-back.svg') }}" />
       </button>
       <div class="verti">
         <div class="desc">{{ assessment.get('title', '') }}</div>
         <div class="ass-info">
           <div class="title info-item">{{ questions | length }} questions</div>
-          <div class="title info-item">
-            {{ assessment.get('total_marks') }} pts
-          </div>
-          <div class="title info-item">
-            {{ assessment.get('time_limit') }} mins
-          </div>
-          <div class="title info-item">
-            Status: {{ assessment.get('status').title() }}
-          </div>
+          <div class="title info-item">{{ assessment.get('total_marks') }} pts</div>
+          <div class="title info-item">{{ assessment.get('time_limit') }} mins</div>
+          <div class="title info-item">Status: {{ assessment.get('status').title() }}</div>
         </div>
       </div>
     </div>
   </div>
 </div>
-
 {% endblock %}
 
 {% block content %}
-<link
-  rel="stylesheet"
-  href="{{ url_for('static', filename='css/style-view-assessment.css') }}"
-/>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style-view-assessment.css') }}" />
 
-
-  
-  {% for student in students %}
-  <div class="student-row" onclick="testing('{{loop.index0}}')" >
-    <div class="student-name">{{ student.get('f_name', '') }} {{ student.get('l_name', '') }} &nbsp&nbsp&nbsp {{ student.get('is_finished', '') }}</div>
-    <!-- <div class="student-score">{{ student.get('score', 0) }}</div> -->
-    <div class="student-status"></div>
+<div class="grading-container">
+  <!-- Left Sidebar - Student List -->
+  <div class="student-sidebar">
+    <div class="sidebar-header">
+      <h3>Student Work</h3>
+      <button class="return-all-btn" onclick="returnAll()">Return all</button>
+    </div>
+    <div class="student-list">
+      {% for student in students %}
+      <div class="student-item {% if student.get('is_finished') == 'checked' %}student-checked{% endif %}"
+        onclick="loadStudent({{loop.index0}})">
+        <div class="student-info">
+          <div class="student-name">{{ student.get('f_name', '') }} {{ student.get('l_name', '') }}</div>
+          {% if student.get('is_finished') == 'checked' %}
+          <span class="status-badge checked">Graded</span>
+          {% else %}
+          <span class="status-badge pending">Pending</span>
+          {% endif %}
+        </div>
+        {% if student.get('is_finished') == 'checked' %}
+        <div class="student-score-badge">{{ student.get('score', 0) }}/{{ assessment.get('total_marks') }}</div>
+        {% endif %}
+      </div>
+      {% endfor %}
+    </div>
   </div>
-  {% endfor %}
-  
 
-<div id="answerContainer"></div>
-<div id="explanationContainer"></div>
-
-
-
-
-
-
-
+  <!-- Right Content - Grading Area -->
+  <div class="grading-content">
+    <div id="grading-view" class="grading-view-empty">
+      <div class="empty-state">
+        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path
+            d="M9 12L11 14L15 10M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z"
+            stroke="#9ca3af" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+        <p>Select a student to review their work</p>
+      </div>
+    </div>
+  </div>
+</div>
 
 <script>
   const answersData = {{ answers | tojson }};
-  const studentsData = {{students | tojson}}
-  const assessmentData = {{assessment | tojson}}
-</script>
+  const studentsData = {{ students | tojson }};
+  const assessmentData = {{ assessment | tojson }};
+  let currentStudentIndex = null;
+  let userData = {};
 
-<script>
-  let userData = {}
-
-  function testing(index) {
-
-    
-    const answerContainer = document.getElementById('answerContainer');
-    const explanationContainer = document.getElementById('explanationContainer')
-
+  function loadStudent(index) {
+    currentStudentIndex = index;
     const studentAnswers = answersData[index];
     const studentData = studentsData[index];
+    const gradingView = document.getElementById('grading-view');
 
-    if (studentData.is_finished == "checked"){
-      explanationContainer.innerHTML = ''
-      answerContainer.innerHTML = '';
-      answerContainer.innerHTML += `<h2> Score: ${studentData.score}/${assessmentData.total_marks}<h2>`
-    }
-    else{
-      answerContainer.innerHTML = '';
-    studentAnswers.forEach(answer => {
-      if (answer.type == "mc"){
-      answerContainer.innerHTML += `
-        <div class="answer">
-          <input type="checkbox" class="score">
-          <p><strong>Question:</strong> ${answer.question}</p>
-          <p><strong>Answer:</strong> ${answer.answer_text}</p>
-          <p><strong>Options:</strong> ${answer.options}</p>
-          <p><strong>Correct answer:</strong>  ${answer.answer}</p>
-          <input type="text" name="explanation" id="">
-          <input type="hidden" name="answerId" value="${answer.id}">
+    // Remove active class from all students
+    document.querySelectorAll('.student-item').forEach(item => {
+      item.classList.remove('active');
+    });
+    // Add active class to selected student
+    document.querySelectorAll('.student-item')[index].classList.add('active');
+
+    if (studentData.is_finished === "checked") {
+      // Show graded view
+      gradingView.className = 'grading-view-checked';
+      gradingView.innerHTML = `
+        <div class="graded-header">
+          <h2>Already Graded</h2>
+          <div class="score-display-large">${studentData.score}/${assessmentData.total_marks}</div>
         </div>
-      `;  
-      }
-      else if (answer.type == "id"){
-        answerContainer.innerHTML += `
-        <div class="answer">
-          <input type="checkbox" class="score">
-          <p><strong>Question:</strong> ${answer.question}</p>
-          <p><strong>Answer:</strong> ${answer.answer_text}</p>
-          <p><strong>Correct answer:</strong>  ${answer.answer}</p>
-          <input type="text" name="explanation" id="">
-          <input type="hidden" name="answerId" value="${answer.id}">
-        </div>
-      `;
-      }
-      else {
-        answerContainer.innerHTML += `
-        <div class="answer">
-          <input type="checkbox" class="score">
-          <p><strong>Question:</strong> ${answer.question}</p>
-          <p><strong>Answer:</strong> ${answer.answer_text}</p>
-          <p><strong>Correct answer:</strong>  ${answer.answer}</p>
-          <input type="text" name="explanation" id="">
-          <input type="hidden" name="answerId" value="${answer.id}">
+        <div class="graded-questions">
+          ${studentAnswers.map((answer, idx) => `
+            <div class="question-review-card">
+              <div class="question-review-header">
+                <span class="question-num">Q${idx + 1}</span>
+                <span class="question-type">${answer.type === 'mc' ? 'Multiple Choice' : answer.type === 'id' ? 'Identification' : 'True/False'}</span>
+              </div>
+              <div class="question-text">${answer.question}</div>
+              <div class="answer-comparison">
+                <div class="answer-item">
+                  <span class="answer-label">Student's Answer:</span>
+                  <span class="answer-value ${answer.answer_text === answer.answer ? 'correct' : 'incorrect'}">${answer.answer_text || 'No answer'}</span>
+                </div>
+                <div class="answer-item">
+                  <span class="answer-label">Correct Answer:</span>
+                  <span class="answer-value correct">${answer.answer}</span>
+                </div>
+              </div>
+            </div>
+          `).join('')}
         </div>
       `;
-      } 
+    } else {
+      // Show grading interface
+      gradingView.className = 'grading-view-active';
+      gradingView.innerHTML = `
+        <div class="grading-header">
+          <div class="student-details">
+            <h2>${studentData.f_name} ${studentData.l_name}</h2>
+            <div class="score-tracker">
+              <span>Score:</span>
+              <span id="currentScore" class="score-value">0/${assessmentData.total_marks}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="questions-to-grade">
+          ${studentAnswers.map((answer, idx) => `
+            <div class="grade-question-card">
+              <div class="grade-question-header">
+                <div class="question-title-row">
+                  <span class="question-num">Q${idx + 1}</span>
+                  <span class="question-type">${answer.type === 'mc' ? 'Multiple Choice' : answer.type === 'id' ? 'Identification' : 'True/False'}</span>
+                </div>
+                <label class="correct-checkbox">
+                  <input type="checkbox" class="score-checkbox" data-answer-id="${answer.id}">
+                  <span class="checkbox-label">Mark as correct</span>
+                </label>
+              </div>
+
+              <div class="question-text">${answer.question}</div>
+
+              ${answer.type === 'mc' ? `
+                <div class="answer-options-display">
+                  ${answer.options.split(',').map(opt => `
+                    <div class="option-display ${opt.trim() === answer.answer ? 'option-correct' : ''} ${opt.trim() === answer.answer_text ? 'option-selected' : ''}">
+                      ${opt.trim()}
+                      ${opt.trim() === answer.answer ? '<span class="correct-label">Correct</span>' : ''}
+                      ${opt.trim() === answer.answer_text && opt.trim() !== answer.answer ? '<span class="selected-label">Student Selected</span>' : ''}
+                    </div>
+                  `).join('')}
+                </div>
+              ` : `
+                <div class="answer-comparison">
+                  <div class="answer-item">
+                    <span class="answer-label">Student's Answer:</span>
+                    <span class="answer-value ${answer.answer_text.toLowerCase() === answer.answer.toLowerCase() ? 'correct' : 'incorrect'}">${answer.answer_text || 'No answer'}</span>
+                  </div>
+                  <div class="answer-item">
+                    <span class="answer-label">Correct Answer:</span>
+                    <span class="answer-value correct">${answer.answer}</span>
+                  </div>
+                </div>
+              `}
+
+              <div class="feedback-section">
+                <label class="feedback-label">Feedback for this question (optional)</label>
+                <input type="text" class="feedback-input" placeholder="Add explanation or comment" data-answer-id="${answer.id}">
+              </div>
+            </div>
+          `).join('')}
+        </div>
+
+        <div class="grading-footer">
+          <div class="teacher-comment-section">
+            <label class="comment-label">Teacher's Comments</label>
+            <textarea id="teacherComment" class="teacher-comment-input" placeholder="Add overall feedback for the student"></textarea>
+          </div>
+          <button class="submit-grade-btn" onclick="submitGrade()">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M5 10L8 13L15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Return Assessment
+          </button>
+        </div>
+      `;
+
+      // Add event listeners for checkboxes
+      const checkboxes = document.querySelectorAll('.score-checkbox');
+      checkboxes.forEach(cb => {
+        // Auto-check if answer is correct
+        const answerData = studentAnswers.find(a => a.id == cb.dataset.answerId);
+        if (answerData && answerData.answer_text.toLowerCase().trim() === answerData.answer.toLowerCase().trim()) {
+          cb.checked = true;
+        }
+        cb.addEventListener('change', updateScore);
+      });
+
+      updateScore();
     }
-  );
-    answerContainer.innerHTML += `<button id="updateUserAssessmentBtn">return assessment</button>`
-
-    explanationContainer.innerHTML = ''
-    explanationContainer.innerHTML += `
-    ${studentData.f_name} ${studentData.l_name}
-    <div id="studentScore">Score: 0/${assessmentData.total_marks}</div>
-    Teacher's comment
-    <input type="text" name="comment" id="commentInput">
-    `
-    const checkboxes = document.querySelectorAll('.score');
-    console.log(checkboxes);
-    checkboxes.forEach(cb => cb.addEventListener('change', updateCheckedCount));
-
-    const updateUserAssessmentBtn = document.getElementById("updateUserAssessmentBtn")
-    updateUserAssessmentBtn.addEventListener('click', ()=>{updateUserAssessment(index)})
   }
 
-  function updateCheckedCount() {
-    let checkedCount = document.querySelectorAll('.score:checked').length;
-    const studentScore = document.getElementById('studentScore')
-    studentScore.innerHTML = `Score: ${checkedCount}/${assessmentData.total_marks}`
-    userData.score = checkedCount
+  function updateScore() {
+    const checkedCount = document.querySelectorAll('.score-checkbox:checked').length;
+    const scoreDisplay = document.getElementById('currentScore');
+    if (scoreDisplay) {
+      scoreDisplay.textContent = `${checkedCount}/${assessmentData.total_marks}`;
+    }
+    userData.score = checkedCount;
   }
 
-  
+  function submitGrade() {
+    if (currentStudentIndex === null) return;
 
-  function updateUserAssessment(index){
-    const commentInput = document.getElementById('commentInput')
-    userData.comment = commentInput.value
-    if (!userData.score){
-      userData.score = 0
+    const teacherComment = document.getElementById('teacherComment').value;
+    const feedbackInputs = document.querySelectorAll('.feedback-input');
+    const answerIds = document.querySelectorAll('.score-checkbox');
+
+    let explanations = [];
+    let aidList = [];
+
+    feedbackInputs.forEach((input, idx) => {
+      explanations.push(input.value);
+      aidList.push(answerIds[idx].dataset.answerId);
+    });
+
+    userData.comment = teacherComment;
+    userData.explanations = explanations;
+    userData.answerIDs = aidList;
+
+    if (!userData.score) {
+      userData.score = 0;
     }
-    const explanations = document.querySelectorAll('input[name="explanation"]');
-    const aids = document.querySelectorAll('input[name="answerId"]');
-    let expList = []
-    let aidList = []
 
-    explanations.forEach((exp, index)=>{
-      expList[index] = exp.value
-      aidList[index] = aids[index].value
+    fetch(`/assessment/check/${studentsData[currentStudentIndex].uaid}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(userData)
     })
-
-    userData.explanations = expList
-    userData.answerIDs = aidList
-    
-    
-    fetch(`/assessment/check/${studentsData[index].uaid}`, {
-    method: 'POST', // or PUT
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(userData) // convert JS object to JSON
-    })
-    location.reload()
-    }
-    
+      .then(response => {
+        if (response.ok) {
+          location.reload();
+        }
+      });
   }
-    
-  
+
+  function returnAll() {
+    if (confirm('Are you sure you want to return all graded assessments?')) {
+      // Implement return all functionality
+      alert('This feature would return all graded assessments to students');
+    }
+  }
 </script>
+
+<style>
+  /* Container Layout */
+  .grading-container {
+    font-family: Inter;
+    display: flex;
+    min-height: calc(100vh - 85px);
+    background-color: #f3f4f6;
+  }
+
+  /* Student Sidebar */
+  .student-sidebar {
+    width: 320px;
+    background: white;
+    border-right: 1px solid #e5e7eb;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .sidebar-header {
+    padding: 20px;
+    border-bottom: 1px solid #e5e7eb;
+  }
+
+  .sidebar-header h3 {
+    font-size: 18px;
+    font-weight: 600;
+    margin: 0 0 16px 0;
+    color: #111827;
+  }
+
+  .return-all-btn {
+    width: 100%;
+    padding: 10px 16px;
+    background-color: #3b82f6;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .return-all-btn:hover {
+    background-color: #2563eb;
+  }
+
+  .student-list {
+    flex: 1;
+    overflow-y: auto;
+    padding: 8px;
+  }
+
+  .student-item {
+    padding: 16px;
+    margin-bottom: 8px;
+    background: #f9fafb;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: 2px solid transparent;
+  }
+
+  .student-item:hover {
+    background: #f3f4f6;
+  }
+
+  .student-item.active {
+    background: #eff6ff;
+    border-color: #3b82f6;
+  }
+
+  .student-item.student-checked {
+    opacity: 0.7;
+  }
+
+  .student-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+
+  .student-name {
+    font-weight: 600;
+    color: #111827;
+    font-size: 14px;
+  }
+
+  .status-badge {
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+
+  .status-badge.checked {
+    background-color: #dcfce7;
+    color: #166534;
+  }
+
+  .status-badge.pending {
+    background-color: #fef3c7;
+    color: #92400e;
+  }
+
+  .student-score-badge {
+    font-size: 12px;
+    font-weight: 600;
+    color: #6b7280;
+  }
+
+  /* Grading Content */
+  .grading-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 24px;
+  }
+
+  .grading-view-empty {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 400px;
+  }
+
+  .empty-state {
+    text-align: center;
+  }
+
+  .empty-state svg {
+    margin-bottom: 16px;
+  }
+
+  .empty-state p {
+    color: #9ca3af;
+    font-size: 16px;
+  }
+
+  /* Grading Active View */
+  .grading-view-active {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .grading-header {
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 20px;
+  }
+
+  .student-details h2 {
+    font-size: 24px;
+    font-weight: 700;
+    color: #111827;
+    margin: 0 0 12px 0;
+  }
+
+  .score-tracker {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 16px;
+    color: #6b7280;
+  }
+
+  .score-value {
+    font-weight: 700;
+    color: #3b82f6;
+    font-size: 20px;
+  }
+
+  /* Question Cards for Grading */
+  .questions-to-grade {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+
+  .grade-question-card {
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 24px;
+  }
+
+  .grade-question-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .question-title-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .question-num {
+    font-weight: 600;
+    font-size: 14px;
+    color: #6b7280;
+  }
+
+  .question-type {
+    font-size: 12px;
+    color: #9ca3af;
+  }
+
+  .correct-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+  }
+
+  .correct-checkbox input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    accent-color: #22c55e;
+  }
+
+  .checkbox-label {
+    font-size: 14px;
+    font-weight: 500;
+    color: #374151;
+  }
+
+  .question-text {
+    font-size: 16px;
+    font-weight: 600;
+    color: #111827;
+    margin-bottom: 16px;
+    line-height: 1.5;
+  }
+
+  /* Answer Options Display */
+  .answer-options-display {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+
+  .option-display {
+    padding: 12px 16px;
+    background-color: #f9fafb;
+    border: 2px solid #e5e7eb;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .option-display.option-correct {
+    background-color: #f0fdf4;
+    border-color: #86efac;
+  }
+
+  .option-display.option-selected {
+    background-color: #fef2f2;
+    border-color: #fecaca;
+  }
+
+  .option-display.option-selected.option-correct {
+    background-color: #f0fdf4;
+    border-color: #86efac;
+  }
+
+  .correct-label,
+  .selected-label {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 12px;
+  }
+
+  .correct-label {
+    background-color: #22c55e;
+    color: white;
+  }
+
+  .selected-label {
+    background-color: #ef4444;
+    color: white;
+  }
+
+  /* Answer Comparison */
+  .answer-comparison {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+
+  .answer-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    background-color: #f9fafb;
+    border-radius: 8px;
+  }
+
+  .answer-label {
+    font-weight: 600;
+    font-size: 14px;
+    color: #6b7280;
+    min-width: 140px;
+  }
+
+  .answer-value {
+    font-size: 14px;
+    font-weight: 600;
+    padding: 4px 12px;
+    border-radius: 12px;
+    color: white;
+  }
+
+  .answer-value.correct {
+    background-color: #22c55e;
+  }
+
+  .answer-value.incorrect {
+    background-color: #ef4444;
+  }
+
+  /* Feedback Section */
+  .feedback-section {
+    margin-top: 16px;
+  }
+
+  .feedback-label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: #6b7280;
+    margin-bottom: 8px;
+  }
+
+  .feedback-input {
+    width: 100%;
+    padding: 10px 12px;
+    border: 2px solid #e5e7eb;
+    border-radius: 8px;
+    font-size: 14px;
+    transition: all 0.2s;
+  }
+
+  .feedback-input:focus {
+    outline: none;
+    border-color: #3b82f6;
+  }
+
+  /* Grading Footer */
+  .grading-footer {
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 24px;
+  }
+
+  .teacher-comment-section {
+    margin-bottom: 20px;
+  }
+
+  .comment-label {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    color: #111827;
+    margin-bottom: 8px;
+  }
+
+  .teacher-comment-input {
+    width: 100%;
+    min-height: 100px;
+    padding: 12px;
+    border: 2px solid #e5e7eb;
+    border-radius: 8px;
+    font-size: 14px;
+    font-family: inherit;
+    resize: vertical;
+    transition: all 0.2s;
+  }
+
+  .teacher-comment-input:focus {
+    outline: none;
+    border-color: #3b82f6;
+  }
+
+  .submit-grade-btn {
+    width: 100%;
+    padding: 14px 24px;
+    background-color: #22c55e;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: all 0.2s;
+  }
+
+  .submit-grade-btn:hover {
+    background-color: #16a34a;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
+  }
+
+  /* Graded View */
+  .grading-view-checked {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .graded-header {
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 32px;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+
+  .graded-header h2 {
+    color: #6b7280;
+    font-size: 18px;
+    margin: 0 0 16px 0;
+  }
+
+  .score-display-large {
+    font-size: 48px;
+    font-weight: 700;
+    color: #22c55e;
+  }
+
+  .graded-questions {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .question-review-card {
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 24px;
+  }
+
+  .question-review-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+
+  /* Responsive */
+  @media (max-width: 1024px) {
+    .grading-container {
+      flex-direction: column;
+    }
+
+    .student-sidebar {
+      width: 100%;
+      max-height: 300px;
+    }
+  }
+</style>
 
 {% endblock %}

@@ -1,28 +1,172 @@
-{% extends "base.html" %} {% block title %}Instructor list page{% endblock %} {%
-block content %} 
-<h1>This is Admin Instructor list page</h1>
-<a href="/admin/instructor/register">Add Instructor</a>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Email</th>
-      <th>actions</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for instructor in instructors %}
-    <tr>
-      <td>
-        {{instructor['f_name']~''~instructor['m_name']~''~instructor['l_name']}}
-      </td>
-      <td><p>{{instructor['email']}}</p></td>
-      <td>
-        <a href="/admin/instructor/delete/{{instructor['id']}}">delete</a>
-      </td>
-    </tr>
-    {% endfor %}
-  </tbody>
-</table>
-<a href="/admin/student">Go to Students</a>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style-question-bank.css') }}" />
+
+{% extends "base_admin.html" %}
+{% block title %}Instructor List page{% endblock %}
+
+{% block topbar %}
+<div class="header-text-container">
+  <div class="d-flex justify-content-between align-items-center">
+    <div class="horizz">
+      <button type="button" class="btn btn-outline-secondary" onclick="window.location.href='/admin/'">
+        <img class="class-theme" src="{{ url_for('static', filename='images/arrow-back.svg') }}" />
+      </button>
+      <h1 class="q-bank-title">All Instructors</h1>
+    </div>
+    <div>
+      <div class="header-actions">
+        <a href="/admin/instructor/register" class="btn btn-primary">Add Instructor</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block content %}
+
+<style>
+  .instructor-list-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 24px;
+  }
+
+  .header-actions {
+    display: flex;
+    gap: 12px;
+  }
+
+  .btn {
+    padding: 12px 24px;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    border: none;
+    cursor: pointer;
+    display: inline-block;
+  }
+
+  .btn-primary {
+    background: #2563eb;
+    color: white;
+  }
+
+  .btn-primary:hover {
+    background: #1d4ed8;
+    transform: translateY(-1px);
+  }
+
+  .btn-secondary {
+    background: white;
+    color: #374151;
+    border: 1px solid #d1d5db;
+  }
+
+  .btn-secondary:hover {
+    background: #f9fafb;
+  }
+
+  .btn-danger {
+    background: #ef4444;
+    color: white;
+    padding: 8px 16px;
+    font-size: 14px;
+  }
+
+  .btn-danger:hover {
+    background: #dc2626;
+  }
+
+  .table-container {
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  thead {
+    background: #f9fafb;
+    border-bottom: 1px solid #e5e7eb;
+  }
+
+  th {
+    padding: 16px 32px;
+    text-align: left;
+    font-size: 13px;
+    font-weight: 600;
+    color: #6b7280;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  tbody tr {
+    border-bottom: 1px solid #e5e7eb;
+    transition: background 0.2s ease;
+  }
+
+  tbody tr:hover {
+    background: #f9fafb;
+  }
+
+  tbody tr:last-child {
+    border-bottom: none;
+  }
+
+  td {
+    padding: 20px 32px;
+    font-size: 15px;
+    color: #374151;
+  }
+
+  td p {
+    margin: 0;
+    color: #6b7280;
+    font-size: 14px;
+  }
+
+  .instructor-name {
+    font-weight: 500;
+    color: #111827;
+  }
+
+  .me-2 {
+    margin-right: 8px;
+  }
+</style>
+
+<div class="instructor-list-container">
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for instructor in instructors %}
+        <tr>
+          <td class="instructor-name">
+            {{instructor['f_name']~' '~instructor['m_name']~' '~instructor['l_name']}}
+          </td>
+          <td>
+            <p>{{instructor['email']}}</p>
+          </td>
+          <td>
+            <a href="/admin/instructor/delete/{{instructor['id']}}" class="btn btn-danger">delete</a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
 {% endblock %}

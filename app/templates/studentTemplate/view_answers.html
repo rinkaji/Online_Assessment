@@ -1,22 +1,398 @@
-{% extends "base.html" %} 
-{% block title %}student view classroom{% endblock %} 
-{% block content %} 
-{% include "student_header.html" %}
-    {% for answer in answers %}
-    <div>
-        <b>{{loop.index}}. </b>{{answer.question}}
-        <br>
-        {% if answer.type == 'mc' %}
-            {% for option in answer.options.split(',') %}
-                <p>{{option}}</p>
-            {% endfor %}
-        {% endif %}
-        Answer: {{answer.answer_text}} <br>
-        Correct Answer: {{answer.answer}} <br>
-        Explanation: {{answer.explanation}} <br>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style-student-assessment.css') }}" />
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style-question-bank.css') }}" />
 
-        Teacher's Feedback <br>
-        {{ua_details.feedback}}
+{% extends "base.html" %}
+{% block title %} Quizzr {% endblock %}
+{% block topbar_style %} background: white center/cover repeat; height: 85px; {%endblock %}
+
+{% block topbar %}
+<div class="header-text-container">
+    <div class="d-flex justify-content-between align-items-center">
+        <div class="horizz">
+            <button type="button" class="btn btn-outline-secondary" onclick="history.back()">
+                <img class="class-theme" src="{{ url_for('static', filename='images/arrow-back.svg') }}" />
+            </button>
+            <h1 class="q-bank-title">Review Correct Answers</h1>
         </div>
-    {% endfor %}
-{% endblock  %}
+        <div>
+            <!-- <button data-bs-toggle="modal" data-bs-target="#editQuestionModal" class="add-btn">
+                <img class="class-theme" src="{{ url_for('static', filename='images/black-plus.svg') }}" />
+                Add new question
+            </button> -->
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="answers-container">
+        {% for answer in answers %}
+        <div class="answer-card">
+            <div class="answer-header">
+                <div class="answer-title-section">
+                    <span class="answer-number">Q{{ loop.index }}</span>
+                    <span class="answer-type-badge">
+                        {% if answer.type == 'mc' %}Multiple Choice{% elif answer.type == 'id' %}Identification{% elif
+                        answer.type == 'tf' %}True or False{% endif %}
+                    </span>
+                </div>
+            </div>
+
+            <div class="answer-question">{{ answer.question }}</div>
+
+            {% if answer.type == 'mc' %}
+            <div class="answer-options">
+                {% for option in answer.options.split(',') %}
+                <div
+                    class="option-item {% if option|trim == answer.answer|trim %}option-correct{% endif %} {% if option|trim == answer.answer_text|trim %}option-selected{% endif %}">
+                    <span class="option-text">{{ option }}</span>
+                    {% if option|trim == answer.answer|trim %}
+                    <span class="correct-indicator">✓ Correct Answer</span>
+                    {% endif %}
+                    {% if option|trim == answer.answer_text|trim and option|trim != answer.answer|trim %}
+                    <span class="your-answer-indicator">Your Answer</span>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+            {% elif answer.type == 'tf' %}
+            <div class="tf-answers">
+                <div
+                    class="tf-item {% if answer.answer_text|lower == 'true' %}tf-selected{% endif %} {% if answer.answer|lower == 'true' %}tf-correct{% endif %}">
+                    <span class="tf-text">True</span>
+                    {% if answer.answer|lower == 'true' %}
+                    <span class="correct-indicator">✓ Correct Answer</span>
+                    {% elif answer.answer_text|lower == 'true' %}
+                    <span class="your-answer-indicator">Your Answer</span>
+                    {% endif %}
+                </div>
+                <div
+                    class="tf-item {% if answer.answer_text|lower == 'false' %}tf-selected{% endif %} {% if answer.answer|lower == 'false' %}tf-correct{% endif %}">
+                    <span class="tf-text">False</span>
+                    {% if answer.answer|lower == 'false' %}
+                    <span class="correct-indicator">✓ Correct Answer</span>
+                    {% elif answer.answer_text|lower == 'false' %}
+                    <span class="your-answer-indicator">Your Answer</span>
+                    {% endif %}
+                </div>
+            </div>
+            {% elif answer.type == 'id' %}
+            <div class="id-answer-section">
+                <div class="id-answer-box">
+                    <span class="id-label">Your Answer:</span>
+                    <span
+                        class="id-value {% if answer.answer_text|lower == answer.answer|lower %}id-correct{% else %}id-incorrect{% endif %}">
+                        {{ answer.answer_text if answer.answer_text else 'No answer provided' }}
+                    </span>
+                </div>
+                {% if answer.answer_text|lower != answer.answer|lower %}
+                <div class="id-answer-box correct-answer-box">
+                    <span class="id-label">Correct Answer:</span>
+                    <span class="id-value id-correct">{{ answer.answer }}</span>
+                </div>
+                {% endif %}
+            </div>
+            {% endif %}
+
+            {% if answer.explanation %}
+            <div class="answer-explanation">
+                <span class="explanation-label">Explanation:</span>
+                <span class="explanation-text">{{ answer.explanation }}</span>
+            </div>
+            {% endif %}
+
+            {% if ua_details and ua_details.feedback %}
+            <div class="teacher-feedback">
+                <div class="feedback-header">Teacher's Feedback</div>
+                <div class="feedback-content">{{ ua_details.feedback }}</div>
+            </div>
+            {% endif %}
+        </div>
+        {% else %}
+        <div class="no-answers">
+            <p>No answers to display.</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<style>
+    /* Container */
+    .answers-container {
+        max-width: 1000px;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        padding: 0 16px;
+    }
+
+    /* Answer Card */
+    .answer-card {
+        background: white;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        padding: 24px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    }
+
+    /* Answer Header */
+    .answer-header {
+        margin-bottom: 16px;
+    }
+
+    .answer-title-section {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .answer-number {
+        font-weight: 600;
+        font-size: 14px;
+        color: #6b7280;
+    }
+
+    .answer-type-badge {
+        font-size: 12px;
+        color: #9ca3af;
+    }
+
+    /* Question Text */
+    .answer-question {
+        font-size: 16px;
+        font-weight: 600;
+        color: #111827;
+        margin-bottom: 20px;
+        line-height: 1.5;
+    }
+
+    /* Multiple Choice Options */
+    .answer-options {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        margin-bottom: 16px;
+    }
+
+    .option-item {
+        padding: 14px 16px;
+        background-color: #f9fafb;
+        border: 1px solid #e5e7eb;
+        border-radius: 8px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        transition: all 0.2s;
+    }
+
+    .option-item.option-correct {
+        background-color: #f0fdf4;
+        border-color: #86efac;
+    }
+
+    .option-item.option-selected:not(.option-correct) {
+        background-color: #fef2f2;
+        border-color: #fecaca;
+    }
+
+    .option-text {
+        font-size: 15px;
+        color: #374151;
+        flex: 1;
+    }
+
+    .option-item.option-correct .option-text {
+        color: #166534;
+        font-weight: 500;
+    }
+
+    .option-item.option-selected:not(.option-correct) .option-text {
+        color: #991b1b;
+    }
+
+    .correct-indicator {
+        background-color: #22c55e;
+        color: white;
+        padding: 4px 10px;
+        border-radius: 12px;
+        font-size: 11px;
+        font-weight: 600;
+    }
+
+    .your-answer-indicator {
+        background-color: #ef4444;
+        color: white;
+        padding: 4px 10px;
+        border-radius: 12px;
+        font-size: 11px;
+        font-weight: 600;
+    }
+
+    /* True/False */
+    .tf-answers {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        margin-bottom: 16px;
+    }
+
+    .tf-item {
+        padding: 14px 16px;
+        background-color: #f9fafb;
+        border: 1px solid #e5e7eb;
+        border-radius: 8px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .tf-item.tf-correct {
+        background-color: #f0fdf4;
+        border-color: #86efac;
+    }
+
+    .tf-item.tf-selected:not(.tf-correct) {
+        background-color: #fef2f2;
+        border-color: #fecaca;
+    }
+
+    .tf-text {
+        font-size: 15px;
+        color: #374151;
+        font-weight: 500;
+    }
+
+    .tf-item.tf-correct .tf-text {
+        color: #166534;
+    }
+
+    .tf-item.tf-selected:not(.tf-correct) .tf-text {
+        color: #991b1b;
+    }
+
+    /* Identification */
+    .id-answer-section {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        margin-bottom: 16px;
+    }
+
+    .id-answer-box {
+        padding: 12px 16px;
+        background-color: #f9fafb;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        flex-wrap: wrap;
+    }
+
+    .correct-answer-box {
+        background-color: #f0fdf4;
+        border: 1px solid #86efac;
+    }
+
+    .id-label {
+        font-weight: 600;
+        font-size: 14px;
+        color: #6b7280;
+    }
+
+    .id-value {
+        font-size: 14px;
+        font-weight: 600;
+        padding: 4px 12px;
+        border-radius: 12px;
+        color: white;
+    }
+
+    .id-value.id-correct {
+        background-color: #22c55e;
+    }
+
+    .id-value.id-incorrect {
+        background-color: #ef4444;
+    }
+
+    /* Explanation */
+    .answer-explanation {
+        padding: 16px;
+        background-color: #f9fafb;
+        border-left: 3px solid #3b82f6;
+        border-radius: 6px;
+        margin-bottom: 16px;
+        font-style: italic;
+    }
+
+    .explanation-label {
+        font-weight: 600;
+        color: #6b7280;
+        font-size: 13px;
+        display: block;
+        margin-bottom: 6px;
+    }
+
+    .explanation-text {
+        color: #4b5563;
+        font-size: 14px;
+        line-height: 1.6;
+    }
+
+    /* Teacher Feedback */
+    .teacher-feedback {
+        padding: 16px;
+        background-color: #fffbeb;
+        border: 1px solid #fde68a;
+        border-radius: 8px;
+        margin-top: 16px;
+    }
+
+    .feedback-header {
+        font-weight: 600;
+        color: #92400e;
+        font-size: 14px;
+        margin-bottom: 8px;
+    }
+
+    .feedback-content {
+        color: #78350f;
+        font-size: 14px;
+        line-height: 1.6;
+    }
+
+    /* No Answers */
+    .no-answers {
+        text-align: center;
+        padding: 60px 20px;
+        background: white;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+    }
+
+    .no-answers p {
+        color: #9ca3af;
+        font-size: 16px;
+        margin: 0;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .answer-card {
+            padding: 16px;
+        }
+
+        .answer-question {
+            font-size: 15px;
+        }
+
+        .option-text,
+        .tf-text {
+            font-size: 14px;
+        }
+    }
+</style>
+
+{% endblock %}
