@@ -72,14 +72,14 @@ endblock %}
                       }}</small>
                   </h6>
                   <div class="card-action-btn">
-                    <a href="/assessment/deploy/{{ assessment.get('id') }}" class="action-btn">
+                    <a href="/question/delete/{{ q.get('id') }}/{{assessment.get('id')}}" class="action-btn">
                       <img src="{{ url_for('static', filename='images/delete-icon.svg') }}" class="class-theme"
                         alt="Deploy Icon" />
                     </a>
-                    <a href="/assessment/deploy/{{ assessment.get('id') }}" class="action-btn">
+                    <!-- <a href="/assessment/deploy/{{ assessment.get('id') }}" class="action-btn">
                       <img src="{{ url_for('static', filename='images/pen-icon.svg') }}" class="class-theme"
                         alt="Deploy Icon" />
-                    </a>
+                    </a> -->
                   </div>
                 </div>
                 <p class="mb-2 fw-semibold">{{ q.get('question') }}</p>
